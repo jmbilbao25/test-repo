@@ -85,7 +85,7 @@ grep -oP 'Pause (Young|Full).*?\K\d+\.\d+(?=ms)' results/heavy-baseline-gc.log \
 
 ## Before submitting
 
-Fill in `[Course / Section]` at the top of the document. Regenerate afterwards with:
+Regenerate both files after any edit to `make_docx.py`:
 
 ```bash
 python3 make_docx.py

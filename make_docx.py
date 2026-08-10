@@ -70,8 +70,16 @@ def figure(filename, caption, width=6.3):
 
 
 # ----------------------------------------------------------------- heading
+day = doc.add_paragraph()
+day.alignment = WD_ALIGN_PARAGRAPH.CENTER
+day.paragraph_format.space_after = Pt(2)
+drun = day.add_run("Day 2 Assignment")
+drun.bold = True
+drun.font.size = Pt(12)
+
 title = doc.add_paragraph()
 title.alignment = WD_ALIGN_PARAGRAPH.CENTER
+title.paragraph_format.space_after = Pt(6)
 trun = title.add_run("JVM Tuning and Spring Boot Microservice Performance")
 trun.bold = True
 trun.font.size = Pt(16)
@@ -80,7 +88,7 @@ sub = doc.add_paragraph()
 sub.alignment = WD_ALIGN_PARAGRAPH.CENTER
 sub.paragraph_format.space_after = Pt(16)
 for text, br in [("John Michael Bilbao", True),
-                 ("[Course / Section]", True),
+                 ("Techstart", True),
                  ("August 10, 2026", False)]:
     r = sub.add_run(text)
     r.font.size = Pt(10.5)
@@ -95,14 +103,14 @@ doc.add_paragraph(
     "itself, so the whole service is only a few lines of code."
 )
 doc.add_paragraph(
-    "Spring Boot runs on the JVM, and the JVM is what decides how much memory the application gets "
-    "and when it clears out objects that are no longer needed. That clearing out is garbage "
-    "collection. If the heap is too small the collector keeps running, and the application spends "
-    "more time freeing memory than answering requests. Tuning means setting options like the heap "
-    "size and the collector type to fit the work the application actually does. I built a small "
-    "item service, put it under load, watched it in VisualVM, then changed the settings and "
-    "measured what happened. Everything here ran on Java 21 with Spring Boot 3.4.1, on a machine "
-    "with 8 cores and 31 GB of RAM."
+    "Spring Boot runs on the JVM, and the JVM decides how much memory the application gets and when "
+    "it clears out objects that are no longer needed. That clearing out is garbage collection. If "
+    "the heap is too small the collector keeps running, and the application spends more time "
+    "freeing memory than answering requests. Tuning means setting options like the heap size and "
+    "the collector type to fit the work the application actually does. I built a small item "
+    "service, put it under load, watched it in VisualVM, then changed the settings to see what "
+    "would happen. Everything here ran on Java 21 with Spring Boot 3.4.1, on a machine with eight "
+    "cores."
 )
 
 # -------------------------------------------------------------- the service
@@ -137,8 +145,7 @@ doc.add_paragraph(
 )
 doc.add_paragraph(
     "The list gets rebuilt on every request instead of being cached, which is on purpose. A cached "
-    "list would barely allocate anything and there would be nothing to watch in VisualVM. "
-    "Rebuilding it means every request throws away thousands of objects."
+    "list would barely allocate anything and there would be nothing to watch in VisualVM."
 )
 figure("fig1-terminal.png", "The endpoint responding, and the health check", width=5.9)
 
@@ -147,8 +154,8 @@ doc.add_heading("Monitoring with VisualVM", level=1)
 doc.add_paragraph(
     "I got VisualVM from visualvm.github.io and started it while the service was already running. "
     "The process shows up on the left under Local, and double clicking it opens the Overview tab, "
-    "which is handy because it shows the JVM options the process actually started with. I ran the "
-    "first round with a small heap and the serial collector so there would be something to find:"
+    "which shows the JVM options the process started with. I ran the first round with a small heap "
+    "and the serial collector so there would be something to find:"
 )
 code_block(["java -Xms64m -Xmx128m -XX:+UseSerialGC \\",
             "     -cp \"target/classes:$(cat cp.txt)\" \\",
@@ -157,34 +164,33 @@ figure("fig-baseline-overview.png", "Overview tab, showing the baseline flags in
 
 doc.add_paragraph(
     "Nothing much happens while the application is idle, so I wrote a Python script that hits the "
-    "endpoint with 16 threads asking for 25,000 items each, and left it looping for about two and "
-    "a half minutes while I watched the Monitor tab."
+    "endpoint from several threads at once and left it looping for a couple of minutes while I "
+    "watched the Monitor tab."
 )
 figure("fig-baseline-monitor.png", "Monitor tab during the baseline run", width=5.9)
 doc.add_paragraph(
-    "Heap went straight to the 128 MB ceiling and stayed pinned there. Used heap sawtoothed between "
-    "roughly 25 and 100 MB and never settled, so the collector was running constantly rather than "
-    "every now and then. CPU sat around 34 percent, and threads went from 29 to 37 when the load "
-    "arrived and then stayed flat, so the thread count was not the problem."
+    "Heap went straight up to its ceiling and stayed pinned there, and used heap sawtoothed up and "
+    "down without ever settling, so the collector was running constantly rather than every now and "
+    "then. Threads went up when the load arrived and then stayed flat, so the thread count was not "
+    "the problem."
 )
 doc.add_paragraph(
-    "The GC activity figure confused me at first. VisualVM showed 7.2 percent, which sounds "
-    "harmless, but the GC log for the same session recorded 3,137 collections, 695 of them full "
-    "GCs, and 95.5 seconds of pauses. During the busiest ten seconds the application was frozen "
-    "68 percent of the time. Both numbers are right. Serial GC stops everything and then works on "
-    "a single thread, and VisualVM reports GC time spread across all 8 cores, so one fully busy "
-    "core comes out at around 7 percent. The graph answers how much of the CPU is going into GC, "
-    "and the log answers how long the application is frozen. For a service that has to answer "
-    "requests, the second one is what matters."
+    "The GC activity figure confused me at first. VisualVM showed about 7 percent, which sounds "
+    "harmless, but the GC log for the same session was full of collections and showed the "
+    "application frozen for most of the run. Both are right. Serial GC stops everything and then "
+    "works on a single thread, and VisualVM spreads GC time across all the cores, so one busy core "
+    "out of eight looks small. The graph shows how much of the CPU is going into GC, while the log "
+    "shows how long the application is actually stopped, and for a service answering requests it is "
+    "the second one that matters."
 )
 
 # -------------------------------------------------------------------- tuning
 doc.add_heading("Changing the settings", level=1)
 doc.add_paragraph(
     "The heap was the problem, not CPU and not threads. I raised the maximum from 128 MB to 512 MB "
-    "and set the minimum to match, which stops the JVM growing the heap while it is already busy. "
-    "I also swapped the serial collector for G1, since G1 spreads its work across cores and does "
-    "much of it concurrently, and gave it a 100 ms pause target."
+    "and set the minimum to match, which stops the JVM growing the heap while it is already busy. I "
+    "also swapped the serial collector for G1, since G1 spreads its work across cores and does much "
+    "of it concurrently, and gave it a 100 ms pause target."
 )
 code_block([
     "java -Xms512m -Xmx512m -XX:+UseG1GC -XX:MaxGCPauseMillis=100 \\",
@@ -194,24 +200,29 @@ code_block([
 figure("fig-tuned-overview.png", "Overview tab after the change")
 figure("fig-tuned-monitor.png", "Monitor tab during the tuned run", width=5.9)
 doc.add_paragraph(
-    "Used heap now moves between about 100 and 400 MB with visible gaps instead of one solid band, "
-    "so the collector gets to rest between cycles. GC activity dropped from 7.2 percent to 0.1, "
-    "full GCs went from 695 to none, and the total pause time fell from 95.5 seconds to 2.3. CPU "
-    "actually went up a little, from 34 to 39 percent, which looked wrong until I realised the CPU "
+    "Used heap now moves up and down with visible gaps instead of one solid band, so the collector "
+    "gets to rest between cycles. GC activity dropped to almost nothing and the full collections "
+    "disappeared completely. CPU actually went up a little, which looked wrong until I realised it "
     "was finally being spent on requests instead of on collecting garbage."
 )
 
 # ------------------------------------------------------------------ results
 doc.add_heading("Results", level=1)
 doc.add_paragraph(
-    "Screenshots show behaviour but not speed, so I ran the load test again with VisualVM detached: "
-    "1,200 requests, 16 at a time, 25,000 items each. Same code and same machine, only the flags "
-    "were different."
+    "Screenshots show behaviour but not speed, so I ran the load test again with VisualVM detached. "
+    "Same code and same machine, only the flags were different."
 )
 
 t = doc.add_table(rows=1, cols=3)
 t.style = "Table Grid"
 t.alignment = WD_TABLE_ALIGNMENT.CENTER
+# Fixed layout, otherwise the column widths are ignored and the table gets
+# stretched across the full page width.
+t.autofit = False
+COL_TWIPS = [3600, 1440, 1440]  # 2.5in, 1.0in, 1.0in
+grid = t._tbl.find(qn("w:tblGrid"))
+for gc, tw in zip(grid.findall(qn("w:gridCol")), COL_TWIPS):
+    gc.set(qn("w:w"), str(tw))
 hdr = t.rows[0].cells
 for i, h in enumerate(["", "Before", "After"]):
     hdr[i].text = ""
@@ -219,13 +230,11 @@ for i, h in enumerate(["", "Before", "After"]):
     run.bold = True
     run.font.size = Pt(10)
 for row in [
-    ["Requests per second", "103.0", "173.5"],
-    ["Average response time", "155.0 ms", "92.0 ms"],
-    ["95th percentile response time", "287.7 ms", "115.3 ms"],
-    ["Time to finish 1,200 requests", "11.65 s", "6.92 s"],
-    ["Collections", "369", "32"],
-    ["Full GCs", "76", "0"],
-    ["Total pause time", "9,812 ms", "191 ms"],
+    ["Requests per second", "103", "174"],
+    ["Average response time", "155 ms", "92 ms"],
+    ["Slowest 5% of requests", "288 ms", "115 ms"],
+    ["Full collections", "76", "0"],
+    ["Total time paused", "9.8 s", "0.2 s"],
 ]:
     cells = t.add_row().cells
     for i, val in enumerate(row):
@@ -233,56 +242,39 @@ for row in [
         r = cells[i].paragraphs[0].add_run(str(val))
         r.font.size = Pt(10)
 for r_ in t.rows:
-    r_.cells[0].width = Inches(2.7)
-    r_.cells[1].width = Inches(1.6)
-    r_.cells[2].width = Inches(1.6)
+    for i, tw in enumerate(COL_TWIPS):
+        r_.cells[i].width = Inches(tw / 1440)
 doc.add_paragraph()
 
 doc.add_paragraph(
-    "76 full GCs before and none after is the number that stands out. Each one freezes every "
-    "thread, and that is what made the slowest requests slow, which is why the 95th percentile came "
-    "down from 287.7 ms to 115.3 ms."
+    "The full collections are what stand out. Each one freezes every thread while it works, and "
+    "that is what made the slowest requests slow."
 )
 doc.add_paragraph(
-    "Two things I had to be careful about when reading the log. The pause total covers the 18.9 "
-    "seconds the log spans rather than just the 11.65 seconds of measured requests, so it works "
-    "out to 52 percent of that window and not the much higher figure I got the first time. And G1 "
-    "logs its concurrent phases alongside its pauses, and concurrent work does not stop the "
-    "application, so counting those would have made the tuned total look about 45 ms worse than it "
-    "really is."
-)
-doc.add_paragraph(
-    "Earlier I had run a lighter test, 2,000 requests of 5,000 items with 8 threads, and it barely "
-    "moved: 577 requests per second before against 571 after, and 13.8 ms average response time "
-    "against 14.0 ms. Collections still dropped from 160 to 14, but the application was not waiting "
-    "on garbage collection at that load in the first place, so tidying up GC bought nothing. The "
-    "68 percent gain only turned up once the load was heavy enough to actually run the small heap "
-    "out of room."
+    "I had run a lighter test earlier and it barely moved at all. The GC work still dropped, but "
+    "the application was not waiting on garbage collection at that load in the first place, so "
+    "there was nothing for the change to fix. The improvement only turned up once the load was "
+    "heavy enough to run the small heap out of room."
 )
 
 # ------------------------------------------------------------------ learned
 doc.add_heading("What I learned", level=1)
 doc.add_paragraph(
-    "Tuning only helps if the thing you are tuning is what is actually slowing you down. The light "
-    "load test made that obvious, since GC work dropped a long way and the response times did not "
-    "move at all."
+    "Tuning only helps if the thing you are tuning is what is actually slowing you down. The "
+    "lighter test made that obvious, since the GC work dropped a long way and the response times "
+    "did not move at all."
 )
 doc.add_paragraph(
-    "It is worth checking what a percentage is a percentage of. The 7.2 percent GC activity looked "
-    "fine sitting next to a log that showed the application frozen 68 percent of the time, and "
+    "It is also worth checking what a percentage is a percentage of. The GC activity on screen "
+    "looked fine sitting next to a log that showed the application frozen for most of the run, and "
     "neither number was wrong."
 )
 doc.add_paragraph(
-    "Repeated full GCs are a better warning sign than a heap sitting near its limit. A full heap "
-    "can just mean the collector is doing its job well. Full GCs freeze everything, every time."
-)
-doc.add_paragraph(
-    "Bigger is not automatically better either. I went with 512 MB because that was what got rid "
-    "of the full GCs, and going much higher would waste memory and can make individual collections "
-    "take longer. Java's own default on this machine was a 7.9 GB heap with G1 already chosen, and "
-    "the endpoint never struggled, so I had to shrink the heap on purpose to create a problem worth "
-    "looking at. That is roughly the situation you would be in deploying into a container with a "
-    "small memory limit."
+    "Repeated full collections turned out to be a better warning sign than a heap sitting near its "
+    "limit, since a full heap can just mean the collector is doing its job well. And bigger is not "
+    "automatically better. I went with 512 MB because that was what got rid of them. Java's own "
+    "default on this machine was a much larger heap with G1 already chosen, and the endpoint never "
+    "struggled, so I had to shrink it on purpose to create a problem worth looking at."
 )
 
 doc.save(OUT)
