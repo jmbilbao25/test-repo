@@ -1,4 +1,6 @@
 """Generates the assignment write-up as a .docx file."""
+import os
+
 from docx import Document
 from docx.enum.table import WD_TABLE_ALIGNMENT
 from docx.enum.text import WD_ALIGN_PARAGRAPH
@@ -6,16 +8,29 @@ from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 from docx.shared import Inches, Pt, RGBColor
 
-OUT = "/projects/sandbox/jvm-tuning-assignment/JVM-Tuning-Assignment.docx"
+HERE = os.path.dirname(os.path.abspath(__file__))
+FIG = os.path.join(HERE, "figures")
+OUT = os.path.join(HERE, "JVM-Tuning-Assignment.docx")
 
 doc = Document()
 
-# Base font
+# The default template uses 1.25 in side margins, which leaves only 6.00 in of
+# printable width. Tighten to 1 in so the wide screenshots fit comfortably.
+for section in doc.sections:
+    section.left_margin = Inches(1.0)
+    section.right_margin = Inches(1.0)
+    section.top_margin = Inches(1.0)
+    section.bottom_margin = Inches(1.0)
+
+PRINTABLE_IN = 6.5
+
 style = doc.styles["Normal"]
 style.font.name = "Calibri"
 style.font.size = Pt(11)
 style.paragraph_format.space_after = Pt(8)
 style.paragraph_format.line_spacing = 1.15
+
+_fig_no = [0]
 
 
 def shade(paragraph, hex_fill):
@@ -27,7 +42,6 @@ def shade(paragraph, hex_fill):
 
 
 def code_block(lines):
-    """Monospaced, shaded block for code and commands."""
     for i, line in enumerate(lines):
         p = doc.add_paragraph()
         p.paragraph_format.space_after = Pt(0) if i < len(lines) - 1 else Pt(10)
@@ -39,26 +53,23 @@ def code_block(lines):
         shade(p, "F2F2F2")
 
 
-def screenshot_slot(caption):
-    """Placeholder box where the screenshot gets pasted in."""
+def figure(filename, caption, width=6.3):
+    """Insert a real screenshot with a numbered caption."""
+    assert width <= PRINTABLE_IN, f"{filename} at {width}in exceeds printable width"
+    _fig_no[0] += 1
     p = doc.add_paragraph()
     p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    p.paragraph_format.space_before = Pt(6)
+    p.paragraph_format.space_before = Pt(8)
     p.paragraph_format.space_after = Pt(2)
-    run = p.add_run("[  PASTE SCREENSHOT HERE  ]")
-    run.font.name = "Consolas"
-    run.font.size = Pt(10)
-    run.bold = True
-    run.font.color.rgb = RGBColor(0x80, 0x80, 0x80)
-    shade(p, "FAFAFA")
+    p.add_run().add_picture(os.path.join(FIG, filename), width=Inches(width))
 
     cap = doc.add_paragraph()
     cap.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    cap.paragraph_format.space_after = Pt(12)
-    crun = cap.add_run(caption)
-    crun.italic = True
-    crun.font.size = Pt(9)
-    crun.font.color.rgb = RGBColor(0x59, 0x59, 0x59)
+    cap.paragraph_format.space_after = Pt(14)
+    run = cap.add_run(f"Figure {_fig_no[0]}: {caption}")
+    run.italic = True
+    run.font.size = Pt(9)
+    run.font.color.rgb = RGBColor(0x59, 0x59, 0x59)
 
 
 def table(headers, rows, widths=None):
@@ -124,12 +135,11 @@ doc.add_paragraph(
     "For this assignment I built a small item service, put it under load, watched it in VisualVM, "
     "then changed the JVM settings and measured the difference."
 )
-
-doc.add_paragraph()
 p = doc.add_paragraph()
 r = p.add_run("Environment: ")
 r.bold = True
-p.add_run("Java 21 (OpenJDK), Spring Boot 3.4.1, Maven 3.9, 8 CPU cores, 31 GB RAM.")
+p.add_run("Java 21.0.2 (OpenJDK), Spring Boot 3.4.1, Maven 3.9, VisualVM 2.2, "
+          "8 CPU cores, 31 GB RAM.")
 
 # --------------------------------------------------------------- step 1
 doc.add_heading("2. Step 1: Building the Microservice", level=1)
@@ -171,56 +181,74 @@ doc.add_paragraph("Building and running it:")
 code_block([
     "mvn package -DskipTests",
     "java -jar target/itemservice-0.0.1-SNAPSHOT.jar",
-    "",
-    "curl \"http://localhost:8085/api/items?count=10\"",
 ])
 doc.add_paragraph(
-    "I tested it in Postman first to confirm it returned a proper JSON array before worrying "
-    "about performance."
+    "I checked the endpoint worked before worrying about performance. A full 5,000 item response "
+    "comes back as 349 KB of JSON in about 43 ms when the service is not under load."
 )
-screenshot_slot("Figure 1: Response from GET /api/items in Postman")
+figure("fig1-terminal.png",
+       "The endpoint returning JSON, the size and timing of a 5,000 item response, "
+       "and the Actuator health check", width=5.9)
 
 # --------------------------------------------------------------- step 2
 doc.add_heading("3. Step 2: Monitoring with VisualVM", level=1)
 doc.add_paragraph(
     "I downloaded VisualVM from visualvm.github.io and started it while the service was already "
     "running. The local Java process shows up in the panel on the left, listed by its main class. "
-    "Double clicking it opens the Monitor tab with the CPU, heap, classes and threads graphs."
+    "Double clicking it opens the application, and the Overview tab is a good place to start "
+    "because it confirms which JVM options the process is actually running with."
 )
+doc.add_paragraph(
+    "For the first run I started the service with a deliberately small heap and the serial "
+    "collector, so the problem would be easy to see:"
+)
+code_block(["java -Xms64m -Xmx128m -XX:+UseSerialGC \\",
+            "     -cp \"target/classes:$(cat cp.txt)\" \\",
+            "     com.example.itemservice.ItemserviceApplication"])
+figure("fig-baseline-overview.png",
+       "Overview tab for the baseline run. The JVM arguments panel confirms "
+       "-Xms64m, -Xmx128m and -XX:+UseSerialGC")
+
 doc.add_paragraph(
     "An idle application does not show much, so I needed traffic. I wrote a short Python script "
-    "that sends 1,200 requests using 16 threads, asking for 25,000 items each time, and records "
-    "how long every request takes."
+    "that sends requests with 16 threads asking for 25,000 items each, and I ran it in a loop so "
+    "the load stayed constant for about two and a half minutes while I watched the Monitor tab."
 )
-doc.add_paragraph(
-    "For the first run I started the service with a small heap so I could see the problem clearly:"
-)
-code_block(["java -Xms64m -Xmx128m -XX:+UseSerialGC -jar target/itemservice-0.0.1-SNAPSHOT.jar"])
-doc.add_paragraph("What the Monitor tab showed while the load was running:")
+figure("fig-baseline-monitor.png",
+       "Monitor tab during the baseline run. Heap is pinned at its 128 MB ceiling and used heap "
+       "sawtooths violently between roughly 25 MB and 100 MB")
+
+doc.add_paragraph("What the Monitor tab showed once the load started:")
 for line in [
-    "Used heap shot up to the 128 MB ceiling within a couple of seconds and stayed pinned there.",
-    "The heap graph had a very tight sawtooth shape, which means collections were happening one "
-    "after another with almost no gap.",
-    "CPU usage was high, but the GC activity portion of the graph was taking most of it rather "
-    "than the application itself.",
-    "Thread count stayed flat at around 30, so threads were not the problem.",
+    "Heap size jumped straight to the ceiling and stayed there. Size and Max both read "
+    "134,217,728 B, which is the 128 MB I asked for.",
+    "Used heap sawtoothed between roughly 25 MB and 100 MB and never settled, so the collector "
+    "was reclaiming memory continuously rather than in occasional bursts.",
+    "CPU usage sat around 34 percent and GC activity was reported at 7.2 percent.",
+    "Live threads went from 29 to 37 when the load arrived and then stayed flat, so thread count "
+    "was not the problem.",
 ]:
     doc.add_paragraph(line, style="List Bullet")
 
-screenshot_slot("Figure 2: VisualVM Monitor tab under load, heap capped at 128 MB")
-screenshot_slot("Figure 3: CPU graph showing GC activity taking most of the CPU time")
-
+doc.add_heading("Why the GC activity percentage looked deceptively small", level=2)
 doc.add_paragraph(
-    "Reading exact pause times off a graph is guesswork, so I also turned on GC logging to get "
-    "real numbers to put next to the screenshots:"
+    "Reading exact pause times off a moving graph is guesswork, so I also turned on GC logging:"
 )
-code_block(["-Xlog:gc:file=gc.log:time,level,tags"])
+code_block(["-Xlog:gc:file=baseline-gc.log:time,level,tags"])
 doc.add_paragraph(
-    "The log made the problem obvious. During the 11.65 second test the JVM ran 369 collections, "
-    "and 76 of those were full GCs. Added together the pauses came to 9,812 ms. That means the "
-    "application was stopped for roughly 84 percent of the run. The bottleneck was not my code "
-    "and it was not CPU or threads, it was simply that the heap was far too small for the amount "
-    "of garbage the endpoint produces."
+    "The log told a much harsher story than the 7.2 percent on screen. Over the monitored session "
+    "the JVM ran 3,137 collections, 695 of them full GCs, and the pauses added up to 95.5 seconds. "
+    "During the busiest ten second stretch the application was stopped for 68 percent of the time."
+)
+doc.add_paragraph(
+    "It took me a while to work out why those two numbers disagree so badly, and the answer is "
+    "that they measure different things. The serial collector pauses the application and then does "
+    "its work on a single thread. This machine has 8 cores, and VisualVM reports GC activity as a "
+    "share of total CPU capacity across all of them. One core fully busy out of eight is about "
+    "12 percent of capacity, so 68 percent of wall time on one core lands near the 7 percent "
+    "VisualVM displayed. The graph was not wrong, it just answers \"how much of my CPU is going "
+    "into GC\" while the log answers \"how much of the time is my application frozen\". For a "
+    "service that has to respond to requests, the second question is the one that matters."
 )
 
 # --------------------------------------------------------------- step 3
@@ -246,21 +274,53 @@ table(
 doc.add_paragraph("The tuned command:")
 code_block([
     "java -Xms512m -Xmx512m -XX:+UseG1GC -XX:MaxGCPauseMillis=100 \\",
-    "     -jar target/itemservice-0.0.1-SNAPSHOT.jar",
+    "     -cp \"target/classes:$(cat cp.txt)\" \\",
+    "     com.example.itemservice.ItemserviceApplication",
 ])
+figure("fig-tuned-overview.png",
+       "Overview tab for the tuned run, confirming the new flags are in effect")
+
 doc.add_paragraph(
-    "I ran the same load script again with VisualVM attached. This time the heap graph looked "
-    "completely different. Used heap moved between roughly 60 MB and 200 MB inside the 512 MB "
-    "space, with clear gaps between collections instead of a solid band, and the GC portion of "
-    "the CPU graph dropped to a thin line."
+    "I attached VisualVM again and ran exactly the same load. The Monitor tab looked like a "
+    "different application."
 )
-screenshot_slot("Figure 4: VisualVM Monitor tab after tuning, heap with room to breathe")
+figure("fig-tuned-monitor.png",
+       "Monitor tab during the tuned run. Used heap now swings between roughly 100 MB and 400 MB "
+       "inside the 512 MB space, with clear gaps between collections, and GC activity has dropped "
+       "to 0.1 percent")
+doc.add_paragraph(
+    "Max heap now reads 536,870,912 B. Used heap rises and falls between about 100 MB and 400 MB "
+    "with visible gaps instead of a solid band, which means the collector gets to wait between "
+    "cycles rather than running constantly. GC activity fell from 7.2 percent to 0.1 percent, and "
+    "CPU usage actually went up slightly, from 34 percent to 39 percent. That sounds wrong until "
+    "you think about it: the CPU is now doing useful work answering requests instead of collecting "
+    "garbage."
+)
 
 # --------------------------------------------------------------- results
 doc.add_heading("5. Results", level=1)
 doc.add_paragraph(
-    "Same code, same load script, same machine. The only difference between the two columns is "
-    "the JVM flags."
+    "The two monitored sessions above ran the same load for the same length of time, so the GC "
+    "logs from them can be compared directly."
+)
+table(
+    ["Monitored session", "Baseline", "Tuned"],
+    [
+        ["Max heap (from VisualVM)", "134,217,728 B", "536,870,912 B"],
+        ["GC activity (from VisualVM)", "7.2%", "0.1%"],
+        ["CPU usage (from VisualVM)", "34.4%", "39.0%"],
+        ["Collections", "3,137", "458"],
+        ["Full GCs", "695", "0"],
+        ["Total stop-the-world pause", "95.5 s", "2.3 s"],
+        ["Pause share, busiest 10 s", "68%", "3%"],
+    ],
+    widths=[2.6, 1.9, 1.9],
+)
+
+doc.add_paragraph(
+    "Screenshots show behaviour but not throughput, so I also ran the load test on its own with "
+    "VisualVM detached, 1,200 requests with 16 concurrent threads at 25,000 items each. Same code, "
+    "same machine. The only difference between the columns is the JVM flags."
 )
 table(
     ["Measurement", "Before tuning", "After tuning", "Change"],
@@ -271,33 +331,41 @@ table(
         ["95th percentile response time", "287.7 ms", "115.3 ms", "60% lower"],
         ["Slowest single request", "454.3 ms", "173.1 ms", "62% lower"],
         ["Total time for 1,200 requests", "11.65 s", "6.92 s", "4.73 s saved"],
-        ["Garbage collections", "369", "32", "91% fewer"],
+        ["Collections", "369", "32", "91% fewer"],
         ["Full GCs", "76", "0", "eliminated"],
-        ["Total time paused for GC", "9,812 ms", "236 ms", "97% lower"],
+        ["Total stop-the-world pause", "9,812 ms", "191 ms", "98% lower"],
     ],
     widths=[2.2, 1.4, 1.4, 1.3],
 )
 doc.add_paragraph(
-    "The full GC count is the number I find most telling. A full GC stops every application "
-    "thread while it collects the entire heap, and there were 76 of them before the change and "
-    "none at all after. The 95th percentile dropping from 287.7 ms to 115.3 ms is the same story "
-    "seen from the user side, since those long pauses were exactly what made the slowest requests "
-    "slow."
+    "The full GC count is the number I find most telling. A full GC stops every application thread "
+    "while it collects the entire heap, and there were 76 of them before the change and none at "
+    "all after. The 95th percentile dropping from 287.7 ms to 115.3 ms is the same story seen from "
+    "the user's side, because those long pauses were exactly what made the slowest requests slow."
+)
+doc.add_paragraph(
+    "One detail worth being careful about: the 9,812 ms of pause was measured across the 18.9 "
+    "seconds that the GC log covers, which includes the warm-up requests as well as the measured "
+    "ones, so it works out to 52 percent of that window rather than the 84 percent I first "
+    "calculated by dividing it by the 11.65 second measured phase alone. I also had to separate "
+    "G1's concurrent phases from its stop-the-world pauses when adding up the tuned figure, since "
+    "concurrent work does not freeze the application and counting it would have overstated the "
+    "pause total by about 45 ms."
 )
 
 doc.add_heading("A result I did not expect", level=2)
 doc.add_paragraph(
-    "Before the heavy test I had run a lighter one, 2,000 requests of 5,000 items each. Those "
-    "numbers were much less exciting:"
+    "Before the heavy test I had run a lighter one, 2,000 requests of 5,000 items each with 8 "
+    "threads. Those numbers were much less exciting:"
 )
 table(
     ["Measurement", "Before tuning", "After tuning"],
     [
         ["Requests per second", "577.2", "571.3"],
         ["Average response time", "13.8 ms", "14.0 ms"],
-        ["Garbage collections", "160", "14"],
+        ["Collections", "160", "14"],
         ["Full GCs", "2", "0"],
-        ["Total time paused for GC", "483.1 ms", "139.2 ms"],
+        ["Total stop-the-world pause", "483 ms", "102 ms"],
     ],
     widths=[2.4, 1.7, 1.7],
 )
@@ -317,16 +385,23 @@ for text in [
     "collection was not what was holding it back at that point.",
 
     "Measure before changing anything. If I had jumped straight to changing flags I would have had "
-    "no way of knowing whether it helped, and no idea which flag was responsible.",
+    "no way of knowing whether it helped, or which flag was responsible.",
 
-    "Graphs and logs answer different questions. VisualVM was what showed me where to look, since "
-    "I could see the heap pinned at its limit and the thread count sitting flat. But for numbers "
-    "I could actually put in a table, the GC log was far better than trying to read values off a "
-    "moving chart.",
+    "Check what a percentage is actually a percentage of. The 7.2 percent GC activity in VisualVM "
+    "looked harmless next to a log showing the application frozen 68 percent of the time. Both "
+    "were correct, because one is a share of eight cores and the other is a share of elapsed time.",
+
+    "Graphs and logs answer different questions. VisualVM showed me where to look, since I could "
+    "see the heap pinned at its limit and the thread count sitting flat. For numbers I could put "
+    "in a table, the GC log was far better than reading values off a moving chart.",
 
     "Full GC count is a more useful warning sign than heap usage. A heap sitting near its limit is "
     "not automatically a problem, that can just be the collector being efficient. Repeated full "
     "GCs are, because each one freezes the whole application.",
+
+    "Rising CPU can be a good sign. CPU went up from 34 to 39 percent after tuning, which looks "
+    "like a regression until you notice throughput went up 68 percent at the same time. The CPU "
+    "was finally being spent on requests instead of on garbage collection.",
 
     "A bigger heap is not automatically better. I went to 512 MB because that was the size that "
     "removed the full GCs. Setting it enormously high would have wasted memory the service does "
@@ -343,11 +418,12 @@ for text in [
 doc.add_heading("7. Conclusion", level=1)
 doc.add_paragraph(
     "I built a Spring Boot microservice with one REST endpoint, monitored it in VisualVM while it "
-    "was under load, found that a 128 MB heap with the serial collector was leaving the "
-    "application paused for most of the test, and fixed it by raising the heap to 512 MB and "
-    "switching to G1 with a 100 ms pause target. That took throughput from 103 to 173.5 requests "
-    "per second and removed all 76 full GCs. The part I will remember is that the exact same "
-    "change made no difference under lighter load, so the measurement mattered as much as the fix."
+    "was under load, found that a 128 MB heap with the serial collector was leaving the application "
+    "frozen for most of the test, and fixed it by raising the heap to 512 MB and switching to G1 "
+    "with a 100 ms pause target. That took throughput from 103 to 173.5 requests per second and "
+    "removed all 76 full GCs. The parts I will remember are that the same change made no "
+    "difference under lighter load, and that the most alarming-looking number on the VisualVM "
+    "dashboard was not the one that mattered."
 )
 
 # -------------------------------------------------------------- appendix
@@ -365,13 +441,15 @@ code_block([
     "     -jar target/itemservice-0.0.1-SNAPSHOT.jar",
 ])
 doc.add_paragraph(
-    "Load in both cases came from loadtest.py (1,200 requests, 16 concurrent, count=25000). "
-    "Counting the collections and adding up the pauses afterwards:"
+    "Load came from loadtest.py (1,200 requests, 16 concurrent, count=25000). Counting the "
+    "collections and the stop-the-world pauses afterwards, note that matching on \"Pause\" is what "
+    "keeps G1's concurrent phases out of the total:"
 )
 code_block([
     "grep -c 'Pause Young\\|Pause Full' baseline-gc.log",
     "grep -c 'Pause Full' baseline-gc.log",
-    "grep -oP '\\d+\\.\\d+(?=ms)' baseline-gc.log | awk '{s+=$1} END {print s}'",
+    "grep -oP 'Pause (Young|Full).*?\\K\\d+\\.\\d+(?=ms)' baseline-gc.log \\",
+    "    | awk '{s+=$1} END {print s \" ms\"}'",
 ])
 
 doc.save(OUT)
