@@ -1,0 +1,11 @@
+requests=1200
+wall_seconds=11.65
+throughput_rps=103.0
+avg_ms=155.0
+p50_ms=161.2
+p95_ms=287.7
+max_ms=454.3
+startup_seconds=2.256
+gc_collections=369
+full_gcs=76
+total_gc_pause_ms=9812.4

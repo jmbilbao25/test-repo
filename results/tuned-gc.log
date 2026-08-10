@@ -1,0 +1,23 @@
+[2026-08-10T08:45:31.930+0000][info][gc] Using G1
+[2026-08-10T08:45:32.379+0000][info][gc] GC(0) Pause Young (Normal) (G1 Evacuation Pause) 26M->3M(512M) 2.759ms
+[2026-08-10T08:45:32.708+0000][info][gc] GC(1) Pause Young (Normal) (G1 Evacuation Pause) 35M->4M(512M) 4.264ms
+[2026-08-10T08:45:33.522+0000][info][gc] GC(2) Pause Young (Concurrent Start) (Metadata GC Threshold) 95M->10M(512M) 6.800ms
+[2026-08-10T08:45:33.522+0000][info][gc] GC(3) Concurrent Mark Cycle
+[2026-08-10T08:45:33.531+0000][info][gc] GC(3) Pause Remark 11M->11M(512M) 1.661ms
+[2026-08-10T08:45:33.532+0000][info][gc] GC(3) Pause Cleanup 11M->11M(512M) 0.097ms
+[2026-08-10T08:45:33.535+0000][info][gc] GC(3) Concurrent Mark Cycle 12.318ms
+[2026-08-10T08:45:35.033+0000][info][gc] GC(4) Pause Young (Prepare Mixed) (G1 Evacuation Pause) 106M->15M(512M) 11.069ms
+[2026-08-10T08:45:35.074+0000][info][gc] GC(5) Pause Young (Mixed) (Metadata GC Threshold) 20M->15M(512M) 7.847ms
+[2026-08-10T08:45:35.104+0000][info][gc] GC(6) Pause Young (Concurrent Start) (Metadata GC Threshold) 19M->15M(512M) 4.481ms
+[2026-08-10T08:45:35.104+0000][info][gc] GC(7) Concurrent Mark Cycle
+[2026-08-10T08:45:35.119+0000][info][gc] GC(7) Pause Remark 17M->17M(512M) 3.414ms
+[2026-08-10T08:45:35.123+0000][info][gc] GC(7) Pause Cleanup 17M->17M(512M) 0.095ms
+[2026-08-10T08:45:35.124+0000][info][gc] GC(7) Concurrent Mark Cycle 19.853ms
+[2026-08-10T08:45:36.069+0000][info][gc] GC(8) Pause Young (Normal) (G1 Evacuation Pause) 249M->18M(512M) 9.548ms
+[2026-08-10T08:45:36.795+0000][info][gc] GC(9) Pause Young (Normal) (G1 Evacuation Pause) 315M->18M(512M) 8.106ms
+[2026-08-10T08:45:37.288+0000][info][gc] GC(10) Pause Young (Normal) (G1 Evacuation Pause) 315M->17M(512M) 6.997ms
+[2026-08-10T08:45:37.794+0000][info][gc] GC(11) Pause Young (Normal) (G1 Evacuation Pause) 315M->18M(512M) 8.240ms
+[2026-08-10T08:45:38.275+0000][info][gc] GC(12) Pause Young (Normal) (G1 Evacuation Pause) 315M->17M(512M) 7.978ms
+[2026-08-10T08:45:38.779+0000][info][gc] GC(13) Pause Young (Normal) (G1 Evacuation Pause) 314M->17M(512M) 7.735ms
+[2026-08-10T08:45:39.264+0000][info][gc] GC(14) Pause Young (Normal) (G1 Evacuation Pause) 315M->18M(512M) 8.089ms
+[2026-08-10T08:45:39.731+0000][info][gc] GC(15) Pause Young (Normal) (G1 Evacuation Pause) 315M->17M(512M) 7.804ms
