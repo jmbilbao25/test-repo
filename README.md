@@ -1,12 +1,14 @@
 # JVM Tuning and Spring Boot Microservice Performance
 
-Assignment submission. The write-up is **[JVM-Tuning-Assignment.docx](JVM-Tuning-Assignment.docx)**.
+Assignment submission. The write-up is **[JVM-Tuning-Assignment.docx](JVM-Tuning-Assignment.docx)**,
+with a **[PDF copy](JVM-Tuning-Assignment.pdf)** for easier viewing.
 
 ## What is here
 
 | Path | What it is |
 | --- | --- |
 | `JVM-Tuning-Assignment.docx` | The assignment write-up to submit |
+| `JVM-Tuning-Assignment.pdf` | PDF version of the same document |
 | `itemservice/` | The Spring Boot microservice (Java 21, Boot 3.4.1) |
 | `figures/` | The VisualVM screenshots used in the write-up |
 | `loadtest.py` | Load generator used to produce the measurements |
@@ -83,4 +85,9 @@ grep -oP 'Pause (Young|Full).*?\K\d+\.\d+(?=ms)' results/heavy-baseline-gc.log \
 
 ## Before submitting
 
-Fill in `[Your Name]`, `[Course]` and `[Date]` at the top of the document.
+Fill in `[Course / Section]` at the top of the document. Regenerate afterwards with:
+
+```bash
+python3 make_docx.py
+soffice --headless --convert-to pdf JVM-Tuning-Assignment.docx
+```
