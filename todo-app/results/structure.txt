@@ -1,0 +1,21 @@
+todo-app/
+|-- drafts
+|   |-- __init__.py
+|   `-- draft_tasks.py
+|-- tests
+|   |-- test_tasks.py
+|   `-- test_web.py
+|-- todo_app
+|   |-- static
+|   |   `-- style.css
+|   |-- templates
+|   |   `-- index.html
+|   |-- __init__.py
+|   |-- app.py
+|   |-- models.py
+|   |-- storage.py
+|   `-- tasks.py
+|-- README.md
+|-- benchmark.py
+|-- build_report.py
+`-- requirements.txt

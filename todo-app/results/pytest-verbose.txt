@@ -1,0 +1,26 @@
+============================= test session starts ==============================
+collecting ... collected 21 items
+
+test_tasks.py::test_add_first_task_to_empty_list PASSED            [  4%]
+test_tasks.py::test_title_is_tidied_up PASSED                      [  9%]
+test_tasks.py::test_empty_title_is_rejected PASSED                 [ 14%]
+test_tasks.py::test_duplicate_is_rejected_ignoring_case_and_spaces PASSED [ 19%]
+test_tasks.py::test_long_title_is_rejected PASSED                  [ 23%]
+test_tasks.py::test_ids_are_not_reused_after_a_delete PASSED       [ 28%]
+test_tasks.py::test_toggle_flips_done PASSED                       [ 33%]
+test_tasks.py::test_toggle_unknown_id_raises PASSED                [ 38%]
+test_tasks.py::test_delete_removes_the_task PASSED                 [ 42%]
+test_tasks.py::test_clear_completed_only_removes_done PASSED       [ 47%]
+test_tasks.py::test_views_and_counts PASSED                        [ 52%]
+test_tasks.py::test_tasks_survive_a_reload PASSED                  [ 57%]
+test_tasks.py::test_corrupt_file_does_not_crash_the_store PASSED   [ 61%]
+test_web.py::test_empty_list_shows_the_placeholder PASSED          [ 66%]
+test_web.py::test_adding_a_task_shows_it_on_the_page PASSED        [ 71%]
+test_web.py::test_rejected_task_reports_the_reason PASSED          [ 76%]
+test_web.py::test_duplicate_reports_the_reason PASSED              [ 80%]
+test_web.py::test_toggle_and_filters PASSED                        [ 85%]
+test_web.py::test_clear_completed PASSED                           [ 90%]
+test_web.py::test_a_title_with_html_in_it_is_escaped PASSED        [ 95%]
+test_web.py::test_unknown_view_falls_back_to_all PASSED            [100%]
+
+============================== 21 passed in 0.16s ==============================

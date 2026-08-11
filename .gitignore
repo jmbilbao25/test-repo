@@ -5,3 +5,8 @@ target/
 .vscode/
 __pycache__/
 results/*-app.log
+
+.pytest_cache/
+todo-app/tasks.json
+todo-app/.venv/
+todo-app/.preview/

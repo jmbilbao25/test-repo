@@ -1,0 +1,21 @@
+1. Adding 2000 tasks, one save per task
+---------------------------------------
+  draft          6.72 s
+  reviewed       7.01 s
+  ratio          0.96x
+  Rewriting the whole file on every add dominates both, so the
+  review did not make this faster.
+
+2. Duplicate check against 2000 existing tasks, 20000 probes
+------------------------------------------------------------
+  list scan     1.340 s
+  set lookup    0.002 s
+  faster by     673.8x
+
+3. The cases the review flagged
+-------------------------------
+  case                              draft             reviewed
+  First task on an empty list       ValueError        added
+  Next id after deleting id 2       id 2 (reused)     id 3
+  '  buy   MILK ' after 'Buy milk'  added twice       rejected
+  Opening a truncated file          JSONDecodeError   0 tasks, starts clean
