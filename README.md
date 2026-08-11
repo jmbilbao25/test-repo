@@ -1,6 +1,15 @@
-# JVM Tuning and Spring Boot Microservice Performance
+# Assignments
 
-Assignment submission. The write-up is **[JVM-Tuning-Assignment.docx](JVM-Tuning-Assignment.docx)**,
+| Day | Assignment | Write-up | Project |
+| --- | --- | --- | --- |
+| 2 | JVM tuning and Spring Boot microservice performance | [docx](JVM-Tuning-Assignment.docx) · [pdf](JVM-Tuning-Assignment.pdf) | [`itemservice/`](itemservice) |
+| 3 | A to-do list app built with Copilot, ChatGPT and CodeWhisperer | [docx](AI-Tools-ToDo-Assignment.docx) · [pdf](AI-Tools-ToDo-Assignment.pdf) | [`todo-app/`](todo-app) |
+
+---
+
+# Day 2: JVM Tuning and Spring Boot Microservice Performance
+
+The write-up is **[JVM-Tuning-Assignment.docx](JVM-Tuning-Assignment.docx)**,
 with a **[PDF copy](JVM-Tuning-Assignment.pdf)** for easier viewing.
 
 ## What is here
@@ -91,3 +100,29 @@ Regenerate both files after any edit to `make_docx.py`:
 python3 make_docx.py
 soffice --headless --convert-to pdf JVM-Tuning-Assignment.docx
 ```
+
+
+---
+
+# Day 3: To-Do List App built with Copilot, ChatGPT and CodeWhisperer
+
+The write-up is **[AI-Tools-ToDo-Assignment.docx](AI-Tools-ToDo-Assignment.docx)**,
+with a **[PDF copy](AI-Tools-ToDo-Assignment.pdf)**. The project and full notes
+are in **[`todo-app/`](todo-app)**.
+
+A small Flask to-do list app: Copilot wrote the interface, ChatGPT wrote the
+add-task function, CodeWhisperer reviewed both. The pre-review code is kept in
+`todo-app/drafts/` so the six findings can be reproduced rather than just
+described.
+
+```bash
+cd todo-app
+pip install -r requirements.txt
+flask --app todo_app.app run     # http://localhost:5000
+python3 -m pytest tests/ -v      # 21 tests
+python3 benchmark.py 2000        # draft against reviewed
+```
+
+The review caught four reproducible bugs, and the two performance findings were
+worth less than they looked. Details in
+[`todo-app/README.md`](todo-app/README.md).

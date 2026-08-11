@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>My To-Do List</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <main class="card">
+    <header class="head">
+      <h1>My To-Do List</h1>
+      <p class="sub">
+        {{ stats.active }} active &middot; {{ stats.done }} done &middot; {{ stats.total }} total
+      </p>
+    </header>
+
+    <form class="add" action="{{ url_for('add') }}" method="post" autocomplete="off">
+      <input type="hidden" name="view" value="{{ view }}">
+      <input class="add-input" type="text" name="title" maxlength="120"
+             placeholder="What needs to be done?" aria-label="New task" autofocus>
+      <button class="add-btn" type="submit">Add task</button>
+    </form>
+
+    {% if error %}
+      <p class="error" role="alert">{{ error }}</p>
+    {% endif %}
+
+    <nav class="tabs">
+      {% for name in ['all', 'active', 'done'] %}
+        <a class="tab {% if view == name %}on{% endif %}"
+           href="{{ url_for('index', view=name) }}">{{ name | capitalize }}</a>
+      {% endfor %}
+    </nav>
+
+    {% if tasks %}
+      <ul class="list">
+        {% for task in tasks %}
+          <li class="item {% if task.done %}done{% endif %}">
+            <form action="{{ url_for('toggle', task_id=task.id) }}" method="post">
+              <input type="hidden" name="view" value="{{ view }}">
+              <button class="check" type="submit"
+                      aria-label="Mark {{ task.title }} as {{ 'not done' if task.done else 'done' }}">
+                {% if task.done %}&check;{% endif %}
+              </button>
+            </form>
+            <span class="title">{{ task.title }}</span>
+            <form action="{{ url_for('delete', task_id=task.id) }}" method="post">
+              <input type="hidden" name="view" value="{{ view }}">
+              <button class="del" type="submit" aria-label="Delete {{ task.title }}">&times;</button>
+            </form>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="empty">
+        {% if view == 'done' %}Nothing finished yet.
+        {% elif view == 'active' %}No active tasks. Nice.
+        {% else %}Your list is empty. Add your first task above.{% endif %}
+      </p>
+    {% endif %}
+
+    {% if stats.done %}
+      <form class="foot" action="{{ url_for('clear') }}" method="post">
+        <input type="hidden" name="view" value="{{ view }}">
+        <button class="clear" type="submit">Clear {{ stats.done }} completed</button>
+      </form>
+    {% endif %}
+  </main>
+</body>
+</html>
