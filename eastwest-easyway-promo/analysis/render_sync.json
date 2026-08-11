@@ -1,0 +1,155 @@
+[
+ {
+  "anchor": "shot 1 open",
+  "beat": 0,
+  "frame": 0,
+  "audio_ms": -37.64371154071018,
+  "quantise_ms": -4.511215244135447,
+  "total_frames": 1.2646478035453688,
+  "graded": false
+ },
+ {
+  "anchor": "shot 2 title1",
+  "beat": 16,
+  "frame": 232,
+  "audio_ms": -4.421221908606832,
+  "quantise_ms": -13.425314853562575,
+  "total_frames": 0.5353961028650822,
+  "graded": true
+ },
+ {
+  "anchor": "shot 3 deck",
+  "beat": 22,
+  "frame": 320,
+  "audio_ms": -3.5727656208308645,
+  "quantise_ms": 16.565231126234536,
+  "total_frames": 0.38977396516211016,
+  "graded": true
+ },
+ {
+  "anchor": "shot 4 transfers",
+  "beat": 36,
+  "frame": 523,
+  "audio_ms": -9.333019165531198,
+  "quantise_ms": 8.765393967987478,
+  "total_frames": 0.01702875592631159,
+  "graded": true
+ },
+ {
+  "anchor": "shot 5 title2",
+  "beat": 48,
+  "frame": 697,
+  "audio_ms": -7.63610658998104,
+  "quantise_ms": 2.0798192609170485,
+  "total_frames": 0.16668861987191974,
+  "graded": true
+ },
+ {
+  "anchor": "shot 6 bills",
+  "beat": 54,
+  "frame": 784,
+  "audio_ms": -6.787650302200632,
+  "quantise_ms": -1.262968092621719,
+  "total_frames": 0.24151855184467053,
+  "graded": true
+ },
+ {
+  "anchor": "shot 7 lock",
+  "beat": 64,
+  "frame": 929,
+  "audio_ms": 2.3664283936000174,
+  "quantise_ms": -6.834280348513744,
+  "total_frames": 0.1340355586474118,
+  "graded": true
+ },
+ {
+  "anchor": "shot 8 rewards",
+  "beat": 76,
+  "frame": 1103,
+  "audio_ms": 4.063340969153728,
+  "quantise_ms": -13.519855055584173,
+  "total_frames": 0.28369542259291336,
+  "graded": true
+ },
+ {
+  "anchor": "shot 9 wipe",
+  "beat": 87,
+  "frame": 1263,
+  "audio_ms": -13.731118043700974,
+  "quantise_ms": -2.981631870397905,
+  "total_frames": 0.5013824974229664,
+  "graded": true
+ },
+ {
+  "anchor": "shot 10 outro",
+  "beat": 90,
+  "frame": 1307,
+  "audio_ms": -1.6969125755466052,
+  "quantise_ms": 12.013641119501983,
+  "total_frames": 0.30950185631866134,
+  "graded": true
+ },
+ {
+  "anchor": "transfer rows seat",
+  "beat": 40,
+  "frame": 581,
+  "audio_ms": -1.0273967575038512,
+  "quantise_ms": 6.536869065630668,
+  "total_frames": 0.1652841692438045,
+  "graded": true
+ },
+ {
+  "anchor": "card lock snaps",
+  "beat": 70,
+  "frame": 1016,
+  "audio_ms": 3.2148846813697673,
+  "quantise_ms": -10.177067702045406,
+  "total_frames": 0.20886549062026916,
+  "graded": true
+ },
+ {
+  "anchor": "card unlocks",
+  "beat": 74,
+  "frame": 1074,
+  "audio_ms": -11.69944755912411,
+  "quantise_ms": -12.405592604409321,
+  "total_frames": 0.7231512049060029,
+  "graded": true
+ },
+ {
+  "anchor": "odometer lock 1",
+  "beat": 82.0,
+  "frame": 1191,
+  "audio_ms": 4.911797256930583,
+  "quantise_ms": 16.470690924215603,
+  "total_frames": 0.6414746454343856,
+  "graded": true
+ },
+ {
+  "anchor": "odometer locks",
+  "beat": 83.0,
+  "frame": 1205,
+  "audio_ms": 24.403168845324785,
+  "quantise_ms": -0.7531069680410951,
+  "total_frames": 0.7095018563185107,
+  "graded": true
+ },
+ {
+  "anchor": "wordmark stamp",
+  "beat": 93,
+  "frame": 1350,
+  "audio_ms": -12.882661755924119,
+  "quantise_ms": -6.324419223929567,
+  "total_frames": 0.5762124293956106,
+  "graded": true
+ },
+ {
+  "anchor": "sweep pass 1",
+  "beat": 65,
+  "frame": 944,
+  "audio_ms": 114.73761857610398,
+  "quantise_ms": 9.27525509256455,
+  "total_frames": 3.720386210060056,
+  "graded": false
+ }
+]

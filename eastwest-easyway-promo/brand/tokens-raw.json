@@ -1,0 +1,400 @@
+{
+ "https://www.eastwestbanker.com/": {
+  "title": "EastWest: Best Bank in the Philippines for Achieving Your Dreams",
+  "bg": [
+   [
+    "#b2006f",
+    129
+   ],
+   [
+    "#542785",
+    58
+   ],
+   [
+    "#ffffff",
+    50
+   ],
+   [
+    "#cccccc",
+    9
+   ],
+   [
+    "#383838",
+    6
+   ],
+   [
+    "#d9d9d9",
+    4
+   ],
+   [
+    "GRAD:linear-gradient(rgb(213, 224, 77), rgba(213, 224, 77, 0.7))",
+    2
+   ],
+   [
+    "#d5e04d",
+    1
+   ],
+   [
+    "#e2e2e2",
+    1
+   ],
+   [
+    "GRAD:linear-gradient(0deg, rgb(213, 224, 77), rgba(0, 0, 0, 0))",
+    1
+   ],
+   [
+    "#151515",
+    1
+   ]
+  ],
+  "fg": [
+   [
+    "#404040",
+    749
+   ],
+   [
+    "#ffffff",
+    250
+   ],
+   [
+    "#151515",
+    187
+   ],
+   [
+    "#212529",
+    138
+   ],
+   [
+    "#542785",
+    100
+   ],
+   [
+    "#000000",
+    13
+   ],
+   [
+    "#b2006f",
+    5
+   ],
+   [
+    "#d5e04d",
+    4
+   ],
+   [
+    "#6c6c6c",
+    3
+   ]
+  ],
+  "fonts": [
+   [
+    "Poppins, sans-serif",
+    1464
+   ]
+  ],
+  "sizes": [
+   [
+    "16px",
+    842
+   ],
+   [
+    "12px",
+    422
+   ],
+   [
+    "10px",
+    58
+   ],
+   [
+    "28px",
+    41
+   ],
+   [
+    "24px",
+    34
+   ],
+   [
+    "32px",
+    30
+   ],
+   [
+    "80px",
+    15
+   ],
+   [
+    "40px",
+    11
+   ],
+   [
+    "14px",
+    7
+   ],
+   [
+    "20px",
+    4
+   ]
+  ],
+  "radii": [
+   [
+    "25px",
+    190
+   ],
+   [
+    "24px",
+    88
+   ],
+   [
+    "50%",
+    20
+   ],
+   [
+    "5px",
+    10
+   ],
+   [
+    "8px",
+    7
+   ],
+   [
+    "100%",
+    6
+   ],
+   [
+    "0px 0px 120px",
+    5
+   ],
+   [
+    "10px",
+    5
+   ]
+  ],
+  "weights": [
+   [
+    "400",
+    912
+   ],
+   [
+    "300",
+    366
+   ],
+   [
+    "600",
+    108
+   ],
+   [
+    "700",
+    72
+   ],
+   [
+    "900",
+    5
+   ],
+   [
+    "200",
+    1
+   ]
+  ],
+  "headings": [
+   "What would you like to search today?",
+   "Garmin Pay",
+   "Garmin Pay",
+   "Garmin Pay",
+   "Dream Run 2026",
+   "Free Fuel",
+   "EastWest Bank: Best Bank in the Philippines",
+   "Let's get you started",
+   "Platinum Mastercard",
+   "Visa Platinum",
+   "JCB Platinum",
+   "EveryDay Titanium Mastercard",
+   "Dolce Vita Titanium Mastercard",
+   "JCB Gold"
+  ]
+ },
+ "https://www.eastwestbanker.com/easyway-app": {
+  "title": "EasyWay App | EastWest Bank",
+  "bg": [
+   [
+    "#b2006f",
+    28
+   ],
+   [
+    "#542785",
+    5
+   ],
+   [
+    "#d5e04d",
+    4
+   ],
+   [
+    "#ffffff",
+    2
+   ],
+   [
+    "#d5e14e",
+    1
+   ],
+   [
+    "GRAD:linear-gradient(90deg, rgb(84, 39, 133), rgb(178, 0, 111) 196.48%)",
+    1
+   ],
+   [
+    "#151515",
+    1
+   ]
+  ],
+  "fg": [
+   [
+    "#404040",
+    682
+   ],
+   [
+    "#ffffff",
+    114
+   ],
+   [
+    "#212529",
+    103
+   ],
+   [
+    "#151515",
+    86
+   ],
+   [
+    "#542785",
+    72
+   ],
+   [
+    "#000000",
+    24
+   ],
+   [
+    "#d5e04d",
+    4
+   ],
+   [
+    "#6c6c6c",
+    3
+   ],
+   [
+    "#b2006f",
+    1
+   ]
+  ],
+  "fonts": [
+   [
+    "Poppins, sans-serif",
+    1089
+   ]
+  ],
+  "sizes": [
+   [
+    "16px",
+    553
+   ],
+   [
+    "12px",
+    350
+   ],
+   [
+    "24px",
+    55
+   ],
+   [
+    "40px",
+    50
+   ],
+   [
+    "28px",
+    41
+   ],
+   [
+    "20px",
+    22
+   ],
+   [
+    "32px",
+    11
+   ],
+   [
+    "14px",
+    7
+   ]
+  ],
+  "radii": [
+   [
+    "25px",
+    45
+   ],
+   [
+    "8px",
+    6
+   ],
+   [
+    "100%",
+    2
+   ],
+   [
+    "0px 0px 16px 16px",
+    1
+   ],
+   [
+    "32px",
+    1
+   ],
+   [
+    "24px",
+    1
+   ],
+   [
+    "16px",
+    1
+   ],
+   [
+    "0px 0px 5px 5px",
+    1
+   ]
+  ],
+  "weights": [
+   [
+    "400",
+    557
+   ],
+   [
+    "300",
+    334
+   ],
+   [
+    "600",
+    84
+   ],
+   [
+    "700",
+    62
+   ],
+   [
+    "500",
+    51
+   ],
+   [
+    "200",
+    1
+   ]
+  ],
+  "headings": [
+   "What would you like to search today?",
+   "Breadcrumb",
+   "EasyWay App",
+   "Sit, bank, and relax!",
+   "What’s new with EastWest EasyWay",
+   "Peso/ Foreign Currency Savings",
+   "QR InstaPay",
+   "Credit Card Application",
+   "Auto Loan",
+   "Maximize your EastWest Credit Card with EasyWay!",
+   "Convert to Installment",
+   "Balance Transfer",
+   "Insta-Cash",
+   "Quick Bills"
+  ]
+ }
+}

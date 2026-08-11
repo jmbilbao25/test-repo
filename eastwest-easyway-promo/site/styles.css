@@ -1,0 +1,209 @@
+/* EastWest-flavoured demo UI for the promo captures.
+   Tokens are the ones measured from eastwestbanker.com (see brand/tokens-raw.json):
+   Poppins, #542785 purple, #B2006F magenta, #D5E04D lime, ink #151515 / #404040,
+   pill radius 25px, card radii 8/16/24/32. All content is fictional demo data. */
+:root {
+  --purple: #542785;
+  --purple-deep: #3d1c63;
+  --magenta: #b2006f;
+  --lime: #d5e04d;
+  --ink: #151515;
+  --body: #404040;
+  --muted: #6c6c6c;
+  --line: #ece7f2;
+  --surface: #ffffff;
+  --canvas: #f7f5fa;
+  --grad: linear-gradient(90deg, #542785 0%, #b2006f 100%);
+  --grad-card: linear-gradient(122deg, #542785 0%, #7b2079 46%, #b2006f 100%);
+  --shadow: 0 2px 10px rgba(84, 39, 133, 0.06), 0 1px 2px rgba(84, 39, 133, 0.05);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 1920px;
+  background: var(--canvas);
+  font-family: Poppins, sans-serif;
+  color: var(--body);
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap { width: 1440px; margin: 0 auto; }
+
+/* ---------- top bar ---------- */
+.topbar { height: 72px; background: var(--grad); color: #fff; }
+.topbar .wrap { display: flex; align-items: center; height: 72px; gap: 44px; }
+.brand { display: flex; align-items: baseline; gap: 10px; font-weight: 700; font-size: 26px; letter-spacing: -0.02em; }
+.brand .east { color: #fff; }
+.brand .west { color: var(--lime); }
+.brand .sub { font-size: 12px; font-weight: 400; letter-spacing: 0.18em; opacity: 0.85; text-transform: uppercase; }
+.nav { display: flex; gap: 34px; font-size: 16px; font-weight: 400; }
+.nav a { color: rgba(255, 255, 255, 0.86); text-decoration: none; }
+.nav a.on { color: #fff; font-weight: 600; border-bottom: 2px solid var(--lime); padding-bottom: 4px; }
+.topbar .right { margin-left: auto; display: flex; align-items: center; gap: 18px; }
+.searchbox {
+  width: 300px; height: 40px; border-radius: 25px; background: rgba(255, 255, 255, 0.16);
+  display: flex; align-items: center; gap: 10px; padding: 0 18px; font-size: 14px; color: rgba(255, 255, 255, 0.8);
+}
+.avatar {
+  width: 40px; height: 40px; border-radius: 50%; background: var(--lime); color: var(--purple-deep);
+  font-weight: 700; font-size: 15px; display: flex; align-items: center; justify-content: center;
+}
+
+/* ---------- page head ---------- */
+.head { padding: 40px 0 26px; }
+.crumb { font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--magenta); font-weight: 600; }
+h1 { font-size: 40px; line-height: 1.15; font-weight: 600; color: var(--ink); margin: 10px 0 6px; letter-spacing: -0.01em; }
+.lede { font-size: 16px; font-weight: 300; color: var(--body); max-width: 720px; }
+
+/* ---------- hero account card ---------- */
+.hero {
+  width: 720px; height: 300px; margin: 0 auto; border-radius: 24px; background: var(--grad-card);
+  color: #fff; padding: 32px 36px; position: relative; overflow: hidden;
+  box-shadow: 0 18px 40px rgba(84, 39, 133, 0.22), 0 2px 6px rgba(84, 39, 133, 0.18);
+}
+.hero::after {
+  content: ''; position: absolute; right: -70px; top: -90px; width: 320px; height: 320px;
+  border-radius: 50%; background: radial-gradient(circle, rgba(213, 224, 77, 0.3), transparent 68%);
+}
+.hero .hrow { display: flex; align-items: center; justify-content: space-between; position: relative; }
+.hero .chip {
+  font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 600;
+  background: var(--lime); color: var(--purple-deep); border-radius: 25px; padding: 6px 14px;
+}
+.hero .label { font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; opacity: 0.82; margin: 30px 0 6px; }
+.hero .amount { font-size: 56px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.05; }
+.hero .amount .cents { font-size: 30px; font-weight: 400; opacity: 0.9; }
+.hero .acct { margin-top: 14px; font-size: 15px; font-weight: 300; opacity: 0.92; }
+.hero .hfoot { position: absolute; left: 36px; right: 36px; bottom: 28px; display: flex; gap: 10px; }
+.hero .hfoot span {
+  font-size: 12.5px; font-weight: 500; border: 1px solid rgba(255, 255, 255, 0.42);
+  border-radius: 25px; padding: 7px 16px;
+}
+
+/* ---------- quick actions ---------- */
+.quick { display: flex; gap: 16px; margin: 30px auto 0; width: 1440px; justify-content: center; }
+.quick .q {
+  background: var(--surface); border: 1px solid var(--line); border-radius: 16px; box-shadow: var(--shadow);
+  width: 168px; height: 92px; padding: 14px 16px; display: flex; flex-direction: column; justify-content: space-between;
+}
+.quick .q i { width: 26px; height: 26px; border-radius: 8px; background: var(--grad); display: block; }
+.quick .q b { font-size: 14px; font-weight: 500; color: var(--ink); }
+
+/* ---------- section ---------- */
+.sec { display: flex; align-items: baseline; justify-content: space-between; margin: 44px 0 20px; }
+.sec h2 { font-size: 28px; font-weight: 600; color: var(--ink); margin: 0; letter-spacing: -0.01em; }
+.sec .count { font-size: 13px; color: var(--muted); }
+
+/* ---------- feature grid ---------- */
+.grid { display: grid; grid-template-columns: repeat(3, 464px); gap: 24px; }
+.card {
+  width: 464px; height: 240px; background: var(--surface); border: 1px solid var(--line);
+  border-radius: 24px; box-shadow: var(--shadow); padding: 26px 28px; position: relative; overflow: hidden;
+}
+.card .ic { width: 44px; height: 44px; border-radius: 14px; background: var(--grad); position: relative; }
+.card .ic::after {
+  content: ''; position: absolute; inset: 13px; border: 2.5px solid rgba(255, 255, 255, 0.92); border-radius: 5px;
+}
+.card h3 { font-size: 21px; font-weight: 600; color: var(--ink); margin: 20px 0 8px; letter-spacing: -0.01em; }
+.card p { font-size: 14.5px; font-weight: 300; line-height: 1.5; color: var(--body); margin: 0; }
+.card .tag {
+  position: absolute; bottom: 24px; left: 28px; font-size: 11.5px; font-weight: 600; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--magenta);
+}
+.card .pill {
+  position: absolute; top: 26px; right: 28px; font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--purple); background: #f3eefb; border-radius: 25px; padding: 5px 12px;
+}
+
+/* ---------- rows (transfers / activity) ---------- */
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 24px; box-shadow: var(--shadow); padding: 30px 34px; }
+.panel .ph { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 18px; }
+.panel .ph h2 { font-size: 24px; margin: 0; font-weight: 600; color: var(--ink); }
+.panel .ph span { font-size: 13px; color: var(--muted); }
+.row {
+  height: 84px; border: 1px solid var(--line); border-radius: 16px; margin-bottom: 14px; padding: 0 24px;
+  display: flex; align-items: center; gap: 20px; background: #fff;
+}
+.row .av { width: 46px; height: 46px; border-radius: 14px; background: #f3eefb; color: var(--purple); font-weight: 600; font-size: 15px; display: flex; align-items: center; justify-content: center; }
+.row .who { flex: 1; }
+.row .who b { display: block; font-size: 17px; font-weight: 500; color: var(--ink); }
+.row .who span { font-size: 13.5px; font-weight: 300; color: var(--muted); }
+.row .rail { text-align: right; }
+.row .rail b { display: block; font-size: 19px; font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; }
+.row .rail span { font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--magenta); }
+.row .free { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--purple-deep); background: var(--lime); border-radius: 25px; padding: 5px 12px; }
+
+/* ---------- amount summary ---------- */
+.sum { display: flex; gap: 24px; }
+.sum .box { flex: 1; background: var(--surface); border: 1px solid var(--line); border-radius: 24px; box-shadow: var(--shadow); padding: 26px 30px; }
+.sum .box small { font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+.sum .box b { display: block; font-size: 34px; font-weight: 600; color: var(--ink); margin-top: 10px; font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
+.sum .box .note { font-size: 13px; font-weight: 300; color: var(--magenta); margin-top: 6px; }
+
+/* ---------- bills ---------- */
+.biller {
+  height: 78px; background: #fff; border: 1px solid var(--line); border-radius: 16px; margin-bottom: 12px;
+  padding: 0 24px; display: flex; align-items: center; gap: 18px;
+}
+.biller .lg { width: 42px; height: 42px; border-radius: 12px; background: var(--grad); }
+.biller .nm { flex: 1; }
+.biller .nm b { display: block; font-size: 16.5px; font-weight: 500; color: var(--ink); }
+.biller .nm span { font-size: 13px; font-weight: 300; color: var(--muted); }
+.biller .due { font-size: 18px; font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; }
+.biller .cta { font-size: 13px; font-weight: 600; color: #fff; background: var(--magenta); border-radius: 25px; padding: 9px 20px; }
+
+/* ---------- card control ---------- */
+.cardstage { display: flex; gap: 40px; align-items: flex-start; }
+.plastic {
+  width: 560px; height: 344px; border-radius: 24px; background: var(--grad-card); color: #fff;
+  padding: 30px 34px; position: relative; overflow: hidden;
+  box-shadow: 0 20px 44px rgba(84, 39, 133, 0.26), 0 2px 6px rgba(84, 39, 133, 0.2);
+}
+.plastic::after {
+  content: ''; position: absolute; left: -60px; bottom: -120px; width: 340px; height: 340px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(213, 224, 77, 0.26), transparent 66%);
+}
+.plastic .top { display: flex; align-items: center; justify-content: space-between; position: relative; }
+.plastic .net { font-size: 15px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; }
+.plastic .emv { width: 48px; height: 36px; border-radius: 7px; background: linear-gradient(140deg, #e8dfa0, #c9b45e); margin: 46px 0 22px; position: relative; }
+.plastic .emv::after { content: ''; position: absolute; inset: 8px 6px; border: 1px solid rgba(0, 0, 0, 0.22); border-radius: 3px; }
+.plastic .num { font-size: 27px; font-weight: 500; letter-spacing: 0.1em; font-variant-numeric: tabular-nums; }
+.plastic .meta { display: flex; gap: 46px; margin-top: 22px; font-size: 12.5px; }
+.plastic .meta small { display: block; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; opacity: 0.75; margin-bottom: 3px; }
+.controls { flex: 1; }
+.ctl {
+  height: 86px; background: #fff; border: 1px solid var(--line); border-radius: 16px; margin-bottom: 14px;
+  padding: 0 26px; display: flex; align-items: center; gap: 18px;
+}
+.ctl .nm { flex: 1; }
+.ctl .nm b { display: block; font-size: 17px; font-weight: 500; color: var(--ink); }
+.ctl .nm span { font-size: 13px; font-weight: 300; color: var(--muted); }
+.sw { width: 62px; height: 34px; border-radius: 25px; background: var(--magenta); position: relative; }
+.sw::after { content: ''; position: absolute; top: 4px; right: 4px; width: 26px; height: 26px; border-radius: 50%; background: #fff; }
+.sw.off { background: #ded7e8; }
+.sw.off::after { right: auto; left: 4px; }
+
+.spacer { height: 120px; }
+
+
+/* feature icons: one glyph per feature family so the grid doesn't read as 12 identical squares */
+.card:nth-child(3n+2) .ic::after { border-radius: 50%; }
+.card:nth-child(3n) .ic::after { inset: 12px 10px; border-width: 0 0 2.5px 2.5px; transform: rotate(-45deg); }
+.card:nth-child(4n) .ic::after { inset: 14px 11px; border-radius: 2px; border-width: 2.5px 0 2.5px 0; }
+.card:nth-child(5n) .ic::after { inset: 11px; border-radius: 50% 50% 50% 4px; }
+.card:nth-child(7n) .ic::after { inset: 13px 15px; border-radius: 3px; }
+
+/* biller marks: one glyph per utility type — six identical blobs read as unfinished (Q10) */
+.biller .lg { position: relative; }
+.biller .lg::after {
+  content: ''; position: absolute; inset: 12px; border: 2.5px solid rgba(255, 255, 255, 0.94);
+}
+.biller:nth-child(2) .lg::after { border-radius: 2px; clip-path: polygon(52% 0, 12% 56%, 46% 56%, 34% 100%, 88% 42%, 52% 42%); border: none; background: rgba(255,255,255,.94); inset: 9px 13px; }
+.biller:nth-child(3) .lg::after { border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; inset: 10px 12px; }
+.biller:nth-child(4) .lg::after { border-radius: 50%; border-width: 2.5px 2.5px 0 0; transform: rotate(-45deg); inset: 11px; }
+.biller:nth-child(5) .lg::after { border-radius: 4px; inset: 13px 10px; }
+.biller:nth-child(6) .lg::after { border-radius: 3px; inset: 12px; border-width: 2.5px 2.5px 2.5px 2.5px; clip-path: polygon(0 0, 100% 0, 100% 62%, 50% 100%, 0 62%); }
+.biller:nth-child(7) .lg::after { border-radius: 50%; inset: 12px; }
