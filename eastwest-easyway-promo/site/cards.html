@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>EasyWay — Card control (demo UI for promo capture)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap">
+    <div class="brand"><span class="east">East</span><span class="west">West</span><span class="sub">EasyWay</span></div>
+    <nav class="nav">
+      <a href="index.html">Accounts</a>
+      <a href="transfers.html">Transfer</a>
+      <a href="bills.html">Pay Bills</a>
+      <a class="on" href="cards.html">Cards</a>
+      <a href="index.html">Apply</a>
+    </nav>
+    <div class="right">
+      <div class="searchbox">Search transactions, billers, cards</div>
+      <div class="avatar">EW</div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="head">
+    <div class="crumb">Card control</div>
+    <h1>You hold the switch.</h1>
+    <p class="lede">Lock the card for ATM withdrawals, online purchases and in-store payments the moment it goes missing — and switch it back on when it turns up.</p>
+  </div>
+
+  <section class="cardstage">
+    <div class="plastic" id="plastic">
+      <div class="top">
+        <div class="brand" style="font-size:22px"><span class="east">East</span><span class="west">West</span></div>
+        <div class="net">Debit</div>
+      </div>
+      <div class="emv"></div>
+      <div class="num">••••&nbsp; ••••&nbsp; ••••&nbsp; 4821</div>
+      <div class="meta">
+        <div><small>Card holder</small>EASYWAY USER</div>
+        <div><small>Valid thru</small>08 / 29</div>
+        <div><small>Status</small>Active</div>
+      </div>
+    </div>
+    <div class="controls" id="controls">
+      <div class="ctl"><div class="nm"><b>ATM withdrawals</b><span>Cash out at any EastWest or BancNet ATM</span></div><div class="sw"></div></div>
+      <div class="ctl"><div class="nm"><b>Online purchases</b><span>Card-not-present payments and subscriptions</span></div><div class="sw"></div></div>
+      <div class="ctl"><div class="nm"><b>In-store payments</b><span>Tap and swipe at point-of-sale terminals</span></div><div class="sw"></div></div>
+      <div class="ctl"><div class="nm"><b>Overseas use</b><span>Transactions outside the Philippines</span></div><div class="sw off"></div></div>
+    </div>
+  </section>
+  <div class="sec">
+    <h2>Recent card activity</h2>
+    <div class="count">Card •••• 4821 · last 3 days</div>
+  </div>
+
+  <section class="panel" id="activity">
+    <div class="ph"><h2>Posted</h2><span>All amounts in PHP</span></div>
+    <div class="row"><div class="av">POS</div><div class="who"><b>Supermarket · Ortigas</b><span>In-store payment · Aug 10, 6:42 PM</span></div><div class="free">5% back</div><div class="rail"><b>₱ 2,480.00</b><span>In-store</span></div></div>
+    <div class="row"><div class="av">WEB</div><div class="who"><b>Online subscription</b><span>Card-not-present · Aug 10, 9:15 AM</span></div><div class="free">Secured</div><div class="rail"><b>₱ 549.00</b><span>Online</span></div></div>
+    <div class="row"><div class="av">ATM</div><div class="who"><b>ATM withdrawal · BancNet</b><span>Aug 9, 7:04 PM</span></div><div class="free">Free</div><div class="rail"><b>₱ 5,000.00</b><span>ATM</span></div></div>
+  </section>
+  <div class="spacer"></div>
+</main>
+</body>
+</html>

@@ -1,0 +1,29 @@
+{
+  "name": "eastwest-easyway-promo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "2.5D feature promo for EastWest EasyWay, built with the video-shotcraft skill (unofficial concept piece)",
+  "scripts": {
+    "dev": "remotion studio src/index.ts",
+    "capture": "node tools/capture.mjs",
+    "check": "node tools/check-timeline.mjs",
+    "render": "remotion render src/index.ts EastWestPromo out/eastwest-easyway-promo.mp4",
+    "render:nobgm": "remotion render src/index.ts EastWestPromo out/eastwest-easyway-promo-nobgm.mp4 --props=props-nobgm.json",
+    "check:still": "node tools/still-check.mjs",
+    "verify:beats": "uv run --with librosa --with scipy --python 3.11 tools/beat-verify.py",
+    "check:blank": "node tools/blank-check.mjs"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.484",
+    "@remotion/google-fonts": "4.0.484",
+    "react": "19.2.7",
+    "react-dom": "19.2.7",
+    "remotion": "4.0.484"
+  },
+  "devDependencies": {
+    "@types/react": "19.2.17",
+    "ffmpeg-static": "^5.2.0",
+    "playwright": "^1.58.0",
+    "typescript": "6.0.3"
+  }
+}
