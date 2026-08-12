@@ -1,0 +1,8 @@
+20 requests to jsonplaceholder.typicode.com
+
+  one after another    0.18s
+  all at once          0.04s
+
+  5.1x faster, 0.15s saved
+
+The work itself is the same. The time saved is the waiting that now overlaps.
