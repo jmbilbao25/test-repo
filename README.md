@@ -4,6 +4,7 @@
 | --- | --- | --- | --- |
 | 2 | JVM tuning and Spring Boot microservice performance | [docx](JVM-Tuning-Assignment.docx) · [pdf](JVM-Tuning-Assignment.pdf) | [`itemservice/`](itemservice) |
 | 3 | A to-do list app built with Copilot, ChatGPT and CodeWhisperer | [docx](AI-Tools-ToDo-Assignment.docx) · [pdf](AI-Tools-ToDo-Assignment.pdf) | [`todo-app/`](todo-app) |
+| 4 | Async IO in Python: fetching several APIs at once | [docx](Async-IO-Assignment.docx) · [pdf](Async-IO-Assignment.pdf) | [`async-io/`](async-io) |
 
 ---
 
@@ -126,3 +127,28 @@ python3 benchmark.py 2000        # draft against reviewed
 The review caught four reproducible bugs, and the two performance findings were
 worth less than they looked. Details in
 [`todo-app/README.md`](todo-app/README.md).
+
+
+---
+
+# Day 4: Async IO in Python
+
+The write-up is **[Async-IO-Assignment.docx](Async-IO-Assignment.docx)**, with a
+**[PDF copy](Async-IO-Assignment.pdf)**. The scripts are in
+**[`async-io/`](async-io)**.
+
+Three scripts using `asyncio` and `aiohttp`: the assignment itself, a sequential
+against concurrent measurement, and a run showing what `asyncio.gather` does when
+some endpoints fail.
+
+```bash
+cd async-io
+pip install aiohttp
+python3 async_fetch.py     # five endpoints at once
+python3 compare.py         # 20 requests: 0.18s sequential, 0.04s concurrent
+python3 errors.py          # 404, DNS failure and timeout in one batch
+```
+
+`gather` stops at the first exception and discards the responses that already
+arrived, unless `return_exceptions=True` is passed. Details in
+[`async-io/README.md`](async-io/README.md).

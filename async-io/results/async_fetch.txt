@@ -1,0 +1,15 @@
+Fetching 5 endpoints concurrently
+
+  200   0.02s  https://jsonplaceholder.typicode.com/posts/1
+  200   0.02s  https://jsonplaceholder.typicode.com/todos/1
+  200   0.02s  https://jsonplaceholder.typicode.com/posts/2
+  200   0.02s  https://jsonplaceholder.typicode.com/users/1
+  200   0.02s  https://jsonplaceholder.typicode.com/comments/1
+
+Got 5 responses in 0.02s
+
+  posts     id=1  sunt aut facere repellat provident occaecati e
+  posts     id=2  qui est esse
+  users     id=1  Leanne Graham
+  todos     id=1  delectus aut autem
+  comments  id=1  id labore ex et quam laborum

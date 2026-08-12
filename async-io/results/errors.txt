@@ -1,0 +1,20 @@
+  a normal request                       timeout 10.0s
+  a path that does not exist             timeout 10.0s
+  a host that does not resolve           timeout 10.0s
+  a real endpoint, impossible timeout    timeout 0.001s
+  a normal request                       timeout 10.0s
+
+Default gather: the first failure ends the batch
+
+  raised TimeoutError: 
+  the responses that did arrive are thrown away
+
+return_exceptions=True: every slot comes back
+
+  ok      id=1                     https://jsonplaceholder.typicode.com/posts/1
+  FAILED  ClientResponseError      404
+  FAILED  ClientConnectorDNSError  Cannot connect to host no-such-host.inva
+  FAILED  TimeoutError             no message
+  ok      id=1                     https://jsonplaceholder.typicode.com/users/1
+
+  2 succeeded, 3 failed, and the batch still finished
