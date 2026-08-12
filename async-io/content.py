@@ -15,7 +15,7 @@ TITLE = "Async IO in Python: Fetching Several APIs at Once"
 DAY = "Day 4 Assignment"
 AUTHOR = "John Michael Bilbao"
 COURSE = "Techstart"
-DATE = "August 11, 2026"
+DATE = "August 12, 2026"
 
 
 def _timings() -> dict:

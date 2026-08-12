@@ -72,15 +72,15 @@ def main() -> None:
         code_figure(r)
         r.shot(terminal("async-io - python3 async_fetch.py",
                         "$ python3 async_fetch.py\n" + read("async_fetch.txt"),
-                        width=820, font_size=12.5),
+                        width=820, font_size=12.5, dots=False),
                out("fig-run.png"))
         r.shot(terminal("async-io - python3 compare.py",
                         "$ python3 compare.py\n" + read("compare.txt"),
-                        width=780, font_size=12.5),
+                        width=780, font_size=12.5, dots=False),
                out("fig-compare.png"))
         r.shot(terminal("async-io - python3 errors.py",
                         "$ python3 errors.py\n" + read("errors.txt"),
-                        width=820, font_size=12),
+                        width=820, font_size=12, dots=False),
                out("fig-errors.png"))
     print("done")
 

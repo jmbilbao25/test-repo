@@ -128,19 +128,32 @@ def term_line(line: str) -> str:
 
 
 def terminal(title: str, body: str, width: int = 900,
-             font_size: float = 13) -> str:
-    """A terminal window containing body, which is plain text."""
+             font_size: float = 13, dots: bool = True) -> str:
+    """A terminal window containing body, which is plain text.
+
+    dots draws the three window buttons in the title bar. Turn it off for a
+    plainer bar; the title then centres on the whole width instead of being
+    offset to balance the buttons.
+    """
     lines = "".join(
         f'<div class="tl">{term_line(l) if l.strip() else "&nbsp;"}</div>'
         for l in body.split("\n")
     )
+    if dots:
+        controls = (
+            '<span class="dot" style="background:#ff5f57"></span>'
+            '<span class="dot" style="background:#febc2e"></span>'
+            '<span class="dot" style="background:#28c840"></span>'
+        )
+        title_class = "ttitle"
+    else:
+        controls = ""
+        title_class = "ttitle bare"
     return f"""
 <div class="win" style="width:{width}px">
   <div class="tbar">
-    <span class="dot" style="background:#ff5f57"></span>
-    <span class="dot" style="background:#febc2e"></span>
-    <span class="dot" style="background:#28c840"></span>
-    <span class="ttitle">{esc(title)}</span>
+    {controls}
+    <span class="{title_class}">{esc(title)}</span>
   </div>
   <div class="tbody" style="font-size:{font_size}px">{lines}</div>
 </div>
@@ -156,8 +169,11 @@ BASE_CSS = f"""
   .tbar{{display:flex;align-items:center;gap:8px;padding:8px 12px;
         background:#333a45}}
   .dot{{width:11px;height:11px;border-radius:50%;display:inline-block}}
+  /* the right margin balances the three buttons on the left, so the title sits
+     centred over the body rather than over the whole bar */
   .ttitle{{flex:1;text-align:center;color:#c8cddb;font-size:12px;
           margin-right:44px}}
+  .ttitle.bare{{margin-right:0}}
   /* white-space:pre belongs on the lines, not the container, otherwise the
      indentation of the surrounding HTML gets rendered too */
   .tbody{{background:{BG};color:{INK};padding:12px 14px 14px;
