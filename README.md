@@ -5,6 +5,7 @@
 | 2 | JVM tuning and Spring Boot microservice performance | [docx](JVM-Tuning-Assignment.docx) · [pdf](JVM-Tuning-Assignment.pdf) | [`itemservice/`](itemservice) |
 | 3 | A to-do list app built with Copilot, ChatGPT and CodeWhisperer | [docx](AI-Tools-ToDo-Assignment.docx) · [pdf](AI-Tools-ToDo-Assignment.pdf) | [`todo-app/`](todo-app) |
 | 4 | Async IO in Python: fetching several APIs at once | [docx](Async-IO-Assignment.docx) · [pdf](Async-IO-Assignment.pdf) | [`async-io/`](async-io) |
+| 6 | Designing a REST API with OpenAPI/Swagger documentation | [docx](REST-API-OpenAPI-Assignment.docx) · [pdf](REST-API-OpenAPI-Assignment.pdf) | [`books-api/`](books-api) |
 
 ---
 
@@ -152,3 +153,28 @@ python3 errors.py          # 404, DNS failure and timeout in one batch
 `gather` stops at the first exception and discards the responses that already
 arrived, unless `return_exceptions=True` is passed. Details in
 [`async-io/README.md`](async-io/README.md).
+
+
+---
+
+# Day 6: Designing a REST API with OpenAPI/Swagger Documentation
+
+The write-up is **[REST-API-OpenAPI-Assignment.docx](REST-API-OpenAPI-Assignment.docx)**,
+with a **[PDF copy](REST-API-OpenAPI-Assignment.pdf)**. The API is in
+**[`books-api/`](books-api)**.
+
+A book management API with the five CRUD endpoints, specified in
+`books-api/openapi.yaml` and implemented in Flask. The spec was written first,
+and 14 of the 48 tests check that the implementation still matches it.
+
+```bash
+cd books-api
+pip install -r requirements.txt
+flask --app books_api.app run     # API on :5000, Swagger UI at /docs
+python3 -m pytest tests/ -v       # 48 tests
+```
+
+The interesting part is `tests/test_spec.py`, which loads `openapi.yaml`, walks
+Flask's routing table to catch undocumented routes, and validates real responses
+against the documented schemas. Details in
+[`books-api/README.md`](books-api/README.md).

@@ -1,0 +1,12 @@
+$ curl -i http://localhost:5000/books/99
+HTTP/1.1 404 NOT FOUND
+Server: Werkzeug/3.1.8 Python/3.9.25
+Date: Thu, 13 Aug 2026 06:07:32 GMT
+Content-Type: application/json
+Content-Length: 54
+Connection: close
+
+{
+  "error": "not_found",
+  "message": "No book with id 99."
+}

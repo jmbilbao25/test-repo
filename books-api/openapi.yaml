@@ -1,0 +1,293 @@
+openapi: 3.0.3
+
+info:
+  title: Book Management API
+  version: 1.0.0
+  description: |
+    A small REST API for managing a collection of books.
+
+    Every endpoint returns JSON. Errors use the same `Error` shape throughout, so
+    a client only has to learn one error format.
+  contact:
+    name: John Michael Bilbao
+
+servers:
+  - url: http://localhost:5000
+    description: Local development server
+
+tags:
+  - name: books
+    description: Create, read, update and delete books
+
+paths:
+  /books:
+    get:
+      tags: [books]
+      summary: List all books
+      description: |
+        Returns every book. `author` filters on a partial, case-insensitive match
+        so `?author=orwell` finds "George Orwell".
+      operationId: listBooks
+      parameters:
+        - name: author
+          in: query
+          required: false
+          description: Only return books whose author contains this text.
+          schema:
+            type: string
+          example: orwell
+      responses:
+        "200":
+          description: The list of books.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [books, count]
+                properties:
+                  books:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Book"
+                  count:
+                    type: integer
+                    description: How many books are in the list.
+                    example: 2
+              example:
+                count: 2
+                books:
+                  - id: 1
+                    title: Nineteen Eighty-Four
+                    author: George Orwell
+                    year: 1949
+                    available: true
+                  - id: 2
+                    title: Brave New World
+                    author: Aldous Huxley
+                    year: 1932
+                    available: true
+
+    post:
+      tags: [books]
+      summary: Create a new book
+      description: |
+        Adds a book. `title` and `author` are required; `year` and `available` are
+        optional. The `id` is assigned by the server and cannot be set by the
+        client.
+
+        The response carries a `Location` header pointing at the new book.
+      operationId: createBook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewBook"
+            example:
+              title: The Hobbit
+              author: J. R. R. Tolkien
+              year: 1937
+      responses:
+        "201":
+          description: The book was created.
+          headers:
+            Location:
+              description: The URL of the new book.
+              schema:
+                type: string
+                example: /books/3
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Book"
+        "400":
+          $ref: "#/components/responses/ValidationError"
+        "409":
+          description: A book with this title and author already exists.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                error: conflict
+                message: "'The Hobbit' by J. R. R. Tolkien is already on the list."
+
+  /books/{id}:
+    parameters:
+      - $ref: "#/components/parameters/BookId"
+
+    get:
+      tags: [books]
+      summary: Retrieve a book by ID
+      operationId: getBook
+      responses:
+        "200":
+          description: The book.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Book"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+    put:
+      tags: [books]
+      summary: Update a book
+      description: |
+        Replaces the fields given. Only the fields present in the body are
+        changed, so sending `{"available": false}` marks a book as out on loan
+        without having to resend the title and author.
+      operationId: updateBook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BookUpdate"
+            example:
+              available: false
+      responses:
+        "200":
+          description: The updated book.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Book"
+        "400":
+          $ref: "#/components/responses/ValidationError"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+    delete:
+      tags: [books]
+      summary: Delete a book
+      description: Removes the book. Returns no body.
+      operationId: deleteBook
+      responses:
+        "204":
+          description: The book was deleted.
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+components:
+  parameters:
+    BookId:
+      name: id
+      in: path
+      required: true
+      description: The book's ID.
+      schema:
+        type: integer
+        minimum: 1
+      example: 1
+
+  responses:
+    NotFound:
+      description: No book with that ID.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            error: not_found
+            message: No book with id 99.
+    ValidationError:
+      description: The body was missing something or had the wrong type.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            error: validation_error
+            message: "'title' is required."
+
+  schemas:
+    Book:
+      type: object
+      required: [id, title, author, available]
+      properties:
+        id:
+          type: integer
+          readOnly: true
+          description: Assigned by the server.
+          example: 1
+        title:
+          type: string
+          maxLength: 200
+          example: Nineteen Eighty-Four
+        author:
+          type: string
+          maxLength: 120
+          example: George Orwell
+        year:
+          type: integer
+          nullable: true
+          minimum: 1450
+          maximum: 2100
+          description: Year of publication, if known.
+          example: 1949
+        available:
+          type: boolean
+          default: true
+          description: False while the book is out on loan.
+          example: true
+
+    NewBook:
+      type: object
+      required: [title, author]
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 200
+          example: The Hobbit
+        author:
+          type: string
+          minLength: 1
+          maxLength: 120
+          example: J. R. R. Tolkien
+        year:
+          type: integer
+          nullable: true
+          minimum: 1450
+          maximum: 2100
+          example: 1937
+        available:
+          type: boolean
+          default: true
+          example: true
+
+    BookUpdate:
+      type: object
+      description: Any subset of the writable fields. An empty body is rejected.
+      minProperties: 1
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 200
+        author:
+          type: string
+          minLength: 1
+          maxLength: 120
+        year:
+          type: integer
+          nullable: true
+          minimum: 1450
+          maximum: 2100
+        available:
+          type: boolean
+
+    Error:
+      type: object
+      required: [error, message]
+      properties:
+        error:
+          type: string
+          description: A short machine-readable code.
+          enum: [validation_error, not_found, conflict]
+          example: not_found
+        message:
+          type: string
+          description: A sentence explaining what went wrong.
+          example: No book with id 99.

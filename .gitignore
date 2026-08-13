@@ -10,3 +10,5 @@ results/*-app.log
 todo-app/tasks.json
 todo-app/.venv/
 todo-app/.preview/
+
+books-api/.pv/
