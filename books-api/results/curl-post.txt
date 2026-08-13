@@ -1,0 +1,18 @@
+$ curl -i -X POST http://localhost:5000/books \
+  -H 'Content-Type: application/json' \
+  -d '{"title": "The Hobbit", "author": "J. R. R. Tolkien", "year": 1937}'
+HTTP/1.1 201 CREATED
+Server: Werkzeug/3.1.8 Python/3.9.25
+Date: Thu, 13 Aug 2026 06:07:32 GMT
+Content-Type: application/json
+Content-Length: 87
+Location: /books/3
+Connection: close
+
+{
+  "id": 3,
+  "title": "The Hobbit",
+  "author": "J. R. R. Tolkien",
+  "year": 1937,
+  "available": true
+}

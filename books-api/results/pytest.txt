@@ -1,0 +1,20 @@
+$ python3 -m pytest tests/ -q
+................................................                         [100%]
+48 passed in 0.18s
+
+$ python3 -m pytest tests/test_spec.py -v
+test_spec_declares_the_five_endpoints PASSED         [  7%]
+test_every_operation_has_a_summary_and_an_operation_id PASSED [ 14%]
+test_every_documented_response_has_a_description PASSED [ 21%]
+test_the_routes_the_app_serves_are_the_routes_the_spec_declares PASSED [ 28%]
+test_list_response_matches_the_schema PASSED         [ 35%]
+test_create_response_matches_the_schema PASSED       [ 42%]
+test_a_book_with_no_year_still_matches_the_schema PASSED [ 50%]
+test_get_one_response_matches_the_schema PASSED      [ 57%]
+test_update_response_matches_the_schema PASSED       [ 64%]
+test_delete_is_documented_as_having_no_body PASSED   [ 71%]
+test_every_error_response_matches_the_error_schema PASSED [ 78%]
+test_error_codes_are_from_the_documented_enum PASSED [ 85%]
+test_the_spec_is_served PASSED                       [ 92%]
+test_swagger_ui_is_served_and_points_at_the_spec PASSED [100%]
+============================== 14 passed in 0.10s ==============================

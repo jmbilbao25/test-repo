@@ -1,0 +1,5 @@
+$ curl -i -X DELETE http://localhost:5000/books/3
+HTTP/1.1 204 NO CONTENT
+Server: Werkzeug/3.1.8 Python/3.9.25
+Date: Thu, 13 Aug 2026 06:07:32 GMT
+Connection: close
