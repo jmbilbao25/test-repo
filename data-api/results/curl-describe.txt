@@ -1,0 +1,65 @@
+PS C:\Users\John\data-api> curl.exe -i http://127.0.0.1:8000/describe_data
+HTTP/1.1 200 OK
+date: Fri, 14 Aug 2026 01:37:51 GMT
+server: uvicorn
+content-length: 843
+content-type: application/json
+
+{
+  "rows": 150,
+  "statistics": [
+    "count",
+    "unique",
+    "top",
+    "freq",
+    "mean",
+    "std",
+    "min",
+    "25%",
+    "50%",
+    "75%",
+    "max"
+  ],
+  "describe": {
+    "sepal_length": {
+      "count": 150.0,
+      "unique": null,
+      "top": null,
+      "freq": null,
+      "mean": 5.843333,
+      "std": 0.828066,
+      "min": 4.3,
+      "25%": 5.1,
+      "50%": 5.8,
+      "75%": 6.4,
+      "max": 7.9
+    },
+    "petal_length": {
+      "count": 150.0,
+      "unique": null,
+      "top": null,
+      "freq": null,
+      "mean": 3.758,
+      "std": 1.765298,
+      "min": 1.0,
+      "25%": 1.6,
+      "50%": 4.35,
+      "75%": 5.1,
+      "max": 6.9
+    },
+    "species": {
+      "count": 150,
+      "unique": 3,
+      "top": "setosa",
+      "freq": 50,
+      "mean": null,
+      "std": null,
+      "min": null,
+      "25%": null,
+      "50%": null,
+      "75%": null,
+      "max": null
+    },
+    "... 2 more columns not shown": "sepal_width, petal_width"
+  }
+}

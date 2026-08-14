@@ -1,0 +1,52 @@
+PS C:\Users\John\data-api> curl.exe -i http://127.0.0.1:8000/columns
+HTTP/1.1 200 OK
+date: Fri, 14 Aug 2026 01:37:51 GMT
+server: uvicorn
+content-length: 486
+content-type: application/json
+
+{
+  "rows": 150,
+  "columns": [
+    {
+      "name": "sepal_length",
+      "dtype": "float64",
+      "numeric": true,
+      "non_null": 150,
+      "nulls": 0,
+      "unique": 35
+    },
+    {
+      "name": "sepal_width",
+      "dtype": "float64",
+      "numeric": true,
+      "non_null": 150,
+      "nulls": 0,
+      "unique": 23
+    },
+    {
+      "name": "petal_length",
+      "dtype": "float64",
+      "numeric": true,
+      "non_null": 150,
+      "nulls": 0,
+      "unique": 43
+    },
+    {
+      "name": "petal_width",
+      "dtype": "float64",
+      "numeric": true,
+      "non_null": 150,
+      "nulls": 0,
+      "unique": 22
+    },
+    {
+      "name": "species",
+      "dtype": "object",
+      "numeric": false,
+      "non_null": 150,
+      "nulls": 0,
+      "unique": 3
+    }
+  ]
+}

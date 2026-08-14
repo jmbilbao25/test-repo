@@ -1,0 +1,29 @@
+PS C:\Users\John\data-api> curl.exe -i "http://127.0.0.1:8000/group_by?by=species&column=sepal_length&agg=max"
+HTTP/1.1 200 OK
+date: Fri, 14 Aug 2026 01:37:51 GMT
+server: uvicorn
+content-length: 196
+content-type: application/json
+
+{
+  "by": "species",
+  "column": "sepal_length",
+  "agg": "max",
+  "groups": [
+    {
+      "species": "setosa",
+      "count": 50,
+      "max": 5.8
+    },
+    {
+      "species": "versicolor",
+      "count": 50,
+      "max": 7.0
+    },
+    {
+      "species": "virginica",
+      "count": 50,
+      "max": 7.9
+    }
+  ]
+}

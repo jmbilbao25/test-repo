@@ -1,0 +1,26 @@
+PS C:\Users\John\data-api> curl.exe -i http://127.0.0.1:8000/stats/petal_length
+HTTP/1.1 200 OK
+date: Fri, 14 Aug 2026 01:37:51 GMT
+server: uvicorn
+content-length: 220
+content-type: application/json
+
+{
+  "column": "petal_length",
+  "count": 150,
+  "mean": 3.758,
+  "median": 4.35,
+  "std": 1.765298,
+  "variance": 3.116278,
+  "min": 1.0,
+  "max": 6.9,
+  "range": 5.9,
+  "q1": 1.6,
+  "q3": 5.1,
+  "iqr": 3.5,
+  "outlier_bounds": {
+    "lower": -3.65,
+    "upper": 10.35
+  },
+  "outliers": []
+}

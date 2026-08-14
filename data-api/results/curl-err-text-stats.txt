@@ -1,0 +1,11 @@
+PS C:\Users\John\data-api> curl.exe -i http://127.0.0.1:8000/stats/species
+HTTP/1.1 404 Not Found
+date: Fri, 14 Aug 2026 01:37:51 GMT
+server: uvicorn
+content-length: 69
+content-type: application/json
+
+{
+  "error": "column_error",
+  "message": "Column 'species' is not numeric."
+}

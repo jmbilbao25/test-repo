@@ -102,9 +102,15 @@ def numbered(code: str, lang: str = "python", start: int = 1,
 
 # ------------------------------------------------------------------- terminal
 TERM_RULES = [
+    # A shell prompt: colour the prompt itself, then the typed command.
     (re.compile(r"^(\$ )(.*)$"),
      lambda m: f'<span style="color:#4ec9b0">{esc(m.group(1))}</span>'
                f'<span style="color:#e8e8e8">{esc(m.group(2))}</span>'),
+    # PowerShell, as it appears on Windows: PS C:\path> command
+    (re.compile(r"^(PS [A-Za-z]:[^>]*>)(\s*)(.*)$"),
+     lambda m: f'<span style="color:#dcdcaa">{esc(m.group(1))}</span>'
+               f'{esc(m.group(2))}'
+               f'<span style="color:#e8e8e8">{esc(m.group(3))}</span>'),
 ]
 
 TERM_WORDS = [
@@ -128,33 +134,46 @@ def term_line(line: str) -> str:
 
 
 def terminal(title: str, body: str, width: int = 900,
-             font_size: float = 13, dots: bool = True) -> str:
+             font_size: float = 13, dots: bool = True,
+             windows: bool = False) -> str:
     """A terminal window containing body, which is plain text.
 
-    dots draws the three window buttons in the title bar. Turn it off for a
+    dots draws the three round window buttons in the title bar. Turn it off for a
     plainer bar; the title then centres on the whole width instead of being
     offset to balance the buttons.
+
+    windows draws a Windows Terminal style tab strip instead of a title bar, and
+    implies no buttons. Use it for output captured on Windows, where the prompt
+    in the body will read PS C:\\...> rather than $.
     """
     lines = "".join(
         f'<div class="tl">{term_line(l) if l.strip() else "&nbsp;"}</div>'
         for l in body.split("\n")
     )
-    if dots:
-        controls = (
-            '<span class="dot" style="background:#ff5f57"></span>'
-            '<span class="dot" style="background:#febc2e"></span>'
-            '<span class="dot" style="background:#28c840"></span>'
-        )
-        title_class = "ttitle"
+
+    if windows:
+        bar = f"""<div class="wbar">
+    <span class="wtab"><span class="wic">&gt;_</span>{esc(title)}</span>
+  </div>"""
     else:
-        controls = ""
-        title_class = "ttitle bare"
-    return f"""
-<div class="win" style="width:{width}px">
-  <div class="tbar">
+        if dots:
+            controls = (
+                '<span class="dot" style="background:#ff5f57"></span>'
+                '<span class="dot" style="background:#febc2e"></span>'
+                '<span class="dot" style="background:#28c840"></span>'
+            )
+            title_class = "ttitle"
+        else:
+            controls = ""
+            title_class = "ttitle bare"
+        bar = f"""<div class="tbar">
     {controls}
     <span class="{title_class}">{esc(title)}</span>
-  </div>
+  </div>"""
+
+    return f"""
+<div class="win" style="width:{width}px">
+  {bar}
   <div class="tbody" style="font-size:{font_size}px">{lines}</div>
 </div>
 """
@@ -174,6 +193,12 @@ BASE_CSS = f"""
   .ttitle{{flex:1;text-align:center;color:#c8cddb;font-size:12px;
           margin-right:44px}}
   .ttitle.bare{{margin-right:0}}
+
+  /* Windows Terminal style tab strip, used instead of the title bar */
+  .wbar{{display:flex;align-items:flex-end;background:#2b2b2b;padding:6px 8px 0}}
+  .wtab{{display:flex;align-items:center;gap:8px;background:{BG};color:#e6e6e6;
+        font-size:11.5px;padding:6px 16px;border-radius:6px 6px 0 0}}
+  .wic{{color:#4fc1ff;font-family:{MONO};font-size:11px}}
   /* white-space:pre belongs on the lines, not the container, otherwise the
      indentation of the surrounding HTML gets rendered too */
   .tbody{{background:{BG};color:{INK};padding:12px 14px 14px;

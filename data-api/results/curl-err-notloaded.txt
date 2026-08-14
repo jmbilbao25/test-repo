@@ -1,0 +1,11 @@
+PS C:\Users\John\data-api> curl.exe -i http://127.0.0.1:8000/columns
+HTTP/1.1 409 Conflict
+date: Fri, 14 Aug 2026 01:37:51 GMT
+server: uvicorn
+content-length: 89
+content-type: application/json
+
+{
+  "error": "data_not_loaded",
+  "message": "No dataset is loaded. Call POST /load_data first."
+}

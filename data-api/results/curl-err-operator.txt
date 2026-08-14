@@ -1,0 +1,23 @@
+PS C:\Users\John\data-api> curl.exe -i "http://127.0.0.1:8000/filter_data?column=species&op=wat&value=setosa"
+HTTP/1.1 422 Unprocessable Entity
+date: Fri, 14 Aug 2026 01:37:51 GMT
+server: uvicorn
+content-length: 219
+content-type: application/json
+
+{
+  "detail": [
+    {
+      "type": "literal_error",
+      "loc": [
+        "query",
+        "op"
+      ],
+      "msg": "Input should be 'eq', 'ne', 'gt', 'gte', 'lt', 'lte' or 'contains'",
+      "input": "wat",
+      "ctx": {
+        "expected": "'eq', 'ne', 'gt', 'gte', 'lt', 'lte' or 'contains'"
+      }
+    }
+  ]
+}

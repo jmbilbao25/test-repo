@@ -6,6 +6,7 @@
 | 3 | A to-do list app built with Copilot, ChatGPT and CodeWhisperer | [docx](AI-Tools-ToDo-Assignment.docx) · [pdf](AI-Tools-ToDo-Assignment.pdf) | [`todo-app/`](todo-app) |
 | 4 | Async IO in Python: fetching several APIs at once | [docx](Async-IO-Assignment.docx) · [pdf](Async-IO-Assignment.pdf) | [`async-io/`](async-io) |
 | 6 | Designing a REST API with OpenAPI/Swagger documentation | [docx](REST-API-OpenAPI-Assignment.docx) · [pdf](REST-API-OpenAPI-Assignment.pdf) | [`books-api/`](books-api) |
+| 6 | Building a data processing API with Pandas, NumPy and FastAPI | [docx](Data-Processing-API-Assignment.docx) · [pdf](Data-Processing-API-Assignment.pdf) | [`data-api/`](data-api) |
 
 ---
 
@@ -178,3 +179,29 @@ The interesting part is `tests/test_spec.py`, which loads `openapi.yaml`, walks
 Flask's routing table to catch undocumented routes, and validates real responses
 against the documented schemas. Details in
 [`books-api/README.md`](books-api/README.md).
+
+
+---
+
+# Day 6 hands-on: Building a Data Processing API with Pandas, NumPy and FastAPI
+
+The write-up is **[Data-Processing-API-Assignment.docx](Data-Processing-API-Assignment.docx)**,
+with a **[PDF copy](Data-Processing-API-Assignment.pdf)** — 30 pages, 29
+screenshots. The service is in **[`data-api/`](data-api)**.
+
+A FastAPI service over the Iris dataset. `POST /load_data` reads the CSV into a
+Pandas DataFrame held in memory; seven more endpoints describe, filter, group and
+run NumPy statistics over it, and every read returns 409 until the data is
+loaded.
+
+```powershell
+cd data-api
+pip install -r requirements.txt
+fastapi dev data_api\main.py     # API on :8000, Swagger UI at /docs
+python -m pytest tests/ -v       # 40 tests
+```
+
+FastAPI generates the OpenAPI document from the type hints, so declaring the
+filter operator as a `Literal` produced the validation, the 422 and the dropdown
+in the docs without a separate specification to maintain. Details in
+[`data-api/README.md`](data-api/README.md).
