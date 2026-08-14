@@ -1,0 +1,31 @@
+PS C:\Users\John\data-api> curl.exe -i http://127.0.0.1:8000/stats/sepal_width
+HTTP/1.1 200 OK
+date: Fri, 14 Aug 2026 01:37:51 GMT
+server: uvicorn
+content-length: 234
+content-type: application/json
+
+{
+  "column": "sepal_width",
+  "count": 150,
+  "mean": 3.057333,
+  "median": 3.0,
+  "std": 0.435866,
+  "variance": 0.189979,
+  "min": 2.0,
+  "max": 4.4,
+  "range": 2.4,
+  "q1": 2.8,
+  "q3": 3.3,
+  "iqr": 0.5,
+  "outlier_bounds": {
+    "lower": 2.05,
+    "upper": 4.05
+  },
+  "outliers": [
+    2.0,
+    4.1,
+    4.2,
+    4.4
+  ]
+}

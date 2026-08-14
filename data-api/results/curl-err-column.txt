@@ -1,0 +1,11 @@
+PS C:\Users\John\data-api> curl.exe -i "http://127.0.0.1:8000/filter_data?column=height&op=gt&value=1"
+HTTP/1.1 404 Not Found
+date: Fri, 14 Aug 2026 01:37:51 GMT
+server: uvicorn
+content-length: 136
+content-type: application/json
+
+{
+  "error": "column_error",
+  "message": "No column named 'height'. Available: sepal_length, sepal_width, petal_length, petal_width, species."
+}

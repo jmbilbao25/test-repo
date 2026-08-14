@@ -1,0 +1,33 @@
+PS C:\Users\John\data-api> fastapi dev data_api\main.py
+
+   FastAPI   Starting development server 🚀
+ 
+             Searching for package file structure from directories with         
+             __init__.py files                                                  
+             Importing from C:\Users\John\data-api
+ 
+    module   📁 data_api       
+             ├── 🐍 __init__.py
+             └── 🐍 main.py    
+ 
+      code   Importing the FastAPI app object from the module with the following
+             code:                                                              
+ 
+             from data_api.main import app
+ 
+       app   Using import string: data_api.main:app
+ 
+    server   Server started at http://127.0.0.1:8001
+    server   Documentation at http://127.0.0.1:8001/docs
+ 
+       tip   Running in development mode, for production use: fastapi run
+ 
+             Logs:
+ 
+      INFO   Will watch for changes in these directories:                       
+             ['C:\Users\John\data-api']
+      INFO   Uvicorn running on http://127.0.0.1:8001 (Press CTRL+C to quit)
+      INFO   Started reloader process [21] using WatchFiles
+      INFO   Started server process [30]
+      INFO   Waiting for application startup.
+      INFO   Application startup complete.

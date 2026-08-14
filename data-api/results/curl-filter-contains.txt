@@ -1,0 +1,32 @@
+PS C:\Users\John\data-api> curl.exe -i "http://127.0.0.1:8000/filter_data?column=species&op=contains&value=VIRGIN&limit=2"
+HTTP/1.1 200 OK
+date: Fri, 14 Aug 2026 01:37:51 GMT
+server: uvicorn
+content-length: 306
+content-type: application/json
+
+{
+  "column": "species",
+  "op": "contains",
+  "value": "VIRGIN",
+  "matched": 50,
+  "total": 150,
+  "returned": 2,
+  "limit": 2,
+  "rows": [
+    {
+      "sepal_length": 6.3,
+      "sepal_width": 3.3,
+      "petal_length": 6.0,
+      "petal_width": 2.5,
+      "species": "virginica"
+    },
+    {
+      "sepal_length": 5.8,
+      "sepal_width": 2.7,
+      "petal_length": 5.1,
+      "petal_width": 1.9,
+      "species": "virginica"
+    }
+  ]
+}

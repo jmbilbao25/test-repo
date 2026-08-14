@@ -1,0 +1,29 @@
+PS C:\Users\John\data-api> curl.exe -i "http://127.0.0.1:8000/group_by?by=species&column=petal_length"
+HTTP/1.1 200 OK
+date: Fri, 14 Aug 2026 01:37:51 GMT
+server: uvicorn
+content-length: 205
+content-type: application/json
+
+{
+  "by": "species",
+  "column": "petal_length",
+  "agg": "mean",
+  "groups": [
+    {
+      "species": "setosa",
+      "count": 50,
+      "mean": 1.462
+    },
+    {
+      "species": "versicolor",
+      "count": 50,
+      "mean": 4.26
+    },
+    {
+      "species": "virginica",
+      "count": 50,
+      "mean": 5.552
+    }
+  ]
+}

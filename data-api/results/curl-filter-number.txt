@@ -1,0 +1,39 @@
+PS C:\Users\John\data-api> curl.exe -i "http://127.0.0.1:8000/filter_data?column=petal_length&op=gt&value=5.0&limit=3"
+HTTP/1.1 200 OK
+date: Fri, 14 Aug 2026 01:37:51 GMT
+server: uvicorn
+content-length: 401
+content-type: application/json
+
+{
+  "column": "petal_length",
+  "op": "gt",
+  "value": "5.0",
+  "matched": 42,
+  "total": 150,
+  "returned": 3,
+  "limit": 3,
+  "rows": [
+    {
+      "sepal_length": 6.0,
+      "sepal_width": 2.7,
+      "petal_length": 5.1,
+      "petal_width": 1.6,
+      "species": "versicolor"
+    },
+    {
+      "sepal_length": 6.3,
+      "sepal_width": 3.3,
+      "petal_length": 6.0,
+      "petal_width": 2.5,
+      "species": "virginica"
+    },
+    {
+      "sepal_length": 5.8,
+      "sepal_width": 2.7,
+      "petal_length": 5.1,
+      "petal_width": 1.9,
+      "species": "virginica"
+    }
+  ]
+}

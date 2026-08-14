@@ -1,0 +1,25 @@
+PS C:\Users\John\data-api> python -m pytest tests/ -q
+........................................                                 [100%]
+40 passed in 0.33s
+
+PS C:\Users\John\data-api> python -m pytest tests/ -v -k "filter or stats or correlation"
+test_filter_equals_on_text PASSED                     [  5%]
+test_filter_greater_than_on_a_number PASSED           [ 10%]
+test_filter_value_is_coerced_for_numeric_columns PASSED [ 15%]
+test_filter_operators PASSED                          [ 21%]
+test_filter_contains_is_case_insensitive PASSED       [ 26%]
+test_filter_limit_caps_the_rows_but_not_the_count PASSED [ 31%]
+test_filter_with_no_matches_is_still_a_200 PASSED     [ 36%]
+test_filter_unknown_column_is_404 PASSED              [ 42%]
+test_filter_unknown_operator_is_422 PASSED            [ 47%]
+test_filter_non_numeric_value_on_numeric_column_is_400 PASSED [ 52%]
+test_filter_contains_on_a_numeric_column_is_400 PASSED [ 57%]
+test_filter_limit_is_validated PASSED                 [ 63%]
+test_stats_matches_known_values PASSED                [ 68%]
+test_stats_quartiles_and_iqr_agree PASSED             [ 73%]
+test_stats_outlier_bounds_are_tukey_fences PASSED     [ 78%]
+test_stats_unknown_column_is_404 PASSED               [ 84%]
+test_stats_on_a_text_column_is_404 PASSED             [ 89%]
+test_correlation_shape_and_diagonal PASSED            [ 94%]
+test_correlation_is_symmetric_and_known PASSED        [100%]
+====================== 19 passed, 21 deselected in 0.15s =======================

@@ -1,0 +1,11 @@
+PS C:\Users\John\data-api> curl.exe -i "http://127.0.0.1:8000/filter_data?column=petal_length&op=gt&value=big"
+HTTP/1.1 400 Bad Request
+date: Fri, 14 Aug 2026 01:37:51 GMT
+server: uvicorn
+content-length: 97
+content-type: application/json
+
+{
+  "error": "filter_error",
+  "message": "'big' is not a number, and column 'petal_length' is float64."
+}

@@ -12,3 +12,6 @@ todo-app/.venv/
 todo-app/.preview/
 
 books-api/.pv/
+
+data-api/.pv/
+data-api/.venv/
