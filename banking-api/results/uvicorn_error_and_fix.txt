@@ -1,0 +1,13 @@
+(.venv) PS C:\Users\JL883807\PyCharmMiscProject> uvicorn
+Usage: uvicorn [OPTIONS] APP
+Try 'uvicorn --help' for help.
+
+Error: Missing argument 'APP'.
+
+(.venv) PS C:\Users\JL883807\PyCharmMiscProject> uvicorn app:app --reload
+INFO:     Will watch for changes in these directories: ['C:\\Users\\JL883807\\PyCharmMiscProject']
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [325] using StatReload
+INFO:     Started server process [327]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.

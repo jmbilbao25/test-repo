@@ -1,0 +1,20 @@
+GET /v1/accounts/acc_1/summary with 50,000 rows in memory
+
+  one request on its own              52.4 ms
+    of which awaited sleep            20.0 ms   (concurrent)
+    of which NumPy/Pandas work        32.4 ms   (runs on the loop)
+
+  20 requests issued at the same time:
+    total wall time                   591.4 ms
+    slowest single request            573.2 ms
+    median request                    322.2 ms
+
+  Two predictions, and which one the measurement matches:
+    if nothing blocked                52.4 ms
+    if the CPU work serialises        667.2 ms
+    measured                          591.4 ms
+
+  The measurement lands within 11% of the serialised
+  prediction. The awaited sleep does overlap across requests; the
+  NumPy and Pandas work does not, because it is called directly from
+  the coroutine instead of being handed to a thread.

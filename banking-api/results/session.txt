@@ -1,0 +1,65 @@
+PS C:\WINDOWS\system32> Invoke-RestMethod -Uri "http://127.0.0.1:8000/v1/transactions" `
+>>   -Method Post -ContentType "application/json" `
+>>   -Body '{"transaction_id": "tx_201", "account_id": "acc_1", "amount": 50.00, "category": "groceries"}'
+HTTP 201
+{
+  "status": "APPROVED",
+  "transaction_id": "tx_201",
+  "fraud_assessment": {
+    "is_anomaly": false,
+    "z_score": -0.97,
+    "mean_spend": 158.5,
+    "std_dev": 111.47
+  }
+}
+
+PS C:\WINDOWS\system32> Invoke-RestMethod -Uri "http://127.0.0.1:8000/v1/transactions" `
+>>   -Method Post -ContentType "application/json" `
+>>   -Body '{"transaction_id": "tx_202", "account_id": "acc_1", "amount": 4500.00, "category": "jewelry"}'
+HTTP 201
+{
+  "status": "APPROVED",
+  "transaction_id": "tx_202",
+  "fraud_assessment": {
+    "is_anomaly": true,
+    "z_score": 40.69,
+    "mean_spend": 131.38,
+    "std_dev": 107.36
+  }
+}
+
+PS C:\WINDOWS\system32> Invoke-RestMethod -Uri "http://127.0.0.1:8000/v1/accounts/acc_1/summary" `
+>>   -Method Get
+HTTP 200
+{
+  "account_id": "acc_1",
+  "metrics": {
+    "total_spent": 5025.5,
+    "avg_transaction": 1005.1,
+    "total_transactions": 5
+  },
+  "spend_by_category": {
+    "dining": 45.0,
+    "electronics": 310.0,
+    "groceries": 170.5,
+    "jewelry": 4500.0
+  }
+}
+
+PS C:\WINDOWS\system32> Invoke-RestMethod -Uri "http://127.0.0.1:8000/v1/analytics/batch-risk-matrix" `
+>>   -Method Get
+HTTP 200
+{
+  "accounts_checked": 3,
+  "portfolio_p95_threshold": 3810.0,
+  "portfolio_total_volume": 7240.5,
+  "high_value_transactions": [
+    {
+      "transaction_id": "tx_202",
+      "account_id": "acc_1",
+      "amount": 4500.0,
+      "category": "jewelry",
+      "timestamp": "2026-08-18T10:08:23.885417+00:00"
+    }
+  ]
+}
