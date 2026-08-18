@@ -1,0 +1,5 @@
+INFO:     127.0.0.1:41858 - "POST /v1/transactions HTTP/1.1" 201 Created
+INFO:     127.0.0.1:41872 - "POST /v1/transactions HTTP/1.1" 201 Created
+INFO:     127.0.0.1:41880 - "GET /v1/accounts/acc_1/summary HTTP/1.1" 200 OK
+⚠️ [ALERT] High anomaly score on TX tx_202: Z-Score = 40.69
+INFO:     127.0.0.1:41894 - "GET /v1/analytics/batch-risk-matrix HTTP/1.1" 200 OK

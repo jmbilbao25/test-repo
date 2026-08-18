@@ -1,0 +1,16 @@
+GET /v1/accounts/acc_1/summary, median of 7 requests
+
+    rows in memory      median   minus the 20 ms   requests/sec
+                       latency       fixed sleep     one worker
+  ----------------  ----------  ----------------  -------------
+                 5     23.7 ms            3.7 ms        42.1/s
+             1,005     24.3 ms            4.3 ms        41.1/s
+            10,005     29.0 ms            9.0 ms        34.4/s
+            50,005     50.8 ms           30.8 ms        19.7/s
+           200,005    147.1 ms          127.1 ms         6.8/s
+
+  The fourth column is the ceiling for a single worker: one request
+  has to finish before the next can be served, because the work is on
+  the event loop. pd.DataFrame(db_transactions) copies the whole
+  table on every call before filtering it to one account, so the cost
+  is driven by total rows stored and not by the rows returned.

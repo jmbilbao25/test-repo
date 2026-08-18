@@ -1,0 +1,7 @@
+Outbound mainframe checks: 3 accounts, 150 ms of latency each
+
+  one after another (await in a loop)   451.8 ms
+  together (asyncio.gather)            150.5 ms
+
+  3.00x faster, and the concurrent time is the cost of a
+  single check rather than the sum of all three.
