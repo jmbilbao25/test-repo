@@ -7,6 +7,7 @@
 | 4 | Async IO in Python: fetching several APIs at once | [docx](Async-IO-Assignment.docx) · [pdf](Async-IO-Assignment.pdf) | [`async-io/`](async-io) |
 | 6 | Designing a REST API with OpenAPI/Swagger documentation | [docx](REST-API-OpenAPI-Assignment.docx) · [pdf](REST-API-OpenAPI-Assignment.pdf) | [`books-api/`](books-api) |
 | 6 | Building a data processing API with Pandas, NumPy and FastAPI | [docx](Data-Processing-API-Assignment.docx) · [pdf](Data-Processing-API-Assignment.pdf) | [`data-api/`](data-api) |
+| 7 | Securing an API with OAuth2, JWT and rate limiting | [docx](API-Security-OAuth2-JWT-Assignment.docx) · [pdf](API-Security-OAuth2-JWT-Assignment.pdf) | [`secure-api/`](secure-api) |
 
 ---
 
@@ -205,3 +206,28 @@ FastAPI generates the OpenAPI document from the type hints, so declaring the
 filter operator as a `Literal` produced the validation, the 422 and the dropdown
 in the docs without a separate specification to maintain. Details in
 [`data-api/README.md`](data-api/README.md).
+
+
+---
+
+# Day 7: Securing and Documenting a REST API with OAuth2, JWT and Rate Limiting
+
+The write-up is **[API-Security-OAuth2-JWT-Assignment.docx](API-Security-OAuth2-JWT-Assignment.docx)**,
+with a **[PDF copy](API-Security-OAuth2-JWT-Assignment.pdf)** — 37 pages, 46
+screenshots. The service is in **[`secure-api/`](secure-api)**.
+
+An expense reports API secured with the OAuth2 password flow and JWT bearer
+tokens, rate limited, documented with Swagger and a Postman collection, and used
+by a web client served at `/app`.
+
+```powershell
+cd secure-api
+pip install -r requirements.txt
+fastapi dev secure_api\main.py    # /docs, /redoc and /app on :8000
+python -m pytest tests/ -v        # 49 tests
+```
+
+Three accounts with different scopes, so the write-up can show the difference
+between a 401 (the API does not know you), a 403 (it knows you and refuses) and a
+429 (you have asked too often). Details in
+[`secure-api/README.md`](secure-api/README.md).

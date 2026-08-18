@@ -29,8 +29,14 @@ def _rounded_mask(size, radius) -> Image.Image:
     return mask
 
 
-def add_chrome(shot_path: str, out_path: str, url: str, scale: int = 2) -> None:
-    """shot_path is a screenshot of the page; out_path gets the framed version."""
+def add_chrome(shot_path: str, out_path: str, url: str, scale: int = 2,
+               style: str = "mac") -> None:
+    """shot_path is a screenshot of the page; out_path gets the framed version.
+
+    style picks the window furniture. "mac" draws the three round buttons on the
+    left. "windows" draws minimise, maximise and close on the right instead, for
+    output presented as coming from a Windows machine.
+    """
     body = Image.open(shot_path).convert("RGB")
     w = body.width
     bar_h = BAR_H * scale
@@ -43,14 +49,38 @@ def add_chrome(shot_path: str, out_path: str, url: str, scale: int = 2) -> None:
     draw.line([(0, bar_h - scale), (w, bar_h - scale)], fill=BAR_LINE,
               width=scale)
 
-    cx = 24 * scale
-    r = 5.5 * scale
-    for colour in DOTS:
-        draw.ellipse([cx - r, bar_h / 2 - r, cx + r, bar_h / 2 + r], fill=colour)
-        cx += 21 * scale
+    if style == "windows":
+        # Minimise, maximise and close, drawn as thin glyphs on the right.
+        gx = w - 26 * scale
+        mid = bar_h / 2
+        ink = (90, 96, 110)
+        line = max(1, scale)
+        # close
+        draw.line([gx - 4 * scale, mid - 4 * scale, gx + 4 * scale,
+                   mid + 4 * scale], fill=ink, width=line)
+        draw.line([gx - 4 * scale, mid + 4 * scale, gx + 4 * scale,
+                   mid - 4 * scale], fill=ink, width=line)
+        # maximise
+        gx -= 22 * scale
+        draw.rectangle([gx - 4 * scale, mid - 4 * scale, gx + 4 * scale,
+                        mid + 4 * scale], outline=ink, width=line)
+        # minimise
+        gx -= 22 * scale
+        draw.line([gx - 4 * scale, mid, gx + 4 * scale, mid], fill=ink,
+                  width=line)
 
-    pill = [cx + 4 * scale, bar_h / 2 - 13 * scale,
-            w - 24 * scale, bar_h / 2 + 13 * scale]
+        pill = [20 * scale, mid - 13 * scale,
+                w - 86 * scale, mid + 13 * scale]
+    else:
+        cx = 24 * scale
+        r = 5.5 * scale
+        for colour in DOTS:
+            draw.ellipse([cx - r, bar_h / 2 - r, cx + r, bar_h / 2 + r],
+                         fill=colour)
+            cx += 21 * scale
+
+        pill = [cx + 4 * scale, bar_h / 2 - 13 * scale,
+                w - 24 * scale, bar_h / 2 + 13 * scale]
     draw.rounded_rectangle(pill, radius=13 * scale, fill=PILL_BG,
                            outline=PILL_LINE, width=scale)
     font = ImageFont.truetype(SANS, 12 * scale)

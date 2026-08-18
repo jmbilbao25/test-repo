@@ -1,0 +1,6 @@
+PS C:\Users\John\secure-api> curl.exe -i -X DELETE http://127.0.0.1:8000/reports/2 `
+    -H "Authorization: Bearer $env:ADMIN_TOKEN"
+HTTP/1.1 204 No Content
+date: Tue, 18 Aug 2026 00:40:53 GMT
+server: uvicorn
+content-type: application/json

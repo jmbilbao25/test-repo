@@ -1,0 +1,19 @@
+PS C:\Users\John\secure-api> curl.exe -i http://127.0.0.1:8000/auth/me -H "Authorization: Bearer $env:TOKEN"
+HTTP/1.1 200 OK
+date: Tue, 18 Aug 2026 00:40:52 GMT
+server: uvicorn
+content-length: 247
+content-type: application/json
+
+{
+  "username": "manager",
+  "full_name": "Man Ager",
+  "role": "manager",
+  "scopes": [
+    "reports:read",
+    "reports:write"
+  ],
+  "token_issued_at": "2026-08-18T00:40:52+00:00",
+  "token_expires_at": "2026-08-18T00:55:52+00:00",
+  "token_id": "96f72383-0f0f-4f30-88ac-288338f43037"
+}

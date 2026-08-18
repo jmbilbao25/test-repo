@@ -1,0 +1,26 @@
+PS C:\Users\John\secure-api> curl.exe -i http://127.0.0.1:8000/reports/summary -H "Authorization: Bearer $env:TOKEN"
+HTTP/1.1 200 OK
+date: Tue, 18 Aug 2026 00:40:52 GMT
+server: uvicorn
+content-length: 298
+content-type: application/json
+
+{
+  "report_count": 6,
+  "total_amount": 40849.0,
+  "by_category": {
+    "travel": 13300.0,
+    "meals": 3200.0,
+    "equipment": 6349.0,
+    "training": 18000.0
+  },
+  "largest": {
+    "id": 4,
+    "title": "Conference ticket",
+    "category": "training",
+    "amount": 18000.0,
+    "submitted_by": "analyst",
+    "status": "pending",
+    "created_at": "2026-08-18T00:40:51+00:00"
+  }
+}

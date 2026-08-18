@@ -1,0 +1,120 @@
+PS C:\Users\John\secure-api> newman run postman\secure-api.postman_collection.json
+newman
+
+Secure Expense Reports API
+
+❏ Auth
+↳ Health (no token)
+  GET http://127.0.0.1:8000/health [200 OK, 262B, 21ms]
+  ✓  200 without a token
+  ✓  reports the auth scheme
+
+↳ Sign in
+  POST http://127.0.0.1:8000/auth/token [200 OK, 897B, 234ms]
+  ✓  200
+  ✓  returns both tokens
+  ✓  is a bearer token that expires
+  ✓  grants the manager scopes
+  ┌
+  │ `Using "atob" is deprecated. Use "require('atob')" ins
+  │ tead.`
+  └
+  ✓  the JWT payload names the subject and scopes
+
+↳ Who am I
+  GET http://127.0.0.1:8000/auth/me [200 OK, 373B, 3ms]
+  ✓  200
+  ✓  is the account that signed in
+  ✓  carries the expected scopes
+  ✓  the token has an id and an expiry
+
+↳ Refresh the access token
+  POST http://127.0.0.1:8000/auth/refresh [200 OK, 569B, 2ms]
+  ✓  200
+  ✓  returns a new access token
+
+❏ Reports
+↳ List reports
+  GET http://127.0.0.1:8000/reports [200 OK, 1.12kB, 4ms]
+  ✓  200
+  ✓  count matches the rows returned
+  ✓  every report has the documented fields
+
+↳ List reports filtered by category
+  GET http://127.0.0.1:8000/reports?category=travel [200 OK, 489B, 3ms]
+  ✓  200
+  ✓  only travel comes back
+
+↳ Totals by category
+  GET http://127.0.0.1:8000/reports/summary [200 OK, 424B, 2ms]
+  ✓  200
+  ✓  the categories add up to the total
+
+↳ Create a report
+  POST http://127.0.0.1:8000/reports [201 Created, 294B, 2ms]
+  ✓  201
+  ✓  the server assigned an id
+  ✓  attributed to the signed in user
+  ✓  starts out pending
+
+↳ Read the report just created
+  GET http://127.0.0.1:8000/reports/7 [200 OK, 289B, 4ms]
+  ✓  200
+  ✓  is the one that was created
+
+❏ Rejected
+↳ No token at all (401)
+  GET http://127.0.0.1:8000/reports [401 Unauthorized, 208B, 1ms]
+  ✓  401
+  ✓  asks for a bearer token
+
+↳ Tampered token (401)
+  GET http://127.0.0.1:8000/reports [401 Unauthorized, 256B, 1ms]
+  ✓  401
+  ✓  the refusal names the signature
+
+↳ Refresh token used as an access token (401)
+  GET http://127.0.0.1:8000/reports [401 Unauthorized, 266B, 2ms]
+  ✓  401
+  ✓  the type claim is what refused it
+
+↳ Wrong password (401)
+  POST http://127.0.0.1:8000/auth/token [401 Unauthorized, 236B, 231ms]
+  ✓  401
+  ✓  does not say whether the user exists
+
+↳ Delete without the scope (403)
+  DELETE http://127.0.0.1:8000/reports/7 [403 Forbidden, 352B, 3ms]
+  ✓  403, not 401
+  ✓  the code is insufficient_scope
+  ✓  it names the scope required and the ones held
+
+↳ Scope the account cannot have (400)
+  POST http://127.0.0.1:8000/auth/token [400 Bad Request, 248B, 231ms]
+  ✓  400
+  ✓  the code is invalid_scope
+
+↳ Missing report (404)
+  GET http://127.0.0.1:8000/reports/9999 [404 Not Found, 189B, 2ms]
+  ✓  404
+  ✓  the code is not_found
+
+┌─────────────────────────┬───────────────────┬──────────────────┐
+│                         │          executed │           failed │
+├─────────────────────────┼───────────────────┼──────────────────┤
+│              iterations │                 1 │                0 │
+├─────────────────────────┼───────────────────┼──────────────────┤
+│                requests │                16 │                0 │
+├─────────────────────────┼───────────────────┼──────────────────┤
+│            test-scripts │                16 │                0 │
+├─────────────────────────┼───────────────────┼──────────────────┤
+│      prerequest-scripts │                 0 │                0 │
+├─────────────────────────┼───────────────────┼──────────────────┤
+│              assertions │                41 │                0 │
+├─────────────────────────┴───────────────────┴──────────────────┤
+│ total run duration: 936ms                                      │
+├────────────────────────────────────────────────────────────────┤
+│ total data received: 4.17kB (approx)                           │
+├────────────────────────────────────────────────────────────────┤
+│ average response time: 46ms [min: 1ms, max: 234ms, s.d.: 89ms] │
+└────────────────────────────────────────────────────────────────┘

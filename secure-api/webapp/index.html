@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Expense Reports</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ------------------------------------------------------------- sign in -->
+<main id="login" class="card">
+  <h1>Expense Reports</h1>
+  <p class="sub">Sign in to continue.</p>
+
+  <form id="login-form" autocomplete="off">
+    <label for="username">Username</label>
+    <input id="username" name="username" type="text" value="manager" required>
+
+    <label for="password">Password</label>
+    <input id="password" name="password" type="password"
+           value="manager-password" required>
+
+    <button class="primary" type="submit">Sign in</button>
+  </form>
+
+  <p id="login-error" class="error" hidden></p>
+
+  <p class="hint">
+    <strong>analyst</strong> can read only &middot;
+    <strong>manager</strong> can also write &middot;
+    <strong>admin</strong> can also delete
+  </p>
+</main>
+
+<!-- ---------------------------------------------------------- the reports -->
+<main id="dashboard" class="card wide" hidden>
+  <header class="bar">
+    <div>
+      <h1>Expense Reports</h1>
+      <p class="sub">
+        Signed in as <strong id="who"></strong>
+        <span id="scopes" class="scopes"></span>
+      </p>
+    </div>
+    <button id="signout" class="ghost" type="button">Sign out</button>
+  </header>
+
+  <section id="totals" class="totals"></section>
+
+  <p id="notice" class="notice" hidden></p>
+
+  <table id="reports">
+    <thead>
+      <tr>
+        <th>#</th><th>Title</th><th>Category</th>
+        <th class="right">Amount</th><th>Status</th><th>By</th><th></th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <form id="add-form" class="add">
+    <input id="new-title" type="text" placeholder="Title" maxlength="120"
+           required>
+    <input id="new-category" type="text" placeholder="Category" value="meals"
+           required>
+    <input id="new-amount" type="number" placeholder="Amount" min="1"
+           step="0.01" required>
+    <button class="primary" type="submit">Add report</button>
+  </form>
+
+  <p class="hint">
+    Every request above carries the access token. The buttons a token cannot use
+    are disabled, and the API refuses them regardless.
+  </p>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>

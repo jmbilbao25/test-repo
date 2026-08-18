@@ -1,0 +1,16 @@
+PS C:\Users\John\secure-api> curl.exe -i -X POST http://127.0.0.1:8000/auth/token `
+    -H "Content-Type: application/x-www-form-urlencoded" `
+    -d "username=manager&password=manager-password"
+HTTP/1.1 200 OK
+date: Tue, 18 Aug 2026 00:40:52 GMT
+server: uvicorn
+content-length: 771
+content-type: application/json
+
+{
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJtYW5h...kZGVlIn0.un_jAWHkqI...",
+  "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJtYW5h...OTJmZSJ9.OHqTvZsbRk...",
+  "token_type": "bearer",
+  "expires_in": 900,
+  "scope": "reports:read reports:write"
+}
