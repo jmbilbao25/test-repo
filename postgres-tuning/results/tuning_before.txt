@@ -1,0 +1,13 @@
+detected RAM: 31560 MB across 8 cores
+target: shared_buffers 7890MB (25%), effective_cache_size 23670MB (75%)
+
+--- defaults ---
+         name         |  value  |       source       
+----------------------+---------+--------------------
+ effective_cache_size | 4096 MB | default
+ maintenance_work_mem | 64 MB   | default
+ random_page_cost     | 4       | default
+ shared_buffers       | 128 MB  | configuration file
+ work_mem             | 4096 kB | default
+(5 rows)
+

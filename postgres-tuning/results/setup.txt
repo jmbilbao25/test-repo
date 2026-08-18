@@ -1,0 +1,11 @@
+psql (PostgreSQL) 16.14
+
+$ pg_ctl -D primary start
+$ createdb exampledb
+$ pg_restore -d exampledb dvdrental.tar
+
+ database  | size  
+-----------+-------
+ exampledb | 16 MB
+(1 row)
+

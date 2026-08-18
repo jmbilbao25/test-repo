@@ -1,0 +1,15 @@
+CREATE INDEX
+CREATE INDEX
+ANALYZE
+
+=== indexes on payment ===
+         indexname         |  size  
+---------------------------+--------
+ idx_fk_customer_id        | 128 kB
+ idx_fk_rental_id          | 336 kB
+ idx_fk_staff_id           | 120 kB
+ idx_payment_customer_date | 464 kB
+ idx_payment_payment_date  | 336 kB
+ payment_pkey              | 336 kB
+(6 rows)
+

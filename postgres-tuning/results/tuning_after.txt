@@ -1,0 +1,19 @@
+$ psql -c "ALTER SYSTEM SET shared_buffers = '7890MB'"   # +4 more
+$ pg_ctl -D primary -m fast restart        # shared_buffers needs a restart
+
+--- after ---
+         name         |  value  |       source       
+----------------------+---------+--------------------
+ effective_cache_size | 23 GB   | configuration file
+ maintenance_work_mem | 512 MB  | configuration file
+ random_page_cost     | 1.1     | configuration file
+ shared_buffers       | 7890 MB | configuration file
+ work_mem             | 32 MB   | configuration file
+(5 rows)
+
+--- the replica reconnected on its own after the restart ---
+ application_name |   state   | sync_state 
+------------------+-----------+------------
+ replica1         | streaming | async
+(1 row)
+

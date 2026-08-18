@@ -1,0 +1,27 @@
+=== Q1: payments taken on one day ===
+                                                                          QUERY PLAN                                                                          
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Index Scan using idx_payment_payment_date on payment (actual time=0.014..0.143 rows=308 loops=1)
+   Index Cond: ((payment_date >= '2007-02-15 00:00:00'::timestamp without time zone) AND (payment_date < '2007-02-16 00:00:00'::timestamp without time zone))
+   Buffers: shared hit=269 read=14
+ Planning:
+   Buffers: shared hit=122 read=22
+ Planning Time: 0.494 ms
+ Execution Time: 0.186 ms
+(7 rows)
+
+
+=== Q2: the ten most recent payments for one customer ===
+                                               QUERY PLAN                                               
+--------------------------------------------------------------------------------------------------------
+ Limit (actual time=0.045..0.052 rows=10 loops=1)
+   Buffers: shared hit=3 read=4
+   ->  Index Scan using idx_payment_customer_date on payment (actual time=0.044..0.051 rows=10 loops=1)
+         Index Cond: (customer_id = 341)
+         Buffers: shared hit=3 read=4
+ Planning:
+   Buffers: shared hit=34 read=1
+ Planning Time: 0.085 ms
+ Execution Time: 0.062 ms
+(9 rows)
+
