@@ -1,0 +1,36 @@
+=== Q1: payments taken on one day ===
+                                                                        QUERY PLAN                                                                        
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+ Seq Scan on payment (actual time=0.016..0.917 rows=308 loops=1)
+   Filter: ((payment_date >= '2007-02-15 00:00:00'::timestamp without time zone) AND (payment_date < '2007-02-16 00:00:00'::timestamp without time zone))
+   Rows Removed by Filter: 14288
+   Buffers: shared hit=128
+ Planning:
+   Buffers: shared hit=102
+ Planning Time: 0.318 ms
+ Execution Time: 0.959 ms
+(8 rows)
+
+
+=== Q2: the ten most recent payments for one customer ===
+                                              QUERY PLAN                                              
+------------------------------------------------------------------------------------------------------
+ Limit (actual time=0.056..0.057 rows=10 loops=1)
+   Buffers: shared hit=11
+   ->  Sort (actual time=0.055..0.056 rows=10 loops=1)
+         Sort Key: payment_date DESC
+         Sort Method: top-N heapsort  Memory: 26kB
+         Buffers: shared hit=11
+         ->  Bitmap Heap Scan on payment (actual time=0.024..0.029 rows=22 loops=1)
+               Recheck Cond: (customer_id = 341)
+               Heap Blocks: exact=3
+               Buffers: shared hit=8
+               ->  Bitmap Index Scan on idx_fk_customer_id (actual time=0.020..0.020 rows=22 loops=1)
+                     Index Cond: (customer_id = 341)
+                     Buffers: shared hit=5
+ Planning:
+   Buffers: shared hit=38
+ Planning Time: 0.104 ms
+ Execution Time: 0.077 ms
+(17 rows)
+

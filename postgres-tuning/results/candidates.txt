@@ -1,0 +1,15 @@
+=== busiest statements by total execution time ===
+ calls | total_ms | mean_ms |                           query                            
+-------+----------+---------+------------------------------------------------------------
+     1 |    33.40 |  33.404 | DO $$ BEGIN FOR i IN 1..40 LOOP PERFORM customer_id, amoun
+    40 |    31.50 |   0.788 | SELECT customer_id, amount, payment_date FROM payment WHER
+    40 |     0.35 |   0.009 | SELECT payment_id, amount, payment_date FROM payment WHERE
+(3 rows)
+
+
+=== tables being read sequentially (a missing-index symptom) ===
+ relname | seq_scan | seq_tup_read | idx_scan | avg_rows_per_seq_scan 
+---------+----------+--------------+----------+-----------------------
+ payment |       40 |       583840 |       40 |                 14596
+(1 row)
+

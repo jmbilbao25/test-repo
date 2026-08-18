@@ -1,0 +1,19 @@
+                                             Table "public.payment"
+    Column    |            Type             | Collation | Nullable |                   Default                   
+--------------+-----------------------------+-----------+----------+---------------------------------------------
+ payment_id   | integer                     |           | not null | nextval('payment_payment_id_seq'::regclass)
+ customer_id  | smallint                    |           | not null | 
+ staff_id     | smallint                    |           | not null | 
+ rental_id    | integer                     |           | not null | 
+ amount       | numeric(5,2)                |           | not null | 
+ payment_date | timestamp without time zone |           | not null | 
+Indexes:
+    "payment_pkey" PRIMARY KEY, btree (payment_id)
+    "idx_fk_customer_id" btree (customer_id)
+    "idx_fk_rental_id" btree (rental_id)
+    "idx_fk_staff_id" btree (staff_id)
+Foreign-key constraints:
+    "payment_customer_id_fkey" FOREIGN KEY (customer_id) REFERENCES customer(customer_id) ON UPDATE CASCADE ON DELETE RESTRICT
+    "payment_rental_id_fkey" FOREIGN KEY (rental_id) REFERENCES rental(rental_id) ON UPDATE CASCADE ON DELETE SET NULL
+    "payment_staff_id_fkey" FOREIGN KEY (staff_id) REFERENCES staff(staff_id) ON UPDATE CASCADE ON DELETE RESTRICT
+

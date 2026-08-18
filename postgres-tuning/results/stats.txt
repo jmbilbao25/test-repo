@@ -1,0 +1,31 @@
+=== pg_stat_user_tables: sequential vs index reads ===
+ relname  | seq_scan | seq_tup_read | idx_scan | n_live_tup 
+----------+----------+--------------+----------+------------
+ customer |        4 |         2399 |        2 |          1
+ film     |        0 |            0 |        0 |          0
+ payment  |      243 |      3546828 |      645 |      14596
+ rental   |        0 |            0 |        0 |          0
+(4 rows)
+
+
+=== pg_stat_user_indexes: is each index actually being used? ===
+        index_name         | scans | tuples_read |  size  
+---------------------------+-------+-------------+--------
+ idx_fk_customer_id        |   241 |        5302 | 128 kB
+ idx_payment_payment_date  |   203 |       61910 | 336 kB
+ idx_payment_customer_date |   201 |        2010 | 464 kB
+ idx_fk_rental_id          |     0 |           0 | 336 kB
+ idx_fk_staff_id           |     0 |           0 | 120 kB
+ payment_pkey              |     0 |           0 | 336 kB
+(6 rows)
+
+
+=== cache hit ratio (how often a read was served from shared_buffers) ===
+ relname  | disk_blocks | cache_blocks | cache_hit_pct 
+----------+-------------+--------------+---------------
+ customer |           0 |           45 |        100.00
+ film     |           0 |            0 |              
+ payment  |           0 |        35374 |        100.00
+ rental   |           0 |            0 |              
+(4 rows)
+

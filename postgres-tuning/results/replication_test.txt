@@ -1,0 +1,17 @@
+--- on the PRIMARY (5432): insert a row ---
+ category_id |       name       
+-------------+------------------
+          17 | Replication Test
+(1 row)
+
+INSERT 0 1
+
+--- on the REPLICA (5433): the row arrived ---
+ category_id |       name       
+-------------+------------------
+          17 | Replication Test
+(1 row)
+
+
+--- on the REPLICA (5433): try to write to it ---
+ERROR:  cannot execute INSERT in a read-only transaction

@@ -1,0 +1,8 @@
+$ pg_ctl -D replica start        # replica listening on 5433
+
+--- is this server a replica? ---
+ in_recovery | replayed  
+-------------+-----------
+ t           | 0/3000060
+(1 row)
+

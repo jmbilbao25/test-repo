@@ -1,0 +1,13 @@
+pg_basebackup: initiating base backup, waiting for checkpoint to complete
+pg_basebackup: checkpoint completed
+pg_basebackup: write-ahead log start point: 0/2000028 on timeline 1
+pg_basebackup: starting background WAL receiver
+pg_basebackup: created replication slot "replica1"
+   64/39970 kB (0%), 0/1 tablespace (...b/pgsql/day8/replica/global/2694)
+39980/39980 kB (100%), 0/1 tablespace (...l/day8/replica/global/pg_control)
+39980/39980 kB (100%), 1/1 tablespace                                         
+pg_basebackup: write-ahead log end point: 0/203C6F8
+pg_basebackup: waiting for background process to finish streaming ...
+pg_basebackup: syncing data to disk ...
+pg_basebackup: renaming backup_manifest.tmp to backup_manifest
+pg_basebackup: base backup completed

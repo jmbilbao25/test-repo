@@ -1,0 +1,30 @@
+=== 1. add a customer (expect: a new id) ===
+psql:08_functions_test.sql:6: NOTICE:  created customer 600 (john.bilbao@example.com)
+ new_customer_id 
+-----------------
+             600
+(1 row)
+
+
+=== 2. the same email again (expect: rejected, unique_violation) ===
+psql:08_functions_test.sql:11: ERROR:  email already registered: JOHN.BILBAO@EXAMPLE.COM
+CONTEXT:  PL/pgSQL function add_customer(smallint,text,text,text,smallint) line 11 at RAISE
+
+=== 3. a malformed email (expect: rejected, check_violation) ===
+psql:08_functions_test.sql:16: ERROR:  not an email address: not-an-email
+CONTEXT:  PL/pgSQL function add_customer(smallint,text,text,text,smallint) line 6 at RAISE
+
+=== 4. deactivate that customer (expect: committed) ===
+psql:08_functions_test.sql:25: NOTICE:  customer 600 deactivated and committed
+CALL
+
+=== 5. deactivate the same customer again (expect: rejected) ===
+psql:08_functions_test.sql:29: ERROR:  no active customer with id 600
+CONTEXT:  PL/pgSQL function deactivate_customer(integer) line 12 at RAISE
+
+=== the resulting row ===
+ customer_id | first_name | last_name |          email          | activebool | create_date 
+-------------+------------+-----------+-------------------------+------------+-------------
+         600 | John       | Bilbao    | john.bilbao@example.com | f          | 2026-08-18
+(1 row)
+

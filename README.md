@@ -8,6 +8,7 @@
 | 6 | Designing a REST API with OpenAPI/Swagger documentation | [docx](REST-API-OpenAPI-Assignment.docx) · [pdf](REST-API-OpenAPI-Assignment.pdf) | [`books-api/`](books-api) |
 | 6 | Building a data processing API with Pandas, NumPy and FastAPI | [docx](Data-Processing-API-Assignment.docx) · [pdf](Data-Processing-API-Assignment.pdf) | [`data-api/`](data-api) |
 | 7 | Securing an API with OAuth2, JWT and rate limiting | [docx](API-Security-OAuth2-JWT-Assignment.docx) · [pdf](API-Security-OAuth2-JWT-Assignment.pdf) | [`secure-api/`](secure-api) |
+| 8 | Optimizing PostgreSQL: indexing, stored procedures and replication | [docx](PostgreSQL-Performance-Assignment.docx) · [pdf](PostgreSQL-Performance-Assignment.pdf) | [`postgres-tuning/`](postgres-tuning) |
 
 ---
 

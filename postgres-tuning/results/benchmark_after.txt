@@ -1,0 +1,13 @@
+ pg_stat_statements_reset 
+--------------------------
+ 
+(1 row)
+
+DO
+=== mean execution time over 200 runs each ===
+         test_query          | calls | mean_ms | total_ms | blocks_per_call 
+-----------------------------+-------+---------+----------+-----------------
+ Q1 (date range)             |   200 |  0.0438 |     8.76 |            17.0
+ Q2 (customer, recent first) |   200 |  0.0029 |     0.57 |             4.0
+(2 rows)
+

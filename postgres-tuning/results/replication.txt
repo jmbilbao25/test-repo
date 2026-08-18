@@ -1,0 +1,13 @@
+=== pg_stat_replication (run on the primary) ===
+ application_name |   state   | sync_state | sent_lsn  | replay_lsn | replay_lag_bytes 
+------------------+-----------+------------+-----------+------------+------------------
+ replica1         | streaming | async      | 0/3000060 | 0/3000060  |                0
+(1 row)
+
+
+=== replication slot ===
+ slot_name | slot_type | active 
+-----------+-----------+--------
+ replica1  | physical  | t
+(1 row)
+

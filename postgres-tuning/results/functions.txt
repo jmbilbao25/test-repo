@@ -1,0 +1,9 @@
+CREATE FUNCTION
+CREATE PROCEDURE
+=== what was created ===
+        name         |   kind    | returns 
+---------------------+-----------+---------
+ add_customer        | function  | integer
+ deactivate_customer | procedure | 
+(2 rows)
+
