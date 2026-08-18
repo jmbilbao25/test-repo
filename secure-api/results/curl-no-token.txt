@@ -1,0 +1,12 @@
+PS C:\Users\John\secure-api> curl.exe -i http://127.0.0.1:8000/reports
+HTTP/1.1 401 Unauthorized
+date: Tue, 18 Aug 2026 00:40:55 GMT
+server: uvicorn
+www-authenticate: Bearer
+content-length: 47
+content-type: application/json
+
+{
+  "error": "error",
+  "message": "Not authenticated"
+}

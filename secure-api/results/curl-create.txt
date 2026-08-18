@@ -1,0 +1,19 @@
+PS C:\Users\John\secure-api> curl.exe -i -X POST http://127.0.0.1:8000/reports `
+    -H "Authorization: Bearer $env:TOKEN" `
+    -H "Content-Type: application/json" `
+    -d '{"title": "Client workshop, Iloilo", "category": "travel", "amount": 9800}'
+HTTP/1.1 201 Created
+date: Tue, 18 Aug 2026 00:40:52 GMT
+server: uvicorn
+content-length: 163
+content-type: application/json
+
+{
+  "id": 7,
+  "title": "Client workshop, Iloilo",
+  "category": "travel",
+  "amount": 9800.0,
+  "submitted_by": "manager",
+  "status": "pending",
+  "created_at": "2026-08-18T00:40:52+00:00"
+}

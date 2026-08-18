@@ -1,0 +1,16 @@
+PS C:\Users\John\secure-api> curl.exe -i http://127.0.0.1:8000/health
+HTTP/1.1 200 OK
+date: Tue, 18 Aug 2026 00:40:52 GMT
+server: uvicorn
+content-length: 136
+content-type: application/json
+
+{
+  "status": "ok",
+  "authentication": "OAuth2 password flow, JWT bearer",
+  "scopes_available": [
+    "reports:delete",
+    "reports:read",
+    "reports:write"
+  ]
+}

@@ -1,0 +1,32 @@
+PS C:\Users\John\secure-api> curl.exe -i http://127.0.0.1:8000/reports -H "Authorization: Bearer $env:TOKEN"
+HTTP/1.1 200 OK
+date: Tue, 18 Aug 2026 00:40:52 GMT
+server: uvicorn
+content-length: 996
+content-type: application/json
+
+{
+  "count": 6,
+  "total_amount": 40849.0,
+  "reports": [
+    {
+      "id": 1,
+      "title": "Client visit, Cebu",
+      "category": "travel",
+      "amount": 12450.0,
+      "submitted_by": "manager",
+      "status": "approved",
+      "created_at": "2026-08-18T00:40:51+00:00"
+    },
+    {
+      "id": 2,
+      "title": "Team lunch, Makati",
+      "category": "meals",
+      "amount": 3200.0,
+      "submitted_by": "manager",
+      "status": "approved",
+      "created_at": "2026-08-18T00:40:51+00:00"
+    },
+    "... 4 more not shown"
+  ]
+}

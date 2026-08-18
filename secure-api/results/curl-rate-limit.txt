@@ -1,0 +1,26 @@
+PS C:\Users\John\secure-api> 1..6 | ForEach-Object { curl.exe -s -o NUL -w "%{http_code}`n" `
+    -X POST http://127.0.0.1:8000/auth/token `
+    -d "username=manager&password=guess" }
+  attempt 1: HTTP 401
+  attempt 2: HTTP 401
+  attempt 3: HTTP 401
+  attempt 4: HTTP 401
+  attempt 5: HTTP 401
+  attempt 6: HTTP 429
+
+PS C:\Users\John\secure-api> curl.exe -i -X POST http://127.0.0.1:8000/auth/token `
+    -H "Content-Type: application/x-www-form-urlencoded" `
+    -d "username=manager&password=manager-password"
+HTTP/1.1 429 Too Many Requests
+date: Tue, 18 Aug 2026 00:40:59 GMT
+server: uvicorn
+retry-after: 60
+content-length: 145
+content-type: application/json
+
+{
+  "error": "rate_limit_exceeded",
+  "message": "Too many requests. Slow down and try again shortly.",
+  "limit": "5 per 1 minute",
+  "retry_after_seconds": 60
+}

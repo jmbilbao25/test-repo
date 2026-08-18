@@ -15,3 +15,6 @@ books-api/.pv/
 
 data-api/.pv/
 data-api/.venv/
+
+secure-api/.pv/
+secure-api/.venv/

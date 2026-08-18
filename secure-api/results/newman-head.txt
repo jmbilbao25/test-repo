@@ -1,0 +1,36 @@
+PS C:\Users\John\secure-api> newman run postman\secure-api.postman_collection.json
+newman
+
+Secure Expense Reports API
+
+❏ Auth
+↳ Health (no token)
+  GET http://127.0.0.1:8000/health [200 OK, 262B, 21ms]
+  ✓  200 without a token
+  ✓  reports the auth scheme
+
+↳ Sign in
+  POST http://127.0.0.1:8000/auth/token [200 OK, 897B, 234ms]
+  ✓  200
+  ✓  returns both tokens
+  ✓  is a bearer token that expires
+  ✓  grants the manager scopes
+  ┌
+  │ `Using "atob" is deprecated. Use "require('atob')" ins
+  │ tead.`
+  └
+  ✓  the JWT payload names the subject and scopes
+
+↳ Who am I
+  GET http://127.0.0.1:8000/auth/me [200 OK, 373B, 3ms]
+  ✓  200
+  ✓  is the account that signed in
+  ✓  carries the expected scopes
+  ✓  the token has an id and an expiry
+
+↳ Refresh the access token
+  POST http://127.0.0.1:8000/auth/refresh [200 OK, 569B, 2ms]
+  ✓  200
+  ✓  returns a new access token
+
+  ... the Reports and Rejected folders follow

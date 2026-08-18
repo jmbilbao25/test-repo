@@ -1,0 +1,18 @@
+PS C:\Users\John\secure-api> python -m pytest tests/ -q
+.................................................                        [100%]
+49 passed in 15.32s
+
+  tests/test_auth.py         23 passed
+  tests/test_scopes.py       18 passed
+  tests/test_limits.py       8 passed
+
+PS C:\Users\John\secure-api> python -m pytest tests/test_limits.py -v
+test_the_sixth_login_attempt_in_a_minute_is_refused PASSED [ 12%]
+test_the_429_says_what_the_limit_was_and_when_to_retry PASSED [ 25%]
+test_failed_logins_count_towards_the_limit PASSED  [ 37%]
+test_the_login_limit_does_not_block_reading PASSED [ 50%]
+test_writes_have_a_tighter_limit_than_reads PASSED [ 62%]
+test_reads_are_still_allowed_after_writes_are_limited PASSED [ 75%]
+test_two_tokens_get_separate_allowances PASSED     [ 87%]
+test_the_summary_limit_is_tighter_than_the_default PASSED [100%]
+============================== 8 passed in 5.95s ===============================

@@ -1,0 +1,10 @@
+PS C:\Users\John\secure-api> python -c "from secure_api.users import USERS; ..."
+stored for manager:
+  $2b$12$dhCsP27BwU6wZn5TfXVwcuSaj.4MDWil0nWrNurjVDijf7J8So75a
+
+algorithm       2b
+cost factor     12
+length          60 characters
+
+correct password -> True
+wrong password   -> False

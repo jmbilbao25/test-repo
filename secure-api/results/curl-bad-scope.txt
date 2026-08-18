@@ -1,0 +1,13 @@
+PS C:\Users\John\secure-api> curl.exe -i -X POST http://127.0.0.1:8000/auth/token `
+    -H "Content-Type: application/x-www-form-urlencoded" `
+    -d "username=analyst&password=analyst-password&scope=reports:delete"
+HTTP/1.1 400 Bad Request
+date: Tue, 18 Aug 2026 00:40:55 GMT
+server: uvicorn
+content-length: 113
+content-type: application/json
+
+{
+  "error": "invalid_scope",
+  "message": "This account cannot be granted 'reports:delete'. It may have: reports:read."
+}

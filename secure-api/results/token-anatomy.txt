@@ -1,0 +1,26 @@
+PS C:\Users\John\secure-api> python -c "from secure_api.security import create_access_token; ..."
+The token has three parts, separated by dots:
+
+1. header     eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+   decoded    {"alg": "HS256", "typ": "JWT"}
+
+2. payload    eyJzdWIiOiJtYW5hZ2VyIiwidHlwZSI6ImFjY2VzcyIs...
+   decoded   
+{
+    "sub": "manager",
+    "type": "access",
+    "scopes": [
+        "reports:read",
+        "reports:write"
+    ],
+    "iat": 1787013502,
+    "exp": 1787014402,
+    "iss": "secure-api",
+    "aud": "secure-api-clients",
+    "jti": "38f437a0-a17a-400e-872f-08c9adc7816d"
+}
+
+3. signature  223YCrQ5HOvED3rWsm4gwSJBhq-9gArXKuKqetTYpTk
+
+Anyone can read the first two. Only the holder of the secret
+can produce the third, which is what makes the rest usable.
