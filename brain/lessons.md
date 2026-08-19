@@ -14,3 +14,4 @@ without a trigger is a note. Wrong lessons get deleted, not archived.
 - When about to add a note that overlaps an existing one → rewrite the existing note instead. Because two notes disagreeing is worse than one note being stale. _(2026-08-19)_
 - When `gh pr create` or any `gh pr`/`gh issue` subcommand is tempting → use `gh api` REST instead. Because the GraphQL-backed subcommands always fail in this sandbox. _(2026-08-19)_
 - When the same loop step fails twice → stop, write the blocker into the ledger's Notes, escalate. Because a third identical attempt produces confident garbage. _(2026-08-19)_
+- When verifying a generated UI → load it headless and assert on the DOM, don't assume it renders. Because a template typo produces a blank page that looks fine in source. _(2026-08-19)_

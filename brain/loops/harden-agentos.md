@@ -19,7 +19,7 @@ output, then advances one step of this loop and pushes it.
 # Steps
 - [x] scaffold kernel steering, skills, vault, `bin/os`, dashboard
 - [x] verify `boot`, `selftest`, and `dash` run clean in this sandbox
-- [ ] push to a remote and confirm `save` round-trips (this is the durability test)
+- [x] push to a remote and confirm `save` round-trips (this is the durability test)
 - [ ] open a fresh Kiro Web session on this repo, boot cold, confirm context loads
 - [ ] clone locally, open `brain/` in Obsidian, confirm graph and links resolve
 - [ ] enable GitHub Pages on `docs/` and confirm the dashboard renders
@@ -31,3 +31,4 @@ output, then advances one step of this loop and pushes it.
   the journal grows; boot prints only the last two entries for that reason.
 - Durability is the one property that cannot be verified inside a single session.
   Steps 3 and 4 are the real test; everything before them is scaffolding.
+- 2026-08-19: `bin/os save` round-trip confirmed against origin/agentos. Repo creation via the sandbox gateway is blocked (403 REST, GraphQL passthrough refused), so AgentOS ships as a branch/PR on an existing repo.
