@@ -1,0 +1,20 @@
+-- Exercise 3, Step 3.2 -- an overdrawn transfer, and the rollback.
+--
+-- Maria Clara holds 5,500.00 PHP and attempts to send 20,000.00 PHP.
+-- check_positive_balance rejects the UPDATE, which puts the whole transaction
+-- into an aborted state: no further statement will run until it is ended.
+BEGIN;
+BEGIN
+-- Attempt to deduct 20,000.00 PHP from Maria Clara (balance: 5,500.00 PHP)
+UPDATE ewb_accounts
+   SET balance = balance - 20000.00
+ WHERE account_number = 'EWB-1002';
+psql:09_overdraw_rollback.sql:12: ERROR:  new row for relation "ewb_accounts" violates check constraint "check_positive_balance"
+DETAIL:  Failing row contains (EWB-1002, Maria Clara, PHP, -14500.00, ACTIVE).
+-- EXPECTED: violates check constraint "check_positive_balance"
+-- Anything sent now is refused: the transaction is already aborted.
+SELECT 'this will not run' AS attempted_after_the_error;
+psql:09_overdraw_rollback.sql:16: ERROR:  current transaction is aborted, commands ignored until end of transaction block
+-- End the transaction and discard everything it did
+ROLLBACK;
+ROLLBACK

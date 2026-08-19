@@ -1,0 +1,24 @@
+CREATE TABLE
+--- the table as PostgreSQL stored it ---
+                                 Table "public.ewb_accounts"
+     Column     |          Type          | Collation | Nullable |           Default           
+----------------+------------------------+-----------+----------+-----------------------------
+ account_number | character varying(12)  |           | not null | 
+ customer_name  | character varying(100) |           | not null | 
+ currency       | character varying(3)   |           |          | 'PHP'::character varying
+ balance        | numeric(12,2)          |           | not null | 0.00
+ status         | character varying(10)  |           |          | 'ACTIVE'::character varying
+Indexes:
+    "ewb_accounts_pkey" PRIMARY KEY, btree (account_number)
+Check constraints:
+    "check_positive_balance" CHECK (balance >= 0.00)
+    "check_valid_currency" CHECK (currency::text = ANY (ARRAY['PHP'::character varying, 'USD'::character varying]::text[]))
+
+
+--- the two CHECK constraints, read back from the catalog ---
+    constraint_name     |                                               definition                                               
+------------------------+--------------------------------------------------------------------------------------------------------
+ check_positive_balance | CHECK ((balance >= 0.00))
+ check_valid_currency   | CHECK (((currency)::text = ANY ((ARRAY['PHP'::character varying, 'USD'::character varying])::text[])))
+(2 rows)
+

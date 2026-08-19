@@ -1,0 +1,9 @@
+INSERT 0 2
+
+--- both accounts, with the columns the DEFAULTs filled in ---
+ account_number | customer_name  | currency | balance  | status 
+----------------+----------------+----------+----------+--------
+ EWB-1001       | Juan Dela Cruz | PHP      | 10000.00 | ACTIVE
+ EWB-1002       | Maria Clara    | PHP      |  2500.00 | ACTIVE
+(2 rows)
+

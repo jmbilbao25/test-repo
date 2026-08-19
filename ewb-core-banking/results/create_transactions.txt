@@ -1,0 +1,18 @@
+CREATE TABLE
+--- the ledger table, and the foreign key it carries ---
+                                                 Table "public.ewb_transactions"
+      Column      |            Type             | Collation | Nullable |                         Default                          
+------------------+-----------------------------+-----------+----------+----------------------------------------------------------
+ transaction_id   | integer                     |           | not null | nextval('ewb_transactions_transaction_id_seq'::regclass)
+ account_number   | character varying(12)       |           |          | 
+ transaction_type | character varying(6)        |           |          | 
+ amount           | numeric(12,2)               |           | not null | 
+ created_at       | timestamp without time zone |           |          | CURRENT_TIMESTAMP
+Indexes:
+    "ewb_transactions_pkey" PRIMARY KEY, btree (transaction_id)
+Check constraints:
+    "ewb_transactions_amount_check" CHECK (amount > 0::numeric)
+    "ewb_transactions_transaction_type_check" CHECK (transaction_type::text = ANY (ARRAY['DEBIT'::character varying, 'CREDIT'::character varying]::text[]))
+Foreign-key constraints:
+    "ewb_transactions_account_number_fkey" FOREIGN KEY (account_number) REFERENCES ewb_accounts(account_number)
+

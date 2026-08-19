@@ -1,0 +1,18 @@
+--- Attempt C: a ledger entry for an account that does not exist ---
+psql:05_fk_test.sql:8: ERROR:  insert or update on table "ewb_transactions" violates foreign key constraint "ewb_transactions_account_number_fkey"
+DETAIL:  Key (account_number)=(EWB-9999) is not present in table "ewb_accounts".
+
+--- Attempt D: a transaction type outside DEBIT / CREDIT ---
+psql:05_fk_test.sql:14: ERROR:  new row for relation "ewb_transactions" violates check constraint "ewb_transactions_transaction_type_check"
+DETAIL:  Failing row contains (2, EWB-1001, REFUND, 100.00, 2026-08-19 08:27:30.001375).
+
+--- Attempt E: a zero-amount movement ---
+psql:05_fk_test.sql:20: ERROR:  new row for relation "ewb_transactions" violates check constraint "ewb_transactions_amount_check"
+DETAIL:  Failing row contains (3, EWB-1001, DEBIT, 0.00, 2026-08-19 08:27:30.001504).
+
+--- the ledger is still empty ---
+ rows_in_ewb_transactions 
+--------------------------
+                        0
+(1 row)
+

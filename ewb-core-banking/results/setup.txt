@@ -1,0 +1,11 @@
+psql (PostgreSQL) 16.14
+
+$ initdb -D data -E UTF8
+$ pg_ctl -D data start
+$ createdb ewb_core
+
+ database | connected_as | port | version 
+----------+--------------+------+---------
+ ewb_core | postgres     | 5432 | 16.14
+(1 row)
+

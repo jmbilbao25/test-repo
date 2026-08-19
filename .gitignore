@@ -21,3 +21,6 @@ secure-api/.venv/
 
 banking-api/__pycache__/
 banking-api/.pytest_cache/
+
+
+ewb-core-banking/pgadmin.log

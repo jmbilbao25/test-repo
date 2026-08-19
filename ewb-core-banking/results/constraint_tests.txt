@@ -1,0 +1,14 @@
+--- Attempt A: negative opening balance ---
+psql:02_constraint_tests.sql:9: ERROR:  new row for relation "ewb_accounts" violates check constraint "check_positive_balance"
+DETAIL:  Failing row contains (EWB-1001, Juan Dela Cruz, PHP, -500.00, ACTIVE).
+
+--- Attempt B: unapproved currency (EUR) ---
+psql:02_constraint_tests.sql:15: ERROR:  new row for relation "ewb_accounts" violates check constraint "check_valid_currency"
+DETAIL:  Failing row contains (EWB-1002, Maria Clara, EUR, 1000.00, ACTIVE).
+
+--- the table is still empty: nothing bad got through ---
+ rows_in_ewb_accounts 
+----------------------
+                    0
+(1 row)
+
