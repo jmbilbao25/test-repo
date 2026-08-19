@@ -1,0 +1,29 @@
+--- balances after the commit ---
+ account_number | customer_name  | balance 
+----------------+----------------+---------
+ EWB-1001       | Juan Dela Cruz | 7000.00
+ EWB-1002       | Maria Clara    | 5500.00
+(2 rows)
+
+
+--- the ledger the transfer wrote ---
+ transaction_id | account_number | transaction_type | amount  |        created_at         
+----------------+----------------+------------------+---------+---------------------------
+              4 | EWB-1001       | DEBIT            | 3000.00 | 2026-08-19 08:27:30.02034
+              5 | EWB-1002       | CREDIT           | 3000.00 | 2026-08-19 08:27:30.02034
+(2 rows)
+
+
+--- double entry check: DEBIT total must equal CREDIT total ---
+ total_debits | total_credits | net  
+--------------+---------------+------
+      3000.00 |       3000.00 | 0.00
+(1 row)
+
+
+--- total deposits held: unchanged by an internal transfer ---
+ total_ewb_deposits 
+--------------------
+           12500.00
+(1 row)
+

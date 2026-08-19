@@ -1,0 +1,21 @@
+--- Maria Clara, after the rejected transfer ---
+ account_number | customer_name | balance 
+----------------+---------------+---------
+ EWB-1002       | Maria Clara   | 5500.00
+(1 row)
+
+
+--- both accounts, and the ledger row count: still 2 entries ---
+ total_ewb_deposits | ledger_entries 
+--------------------+----------------
+           12500.00 |              2
+(1 row)
+
+
+--- customer ledger, joined back to the account master ---
+ account_number | customer_name  | transaction_type | amount  | balance_now 
+----------------+----------------+------------------+---------+-------------
+ EWB-1001       | Juan Dela Cruz | DEBIT            | 3000.00 |     7000.00
+ EWB-1002       | Maria Clara    | CREDIT           | 3000.00 |     5500.00
+(2 rows)
+

@@ -1,0 +1,20 @@
+--- Query A: accounts holding more than PHP 5,000.00 ---
+ account_number | customer_name  | balance  
+----------------+----------------+----------
+ EWB-1001       | Juan Dela Cruz | 10000.00
+(1 row)
+
+
+--- Query B: total deposits EWB is holding across all accounts ---
+ total_ewb_deposits 
+--------------------
+           12500.00
+(1 row)
+
+
+--- Query C: the same total, broken down by currency ---
+ currency | accounts | total_balance 
+----------+----------+---------------
+ PHP      |        2 |      12500.00
+(1 row)
+

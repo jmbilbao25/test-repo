@@ -1,0 +1,16 @@
+{
+  "Servers": {
+    "1": {
+      "Name": "EWB Core Banking (Manila Center Lab)",
+      "Group": "EastWest Bank",
+      "Host": "127.0.0.1",
+      "Port": 5432,
+      "MaintenanceDB": "ewb_core",
+      "Username": "postgres",
+      "SSLMode": "prefer",
+      "Comment": "T&O Induction Program - core banking relational database lab",
+      "ConnectNow": true,
+      "Shared": false
+    }
+  }
+}
