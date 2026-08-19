@@ -32,3 +32,4 @@ output, then advances one step of this loop and pushes it.
 - Durability is the one property that cannot be verified inside a single session.
   Steps 3 and 4 are the real test; everything before them is scaffolding.
 - 2026-08-19: `bin/os save` round-trip confirmed against origin/agentos. Repo creation via the sandbox gateway is blocked (403 REST, GraphQL passthrough refused), so AgentOS ships as a branch/PR on an existing repo.
+- 2026-08-19: step 4 first attempt FAILED — session had no repo bound, so nothing cloned. Root cause and fix in [[Binding Beats Building]]. Sidecar clone+boot verified from an empty workspace; the remaining half of step 4 is a fresh session *with the global kernel installed*.

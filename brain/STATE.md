@@ -25,6 +25,13 @@ kernel in `.kiro/steering/`, skills as programs, loops as the control system.
 - Does anything outside the cloned repo survive sandbox teardown? Docs contradict
   themselves; treat the answer as "no" until measured.
 
+## Blocked on the user
+- Paste `cloud-config/00-agentos-global.md` into Settings → Cloud configuration.
+  Until then, sessions with no repo selected boot amnesiac. This is the fix for
+  "every session", see [[Binding Beats Building]].
+- PR #11 is unmerged, so `main` has no `.kiro/`. Web clones the default branch and
+  offers no branch picker — that's why the global kernel clones `-b agentos`.
+
 ## Recent decisions
 - [[2026-08-19 Steering as the boot loader]] — no SessionStart hook on Web, so the
   always-included kernel file carries the boot instruction instead.
