@@ -24,3 +24,8 @@ banking-api/.pytest_cache/
 
 
 ewb-core-banking/pgadmin.log
+
+# AgentOS
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+__pycache__/
