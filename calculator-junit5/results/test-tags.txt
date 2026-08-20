@@ -1,0 +1,8 @@
+$ mvn test -Dgroups=injection
+[INFO] Tests run: 36, Failures: 0, Errors: 0, Skipped: 0
+
+$ mvn test -Dgroups=arithmetic
+[INFO] Tests run: 137, Failures: 0, Errors: 0, Skipped: 0
+
+$ mvn test -DexcludedGroups=advanced,injection
+[INFO] Tests run: 139, Failures: 0, Errors: 0, Skipped: 0

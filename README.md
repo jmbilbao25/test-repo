@@ -9,6 +9,7 @@
 | 6 | Building a data processing API with Pandas, NumPy and FastAPI | [docx](Data-Processing-API-Assignment.docx) · [pdf](Data-Processing-API-Assignment.pdf) | [`data-api/`](data-api) |
 | 7 | Securing an API with OAuth2, JWT and rate limiting | [docx](API-Security-OAuth2-JWT-Assignment.docx) · [pdf](API-Security-OAuth2-JWT-Assignment.pdf) | [`secure-api/`](secure-api) |
 | 8 | Optimizing PostgreSQL: indexing, stored procedures and replication | [docx](PostgreSQL-Performance-Assignment.docx) · [pdf](PostgreSQL-Performance-Assignment.pdf) | [`postgres-tuning/`](postgres-tuning) |
+| 10 | Hands-on JUnit 5: annotations, assertions and advanced concepts | [docx](JUnit5-Testing-Assignment.docx) · [pdf](JUnit5-Testing-Assignment.pdf) | [`calculator-junit5/`](calculator-junit5) |
 | Milestone | Case study: real-time banking fraud & analytics engine | [docx](Banking-Fraud-Analytics-CaseStudy.docx) · [pdf](Banking-Fraud-Analytics-CaseStudy.pdf) | [`banking-api/`](banking-api) |
 | Induction | EastWest Bank core banking relational database lab | [docx](EWB-Core-Banking-Database-Lab.docx) · [pdf](EWB-Core-Banking-Database-Lab.pdf) | [`ewb-core-banking/`](ewb-core-banking) |
 
@@ -234,3 +235,44 @@ Three accounts with different scopes, so the write-up can show the difference
 between a 401 (the API does not know you), a 403 (it knows you and refuses) and a
 429 (you have asked too often). Details in
 [`secure-api/README.md`](secure-api/README.md).
+
+
+
+---
+
+# Day 10: Hands-on JUnit 5 — Annotations, Assertions and Advanced Concepts
+
+The write-up is **[JUnit5-Testing-Assignment.docx](JUnit5-Testing-Assignment.docx)**,
+with a **[PDF copy](JUnit5-Testing-Assignment.pdf)** — 43 pages, 46 figures. The
+project is in **[`calculator-junit5/`](calculator-junit5)**.
+
+A calculator with the four arithmetic operations and 185 JUnit 5 tests across
+nine classes: the lifecycle annotations, the assertions, six parameterized
+argument sources, a `@Suite`, three kinds of dependency injection, nested tests
+and dynamic tests.
+
+```bash
+cd calculator-junit5
+mvn test                    # 185 tests, 2 skipped
+mvn test -Psuite            # the same 185, reached through @Suite
+mvn test -Pshow-failure     # three tests that fail on purpose
+mvn compile exec:java       # the calculator on its own
+```
+
+The calculator is deliberately given something worth testing: division refuses
+rather than returning `Infinity`, rounding is an injected policy, and an
+injected operation log gives the lifecycle annotations real work to do.
+
+Two findings from building it, both covered in the write-up:
+
+- JUnit resolves **constructor** parameters against the class-level
+  `ExtensionContext`, and store lookups fall through to ancestor stores. An
+  extension that caches there hands one instance to every test in the class —
+  with all tests still passing, because the `afterEach` cleanup hid it. The
+  `@RepeatedTest` is what caught it.
+- `0.1 * 0.3` is exactly `0.03` as a double, while `0.3 - 0.2` is
+  `0.09999999999999998`. Whether an exact comparison passes depends on the
+  values and the operation, so a tolerance belongs everywhere rather than only
+  where a failure has already shown up.
+
+Details in [`calculator-junit5/README.md`](calculator-junit5/README.md).

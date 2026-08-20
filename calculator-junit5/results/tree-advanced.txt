@@ -1,0 +1,30 @@
+$ java -jar junit-platform-console-standalone.jar execute -c AdvancedFeaturesTest
+╷
+└─ JUnit Jupiter ✔
+   └─ Advanced JUnit 5 features ✔
+      ├─ square root, once the calculator has one ↷ Square root is not part of the assignment; kept to show a skip is reported, not hidden
+      ├─ a test that only makes sense with a system property set ↷ System property [run.slow.tests] does not exist
+      ├─ conditions can also key off the OS and the JRE ✔
+      ├─ an assumption aborts the test rather than failing it ✔
+      ├─ assumingThat guards one part of a test without skipping the rest ✔
+      ├─ the whole test must finish inside two seconds ✔
+      ├─ assertTimeout measures one block rather than the whole test ✔
+      └─ with one instance for the whole class ✔
+         ├─ first test increments a field ✔
+         ├─ second test sees what the first one left behind ✔
+         └─ the outer @BeforeEach still runs before each of them ✔
+
+Test run finished after 209 ms
+[         3 containers found      ]
+[         0 containers skipped    ]
+[         3 containers started    ]
+[         0 containers aborted    ]
+[         3 containers successful ]
+[         0 containers failed     ]
+[        10 tests found           ]
+[         2 tests skipped         ]
+[         8 tests started         ]
+[         0 tests aborted         ]
+[         8 tests successful      ]
+[         0 tests failed          ]
+

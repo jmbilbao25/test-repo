@@ -1,0 +1,29 @@
+$ java -jar junit-platform-console-standalone.jar execute -c CalculatorTestSuite
+╷
+└─ JUnit Platform Suite ✔
+   └─ Calculator: the complete test suite ✔
+      └─ JUnit Jupiter ✔
+         ├─ Calculator: the four arithmetic operations ✔
+         ├─ Lifecycle callback order ✔
+         ├─ Calculator: parameterized ✔
+         ├─ Dependency injection with Guice ✔
+         ├─ The hand-rolled SimpleInjector ✔
+         ├─ Dependency injection by JUnit's ParameterResolver ✔
+         ├─ A calculator ✔
+         ├─ Calculator: dynamic tests ✔
+         └─ Advanced JUnit 5 features ✔
+
+Test run finished after 610 ms
+[        42 containers found      ]
+[         0 containers skipped    ]
+[        42 containers started    ]
+[         0 containers aborted    ]
+[        42 containers successful ]
+[         0 containers failed     ]
+[       185 tests found           ]
+[         2 tests skipped         ]
+[       183 tests started         ]
+[         0 tests aborted         ]
+[       183 tests successful      ]
+[         0 tests failed          ]
+

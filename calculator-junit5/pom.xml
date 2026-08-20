@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.techstart</groupId>
+    <artifactId>calculator-junit5</artifactId>
+    <version>1.0.0</version>
+    <name>calculator-junit5</name>
+    <description>Calculator application and JUnit 5 test suite for the Day 10 assignment</description>
+
+    <properties>
+        <maven.compiler.release>21</maven.compiler.release>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <junit.version>5.12.2</junit.version>
+        <guice.version>7.0.0</guice.version>
+        <surefire.version>3.5.6</surefire.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- The BOM keeps junit-jupiter and junit-platform on versions that
+                 belong together; platform 1.12.x pairs with jupiter 5.12.x. -->
+            <dependency>
+                <groupId>org.junit</groupId>
+                <artifactId>junit-bom</artifactId>
+                <version>${junit.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <!-- Guice, for the dependency injection step. Guice 7 is the first
+             release to use the jakarta.inject annotations, so @Inject in the
+             main sources is jakarta.inject.Inject and the hand-rolled injector
+             can read the same annotation. -->
+        <dependency>
+            <groupId>com.google.inject</groupId>
+            <artifactId>guice</artifactId>
+            <version>${guice.version}</version>
+        </dependency>
+
+        <!-- junit-jupiter is an aggregate: api, params and the engine. -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- @Suite lives here. The aggregate brings both the annotations and
+             the engine that runs them. -->
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-suite</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${surefire.version}</version>
+                <configuration>
+                    <excludes>
+                        <!-- The suite selects classes that Surefire also finds
+                             on its own; see the "suite" profile. -->
+                        <exclude>**/CalculatorTestSuite.java</exclude>
+                        <!-- Fails on purpose; see the "show-failure" profile. -->
+                        <exclude>**/FloatingPointFailureDemo.java</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.5.0</version>
+                <configuration>
+                    <mainClass>com.techstart.calculator.CalculatorApp</mainClass>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <!-- mvn test -Psuite  runs the aggregated suite and nothing else. -->
+        <profile>
+            <id>suite</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <configuration combine.self="override">
+                            <includes>
+                                <include>**/CalculatorTestSuite.java</include>
+                            </includes>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!-- mvn test -Pshow-failure  keeps the deliberately failing test, which
+             is excluded from every other run. -->
+        <profile>
+            <id>show-failure</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <configuration combine.self="override">
+                            <includes>
+                                <include>**/FloatingPointFailureDemo.java</include>
+                            </includes>
+                            <testFailureIgnore>true</testFailureIgnore>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>

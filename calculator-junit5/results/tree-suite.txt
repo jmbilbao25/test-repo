@@ -1,0 +1,245 @@
+$ java -jar junit-platform-console-standalone.jar execute -c CalculatorTestSuite
+╷
+└─ JUnit Platform Suite ✔
+   └─ Calculator: the complete test suite ✔
+      └─ JUnit Jupiter ✔
+         ├─ Calculator: the four arithmetic operations ✔
+         │  ├─ dividing by zero throws ArithmeticException ✔
+         │  ├─ isolation, first of two ✔
+         │  ├─ isolation, second of two ✔
+         │  ├─ every operation is recorded, in order ✔
+         │  ├─ the history cannot be edited from outside ✔
+         │  ├─ 0.1 + 0.2 is 0.3 once the rounding policy has been applied ✔
+         │  ├─ without the policy the same sum is 0.30000000000000004 ✔
+         │  ├─ addition: 4 + 5 = 9 ✔
+         │  ├─ all four at once, so one failure does not hide the rest ✔
+         │  ├─ subtraction: 10 - 3 = 7, and it is not commutative ✔
+         │  ├─ assertThrowsExactly rejects a subclass; assertThrows accepts one ✔
+         │  ├─ the constructor refuses to build a calculator with no collaborators ✔
+         │  ├─ NaN and infinite operands are rejected before any arithmetic ✔
+         │  ├─ multiplication: 6 * 7 = 42, including a negative operand ✔
+         │  ├─ a result too large for a double is an error, not Infinity ✔
+         │  ├─ 0 / 0 is refused too, rather than returning NaN ✔
+         │  └─ division: 9 / 4 = 2.25 ✔
+         ├─ Lifecycle callback order ✔
+         │  ├─ first test ✔
+         │  └─ second test ✔
+         ├─ Calculator: parameterized ✔
+         │  ├─ generated cases, from a factory method ✔
+         │  │  ├─ 1.0 * 2 = 2.0 ✔
+         │  │  ├─ 2.0 * 2 = 4.0 ✔
+         │  │  ├─ 4.0 * 2 = 8.0 ✔
+         │  │  ├─ 8.0 * 2 = 16.0 ✔
+         │  │  ├─ 16.0 * 2 = 32.0 ✔
+         │  │  ├─ 32.0 * 2 = 64.0 ✔
+         │  │  ├─ 64.0 * 2 = 128.0 ✔
+         │  │  ├─ 128.0 * 2 = 256.0 ✔
+         │  │  ├─ 256.0 * 2 = 512.0 ✔
+         │  │  ├─ 512.0 * 2 = 1024.0 ✔
+         │  │  ├─ 1024.0 * 2 = 2048.0 ✔
+         │  │  └─ 2048.0 * 2 = 4096.0 ✔
+         │  ├─ every symbol can be looked back up ✔
+         │  │  ├─ ADD has a symbol that round-trips ✔
+         │  │  ├─ SUBTRACT has a symbol that round-trips ✔
+         │  │  ├─ MULTIPLY has a symbol that round-trips ✔
+         │  │  └─ DIVIDE has a symbol that round-trips ✔
+         │  ├─ no numerator makes division by zero acceptable ✔
+         │  │  ├─ 0.0 / 0 is refused ✔
+         │  │  ├─ 1.0 / 0 is refused ✔
+         │  │  ├─ -1.0 / 0 is refused ✔
+         │  │  └─ 1.0E10 / 0 is refused ✔
+         │  ├─ every operation records exactly one history entry ✔
+         │  │  ├─ ADD ✔
+         │  │  ├─ SUBTRACT ✔
+         │  │  ├─ MULTIPLY ✔
+         │  │  └─ DIVIDE ✔
+         │  ├─ one is the identity for multiplication ✔
+         │  │  ├─ 0.0 * 1 = 0.0 ✔
+         │  │  ├─ 3.0 * 1 = 3.0 ✔
+         │  │  ├─ -7.5 * 1 = -7.5 ✔
+         │  │  └─ 0.001 * 1 = 0.001 ✔
+         │  ├─ null, empty and blank symbols are all refused ✔
+         │  │  ├─ symbol [null] is refused ✔
+         │  │  ├─ symbol [] is refused ✔
+         │  │  ├─ symbol [ ] is refused ✔
+         │  │  ├─ symbol [ ] is refused ✔
+         │  │  ├─ symbol [^] is refused ✔
+         │  │  ├─ symbol [**] is refused ✔
+         │  │  ├─ symbol [plus] is refused ✔
+         │  │  └─ symbol [++] is refused ✔
+         │  ├─ zero is the identity for addition ✔
+         │  │  ├─ 0.0 + 0 = 0.0 ✔
+         │  │  ├─ 1.0 + 0 = 1.0 ✔
+         │  │  ├─ -1.0 + 0 = -1.0 ✔
+         │  │  ├─ 2.5 + 0 = 2.5 ✔
+         │  │  ├─ -99.75 + 0 = -99.75 ✔
+         │  │  └─ 1000000.0 + 0 = 1000000.0 ✔
+         │  ├─ a table of cases written next to the test ✔
+         │  │  ├─ [1] 4 + 5 = 9 ✔
+         │  │  ├─ [2] -2.5 + 2.5 = 0 ✔
+         │  │  ├─ [3] 10 - 3 = 7 ✔
+         │  │  ├─ [4] 3 - 10 = -7 ✔
+         │  │  ├─ [5] 6 * 7 = 42 ✔
+         │  │  ├─ [6] -4 * 2.5 = -10 ✔
+         │  │  ├─ [7] 9 / 4 = 2.25 ✔
+         │  │  └─ [8] -8 / 2 = -4 ✔
+         │  ├─ the two operations that are not commutative ✔
+         │  │  ├─ SUBTRACT and {1} are not the same operation ✔
+         │  │  └─ DIVIDE and {1} are not the same operation ✔
+         │  ├─ banker's rounding sends a tie to the nearest even digit ✔
+         │  │  ├─ 0.25 rounds to 0.2 at one decimal place ✔
+         │  │  ├─ 0.35 rounds to 0.4 at one decimal place ✔
+         │  │  ├─ 0.45 rounds to 0.4 at one decimal place ✔
+         │  │  └─ 0.55 rounds to 0.6 at one decimal place ✔
+         │  └─ the same table, loaded from src/test/resources/operations.csv ✔
+         │     ├─ [1] 4 + 5 = 9 ✔
+         │     ├─ [2] -2.5 + 2.5 = 0 ✔
+         │     ├─ [3] 0.1 + 0.2 = 0.3 ✔
+         │     ├─ [4] 10 - 3 = 7 ✔
+         │     ├─ [5] 3 - 10 = -7 ✔
+         │     ├─ [6] 6 * 7 = 42 ✔
+         │     ├─ [7] -4 * 2.5 = -10 ✔
+         │     ├─ [8] 9 / 4 = 2.25 ✔
+         │     ├─ [9] -8 / 2 = -4 ✔
+         │     └─ [10] 100 / 3 = 33.3333333333 ✔
+         ├─ Dependency injection with Guice ✔
+         │  ├─ an unbound interface is a wiring error, reported as one ✔
+         │  ├─ singleton bindings hand back the same object every time ✔
+         │  ├─ two injectors do not share state ✔
+         │  ├─ the default scale comes through the no-argument constructor ✔
+         │  ├─ the module supplies a fully wired calculator ✔
+         │  ├─ compared with the hand-rolled injector ✔
+         │  │  ├─ both produce a calculator that behaves the same ✔
+         │  │  └─ both honour @Singleton ✔
+         │  └─ when a test overrides part of the module ✔
+         │     ├─ the log can be replaced without touching CalculatorModule ✔
+         │     ├─ the rounding policy can be replaced, and the results change ✔
+         │     └─ a specific instance can be bound, scale and all ✔
+         ├─ The hand-rolled SimpleInjector ✔
+         │  ├─ refusing ✔
+         │  │  ├─ a class with several constructors and no @Inject ✔
+         │  │  ├─ a missing binding for something further down the graph ✔
+         │  │  ├─ an interface with no binding ✔
+         │  │  ├─ a class with two @Inject constructors ✔
+         │  │  ├─ a dependency cycle, naming the chain ✔
+         │  │  └─ a constructor that throws, reporting the real cause ✔
+         │  └─ resolving ✔
+         │     ├─ follows a binding from interface to implementation ✔
+         │     ├─ builds the calculator and everything it needs ✔
+         │     ├─ a class with no dependencies needs no binding at all ✔
+         │     ├─ two injectors share nothing ✔
+         │     ├─ caches a @Singleton and returns it for both interface and class ✔
+         │     └─ a ready-made instance can be supplied ✔
+         ├─ Dependency injection by JUnit's ParameterResolver ✔
+         │  ├─ TestInfo is resolved by JUnit's own built-in resolver ✔
+         │  │     2026-08-20T07:18:12.351576235 sum = `3.0`
+         │  ├─ the constructor was given a working calculator ✔
+         │  ├─ a method parameter is a different instance from the constructor's ✔
+         │  ├─ each repetition is given a fresh calculator ✔
+         │  │  ├─ repetition 1 of 3 ✔
+         │  │  ├─ repetition 2 of 3 ✔
+         │  │  └─ repetition 3 of 3 ✔
+         │  ├─ the log can be injected on its own ✔
+         │  ├─ every parameter of one test method gets the same instance ✔
+         │  ├─ each execution is given a different instance ✔
+         │  │  ├─ execution 1 ✔
+         │  │  └─ execution 2 ✔
+         │  └─ injection and parameterization together ✔
+         │     ├─ 4 + 5 = 9 ✔
+         │     ├─ 10 - 3 = 7 ✔
+         │     ├─ 6 * 7 = 42 ✔
+         │     └─ 9 / 4 = 2.25 ✔
+         ├─ A calculator ✔
+         │  ├─ starts with an empty history ✔
+         │  ├─ when the log is discarded ✔
+         │  │  ├─ the arithmetic is unchanged ✔
+         │  │  ├─ the empty history is always the same immutable list ✔
+         │  │  └─ nothing is recorded ✔
+         │  ├─ when the rounding policy is swapped out ✔
+         │  │  ├─ the outer @BeforeEach still ran first ✔
+         │  │  ├─ both are within a sensible tolerance of each other ✔
+         │  │  └─ the same sum gives two different answers ✔
+         │  ├─ when dividing ✔
+         │  │  ├─ by zero, records nothing in the history ✔
+         │  │  ├─ a third cannot be represented exactly, so it is rounded ✔
+         │  │  ├─ 9 / 4 = 2.25 ✔
+         │  │  └─ by zero, throws rather than returning Infinity ✔
+         │  └─ when adding ✔
+         │     ├─ is commutative ✔
+         │     ├─ uses the fixture built by the outer @BeforeEach ✔
+         │     └─ 0.1 + 0.2 comes out as 0.3 because of the rounding policy ✔
+         ├─ Calculator: dynamic tests ✔
+         │  ├─ squaring, up to the overflow boundary that is found at run time ✔
+         │  │  ├─ 10^0 squared is representable ✔
+         │  │  ├─ 10^1 squared is representable ✔
+         │  │  ├─ 10^10 squared is representable ✔
+         │  │  ├─ 10^77 squared is representable ✔
+         │  │  ├─ 10^154 squared is representable ✔
+         │  │  └─ 10^155 squared overflows ✔
+         │  ├─ every operation against every operand pair ✔
+         │  │  ├─ ADD ✔
+         │  │  │  ├─ 6 + 3 ✔
+         │  │  │  ├─ -6 + 3 ✔
+         │  │  │  ├─ 2.5 + 0.5 ✔
+         │  │  │  ├─ 0 + 5 ✔
+         │  │  │  ├─ 7 + 0 ✔
+         │  │  │  └─ 1000000 + 1.0E-6 ✔
+         │  │  ├─ SUBTRACT ✔
+         │  │  │  ├─ 6 - 3 ✔
+         │  │  │  ├─ -6 - 3 ✔
+         │  │  │  ├─ 2.5 - 0.5 ✔
+         │  │  │  ├─ 0 - 5 ✔
+         │  │  │  ├─ 7 - 0 ✔
+         │  │  │  └─ 1000000 - 1.0E-6 ✔
+         │  │  ├─ MULTIPLY ✔
+         │  │  │  ├─ 6 * 3 ✔
+         │  │  │  ├─ -6 * 3 ✔
+         │  │  │  ├─ 2.5 * 0.5 ✔
+         │  │  │  ├─ 0 * 5 ✔
+         │  │  │  ├─ 7 * 0 ✔
+         │  │  │  └─ 1000000 * 1.0E-6 ✔
+         │  │  └─ DIVIDE ✔
+         │  │     ├─ 6 / 3 ✔
+         │  │     ├─ -6 / 3 ✔
+         │  │     ├─ 2.5 / 0.5 ✔
+         │  │     ├─ 0 / 5 ✔
+         │  │     ├─ 7 / 0 ✔
+         │  │     └─ 1000000 / 1.0E-6 ✔
+         │  └─ one test per row of operations.csv ✔
+         │     ├─ 4 + 5 = 9 ✔
+         │     ├─ -2.5 + 2.5 = 0 ✔
+         │     ├─ 0.1 + 0.2 = 0.3 ✔
+         │     ├─ 10 - 3 = 7 ✔
+         │     ├─ 3 - 10 = -7 ✔
+         │     ├─ 6 * 7 = 42 ✔
+         │     ├─ -4 * 2.5 = -10 ✔
+         │     ├─ 9 / 4 = 2.25 ✔
+         │     ├─ -8 / 2 = -4 ✔
+         │     └─ 100 / 3 = 33.3333333333 ✔
+         └─ Advanced JUnit 5 features ✔
+            ├─ square root, once the calculator has one ↷ Square root is not part of the assignment; kept to show a skip is reported, not hidden
+            ├─ a test that only makes sense with a system property set ↷ System property [run.slow.tests] does not exist
+            ├─ conditions can also key off the OS and the JRE ✔
+            ├─ an assumption aborts the test rather than failing it ✔
+            ├─ assumingThat guards one part of a test without skipping the rest ✔
+            ├─ the whole test must finish inside two seconds ✔
+            ├─ assertTimeout measures one block rather than the whole test ✔
+            └─ with one instance for the whole class ✔
+               ├─ first test increments a field ✔
+               ├─ second test sees what the first one left behind ✔
+               └─ the outer @BeforeEach still runs before each of them ✔
+
+Test run finished after 610 ms
+[        42 containers found      ]
+[         0 containers skipped    ]
+[        42 containers started    ]
+[         0 containers aborted    ]
+[        42 containers successful ]
+[         0 containers failed     ]
+[       185 tests found           ]
+[         2 tests skipped         ]
+[       183 tests started         ]
+[         0 tests aborted         ]
+[       183 tests successful      ]
+[         0 tests failed          ]
+

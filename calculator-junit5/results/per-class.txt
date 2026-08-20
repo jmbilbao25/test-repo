@@ -1,0 +1,15 @@
+$ for c in "${CLASSES[@]}"; do console-launcher --select-class "$c" --details=summary; done
+
+test class                        tests   passed   skipped
+--------------------------------  -----   ------   -------
+CalculatorTest                       17       17         0
+LifecycleOrderTest                    2        2         0
+CalculatorParameterizedTest          66       66         0
+GuiceInjectionTest                   10       10         0
+SimpleInjectorTest                   12       12         0
+InjectedCalculatorTest               14       14         0
+CalculatorNestedTest                 14       14         0
+CalculatorDynamicTest                40       40         0
+AdvancedFeaturesTest                 10        8         2
+--------------------------------  -----   ------   -------
+total                               185      183         2
