@@ -1,0 +1,18 @@
+$ mvn test -Pshow-failure
+[INFO] Running Deliberate failures
+[ERROR] Tests run: 3, Failures: 3, Errors: 0, Skipped: 0, Time elapsed: 0.067 s <<< FAILURE! -- in Deliberate failures
+[ERROR] com.techstart.calculator.FloatingPointFailureDemo.withAMessage -- Time elapsed: 0.034 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: no exact binary form for 0.1 or 0.2; compare with a tolerance ==> expected: <0.3> but was: <0.30000000000000004>
+	at com.techstart.calculator.FloatingPointFailureDemo.withAMessage(FloatingPointFailureDemo.java:70)
+
+[ERROR] com.techstart.calculator.FloatingPointFailureDemo.everyFailureIsReported -- Time elapsed: 0.007 s <<< FAILURE!
+org.opentest4j.MultipleFailuresError: 
+Multiple Failures (3 failures)
+	org.opentest4j.AssertionFailedError: add: 0.1 + 0.2 ==> expected: <0.3> but was: <0.30000000000000004>
+	org.opentest4j.AssertionFailedError: subtract: 0.3 - 0.2 ==> expected: <0.1> but was: <0.09999999999999998>
+	org.opentest4j.AssertionFailedError: multiply: 1.1 * 1.1 ==> expected: <1.21> but was: <1.2100000000000002>
+	at com.techstart.calculator.FloatingPointFailureDemo.everyFailureIsReported(FloatingPointFailureDemo.java:56)
+[ERROR] com.techstart.calculator.FloatingPointFailureDemo.exactEqualityOnADouble -- Time elapsed: 0.002 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: expected: <0.3> but was: <0.30000000000000004>
+	at com.techstart.calculator.FloatingPointFailureDemo.exactEqualityOnADouble(FloatingPointFailureDemo.java:41)
+

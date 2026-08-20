@@ -1,0 +1,37 @@
+$ java -jar junit-platform-console-standalone.jar execute -c InjectedCalculatorTest
+╷
+└─ JUnit Jupiter ✔
+   └─ Dependency injection by JUnit's ParameterResolver ✔
+      ├─ TestInfo is resolved by JUnit's own built-in resolver ✔
+      │     2026-08-20T07:18:10.531286229 sum = `3.0`
+      ├─ the constructor was given a working calculator ✔
+      ├─ a method parameter is a different instance from the constructor's ✔
+      ├─ each repetition is given a fresh calculator ✔
+      │  ├─ repetition 1 of 3 ✔
+      │  ├─ repetition 2 of 3 ✔
+      │  └─ repetition 3 of 3 ✔
+      ├─ the log can be injected on its own ✔
+      ├─ every parameter of one test method gets the same instance ✔
+      ├─ each execution is given a different instance ✔
+      │  ├─ execution 1 ✔
+      │  └─ execution 2 ✔
+      └─ injection and parameterization together ✔
+         ├─ 4 + 5 = 9 ✔
+         ├─ 10 - 3 = 7 ✔
+         ├─ 6 * 7 = 42 ✔
+         └─ 9 / 4 = 2.25 ✔
+
+Test run finished after 152 ms
+[         5 containers found      ]
+[         0 containers skipped    ]
+[         5 containers started    ]
+[         0 containers aborted    ]
+[         5 containers successful ]
+[         0 containers failed     ]
+[        14 tests found           ]
+[         0 tests skipped         ]
+[        14 tests started         ]
+[         0 tests aborted         ]
+[        14 tests successful      ]
+[         0 tests failed          ]
+

@@ -1,0 +1,39 @@
+$ java -jar junit-platform-console-standalone.jar execute -m 'CalculatorParameterizedTest#unusableSymbols(java.lang.String)' ...
+╷
+└─ JUnit Jupiter ✔
+   └─ Calculator: parameterized ✔
+      ├─ the same table, loaded from src/test/resources/operations.csv ✔
+      │  ├─ [1] 4 + 5 = 9 ✔
+      │  ├─ [2] -2.5 + 2.5 = 0 ✔
+      │  ├─ [3] 0.1 + 0.2 = 0.3 ✔
+      │  ├─ [4] 10 - 3 = 7 ✔
+      │  ├─ [5] 3 - 10 = -7 ✔
+      │  ├─ [6] 6 * 7 = 42 ✔
+      │  ├─ [7] -4 * 2.5 = -10 ✔
+      │  ├─ [8] 9 / 4 = 2.25 ✔
+      │  ├─ [9] -8 / 2 = -4 ✔
+      │  └─ [10] 100 / 3 = 33.3333333333 ✔
+      └─ null, empty and blank symbols are all refused ✔
+         ├─ symbol [null] is refused ✔
+         ├─ symbol [] is refused ✔
+         ├─ symbol [ ] is refused ✔
+         ├─ symbol [ ] is refused ✔
+         ├─ symbol [^] is refused ✔
+         ├─ symbol [**] is refused ✔
+         ├─ symbol [plus] is refused ✔
+         └─ symbol [++] is refused ✔
+
+Test run finished after 162 ms
+[         4 containers found      ]
+[         0 containers skipped    ]
+[         4 containers started    ]
+[         0 containers aborted    ]
+[         4 containers successful ]
+[         0 containers failed     ]
+[        18 tests found           ]
+[         0 tests skipped         ]
+[        18 tests started         ]
+[         0 tests aborted         ]
+[        18 tests successful      ]
+[         0 tests failed          ]
+

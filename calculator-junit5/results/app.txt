@@ -1,0 +1,27 @@
+$ mvn -q compile exec:java
+Calculator, wired by Guice
+  rounding : BankersRoundingPolicy(scale=10)
+  log      : InMemoryOperationLog
+
+The four operations
+  4 + 5      = 9.0
+  10 - 3     = 7.0
+  6 * 7      = 42.0
+  9 / 4      = 2.25
+
+Rounding, which is a policy rather than a hard-coded line
+  0.1 + 0.2  = 0.3   (rounded to 10 places)
+  0.1 + 0.2  = 0.30000000000000004   (what the hardware computed)
+
+What it refuses
+  1 / 0            ArithmeticException: cannot divide 1 by zero
+  MAX_VALUE * 2    ArithmeticException: 1.7976931348623157E308 * 2 overflowed a double
+  NaN + 1          IllegalArgumentException: left operand is not a number
+  operation '^'    IllegalArgumentException: unknown operation: ^
+
+History
+  4 + 5 = 9
+  10 - 3 = 7
+  6 * 7 = 42
+  9 / 4 = 2.25
+  0.1 + 0.2 = 0.3

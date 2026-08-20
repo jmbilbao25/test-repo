@@ -1,0 +1,37 @@
+$ java -jar junit-platform-console-standalone.jar execute -c CalculatorNestedTest
+╷
+└─ JUnit Jupiter ✔
+   └─ A calculator ✔
+      ├─ starts with an empty history ✔
+      ├─ when the log is discarded ✔
+      │  ├─ the arithmetic is unchanged ✔
+      │  ├─ the empty history is always the same immutable list ✔
+      │  └─ nothing is recorded ✔
+      ├─ when the rounding policy is swapped out ✔
+      │  ├─ the outer @BeforeEach still ran first ✔
+      │  ├─ both are within a sensible tolerance of each other ✔
+      │  └─ the same sum gives two different answers ✔
+      ├─ when dividing ✔
+      │  ├─ by zero, records nothing in the history ✔
+      │  ├─ a third cannot be represented exactly, so it is rounded ✔
+      │  ├─ 9 / 4 = 2.25 ✔
+      │  └─ by zero, throws rather than returning Infinity ✔
+      └─ when adding ✔
+         ├─ is commutative ✔
+         ├─ uses the fixture built by the outer @BeforeEach ✔
+         └─ 0.1 + 0.2 comes out as 0.3 because of the rounding policy ✔
+
+Test run finished after 95 ms
+[         6 containers found      ]
+[         0 containers skipped    ]
+[         6 containers started    ]
+[         0 containers aborted    ]
+[         6 containers successful ]
+[         0 containers failed     ]
+[        14 tests found           ]
+[         0 tests skipped         ]
+[        14 tests started         ]
+[         0 tests aborted         ]
+[        14 tests successful      ]
+[         0 tests failed          ]
+
