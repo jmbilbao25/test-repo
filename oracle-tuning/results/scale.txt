@@ -1,0 +1,50 @@
+=== 200,000 more employees ===
+
+200000 rows created.
+
+Elapsed: 00:00:04.15
+
+Commit complete.
+
+Elapsed: 00:00:00.00
+
+=== restate the statistics, with a histogram on department_id ===
+
+TABLE_NAME        NUM_ROWS     BLOCKS AVG_ROW_LEN
+------------- ------------ ---------- -----------
+DEPARTMENTS             10          5          17
+EMPLOYEES          200,012       1000          30
+
+=== the histogram Oracle built ===
+
+COLUMN_NAME     NUM_DISTINCT NUM_BUCKETS HISTOGRAM
+--------------- ------------ ----------- ------------
+DEPARTMENT_ID             10          10 FREQUENCY
+EMPLOYEE_ID           200012           1 NONE
+NAME                  199168           1 NONE
+SALARY                196912           1 NONE
+
+=== how the employees are spread across the departments ===
+
+DEPARTMENT_ID DEPARTMENT_NAME          HEADCOUNT     PCT  AVG_SALARY
+------------- ------------------------ --------- ------- -----------
+           10 Executive                      501    0.25   73,756.54
+           20 Finance                     22,169   11.08   75,054.12
+           30 Human Resources             22,169   11.08   75,330.34
+           40 Information Technology      22,169   11.08   74,934.41
+           50 Operations                  22,167   11.08   75,067.41
+           60 Retail Banking              22,167   11.08   75,255.70
+           70 Treasury                    22,168   11.08   75,014.40
+           80 Risk and Compliance         22,168   11.08   75,114.74
+           90 Internal Audit              22,167   11.08   74,984.96
+          100 Customer Service            22,167   11.08   75,051.49
+
+=== segment sizes after the load ===
+
+SEGMENT_NAME           SEGMENT_TYPE      MB     BLOCKS
+---------------------- ------------ ------- ----------
+DEPARTMENTS_PK         INDEX           0.06          8
+EMPLOYEES_DEPT_IDX     INDEX           5.00        640
+EMPLOYEES_PK           INDEX           4.00        512
+DEPARTMENTS            TABLE           0.06          8
+EMPLOYEES              TABLE           8.00       1024

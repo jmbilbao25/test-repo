@@ -1,0 +1,22 @@
+=== the index the assignment asks for ===
+
+Index created.
+
+
+=== every index on the two tables now ===
+
+TABLE_NAME    INDEX_NAME             INDEX_TYPE UNIQUENESS COLUMNS
+------------- ---------------------- ---------- ---------- ------------------------
+DEPARTMENTS   DEPARTMENTS_PK         NORMAL     UNIQUE     DEPARTMENT_ID
+EMPLOYEES     EMPLOYEES_DEPT_IDX     NORMAL     NONUNIQUE  DEPARTMENT_ID
+EMPLOYEES     EMPLOYEES_PK           NORMAL     UNIQUE     EMPLOYEE_ID
+
+=== and what each one costs on disk ===
+
+SEGMENT_NAME           SEGMENT_TYPE       KB     BLOCKS
+---------------------- ------------ -------- ----------
+DEPARTMENTS_PK         INDEX              64          8
+EMPLOYEES_DEPT_IDX     INDEX              64          8
+EMPLOYEES_PK           INDEX              64          8
+DEPARTMENTS            TABLE              64          8
+EMPLOYEES              TABLE              64          8

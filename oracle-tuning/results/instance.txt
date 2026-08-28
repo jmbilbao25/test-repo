@@ -1,0 +1,39 @@
+=== version ===
+
+BANNER_FULL
+------------------------------------------------------------------------------
+Oracle AI Database 26ai Free Release 23.26.2.0.0 - Develop, Learn, and Run for
+ Free
+Version 23.26.2.0.0
+
+
+=== the container database ===
+
+NAME       CDB OPEN_MODE   LOG_MODE
+---------- --- ----------- -------------
+FREE       YES READ WRITE  NOARCHIVELOG
+
+=== instance ===
+
+INSTANCE_NAME    HOST_NAME        STATUS       DATABASE_STATUS
+---------------- ---------------- ------------ -----------------
+FREE             25de307f48c7     OPEN         ACTIVE
+
+=== pluggable databases ===
+
+    CON_ID PDB_NAME       OPEN_MODE   RES
+---------- -------------- ----------- ---
+         2 PDB$SEED       READ ONLY   NO
+         3 FREEPDB1       READ WRITE  NO
+
+=== memory and file layout ===
+
+PARAMETER                  VALUE
+-------------------------- --------------------------
+db_block_size              8192
+db_create_file_dest
+db_recovery_file_dest
+db_recovery_file_dest_size 0
+pga_aggregate_target       536870912
+sga_target                 1610612736
+undo_management            AUTO

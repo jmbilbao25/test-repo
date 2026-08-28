@@ -1,0 +1,115 @@
+
+Recovery Manager: Release 23.26.2.0.0 - Production on Fri Aug 28 09:22:28 2026
+Version 23.26.2.0.0
+
+Copyright (c) 1982, 2026, Oracle and/or its affiliates.  All rights reserved.
+
+connected to target database: FREE (DBID=1506701350)
+
+RMAN> # Step 3: recover the database to the moment before the employees table was
+2> # dropped.
+3> #
+4> #   rman target / cmdfile=rman/02_restore.rman using <scn>
+5> #
+6> # 2243875 is the SCN captured in results/drop.txt, read one statement before the DROP.
+7> # RMAN reads it as text when it loads this file, so the recorded command in the
+8> # output shows the real number rather than a placeholder.
+9> #
+10> # This is a point-in-time recovery, which is why the database has to be opened
+11> # with RESETLOGS afterwards. The redo written after the chosen SCN — the DROP
+12> # itself — is being deliberately abandoned, so the log sequence has to start
+13> # over rather than continue past a point the datafiles no longer agree with.
+14> 
+15> RUN {
+16>     # RESTORE needs the datafiles closed but the control file readable, and
+17>     # MOUNT is the state where both are true.
+18>     SHUTDOWN IMMEDIATE;
+19>     STARTUP MOUNT;
+20> 
+21>     # SET UNTIL applies to both commands below: it stops RESTORE from picking a
+22>     # backup taken after the target, and stops RECOVER from applying redo past
+23>     # it. Setting it once is what keeps the two consistent.
+24>     SET UNTIL SCN 2243875;
+25> 
+26>     # RESTORE copies the datafiles back out of the backup. They come back as
+27>     # they were during the backup, which is mid-transaction and unusable.
+28>     RESTORE DATABASE;
+29> 
+30>     # RECOVER replays the archived redo logs on top of them, up to the SCN, and
+31>     # that is the step that turns the copies into a consistent database. The
+32>     # employees table exists again at the end of this line.
+33>     RECOVER DATABASE;
+34> 
+35>     ALTER DATABASE OPEN RESETLOGS;
+36> }
+37> 
+38> LIST INCARNATION OF DATABASE;
+39> 
+using target database control file instead of recovery catalog
+database closed
+database dismounted
+Oracle instance shut down
+
+connected to target database (not started)
+Oracle instance started
+database mounted
+
+Total System Global Area    1603392928 bytes
+
+Fixed Size                     5027232 bytes
+Variable Size                587202560 bytes
+Database Buffers            1006632960 bytes
+Redo Buffers                   4530176 bytes
+
+executing command: SET until clause (SCN)
+
+Starting restore at 28-AUG-26
+RMAN-06908: warning: operation will not run in parallel on the allocated channels
+RMAN-06909: warning: parallelism require Enterprise Edition
+allocated channel: ORA_DISK_1
+channel ORA_DISK_1: SID=37 device type=DISK
+
+skipping datafile 2; already restored to file /opt/oracle/oradata/FREE/pdbseed/system01.dbf
+skipping datafile 4; already restored to file /opt/oracle/oradata/FREE/pdbseed/sysaux01.dbf
+skipping datafile 20; already restored to file /opt/oracle/oradata/FREE/pdbseed/undotbs01.dbf
+channel ORA_DISK_1: starting datafile backup set restore
+channel ORA_DISK_1: specifying datafile(s) to restore from backup set
+channel ORA_DISK_1: restoring datafile 00001 to /opt/oracle/oradata/FREE/system01.dbf
+channel ORA_DISK_1: restoring datafile 00003 to /opt/oracle/oradata/FREE/sysaux01.dbf
+channel ORA_DISK_1: restoring datafile 00007 to /opt/oracle/oradata/FREE/users01.dbf
+channel ORA_DISK_1: restoring datafile 00018 to /opt/oracle/oradata/FREE/undotbs01.dbf
+channel ORA_DISK_1: reading from backup piece /opt/oracle/oradata/FRA/FREE/backupset/2026_08_28/o1_mf_nnndf_TAG20260828T092124_o92nro55_.bkp
+channel ORA_DISK_1: piece handle=/opt/oracle/oradata/FRA/FREE/backupset/2026_08_28/o1_mf_nnndf_TAG20260828T092124_o92nro55_.bkp tag=TAG20260828T092124
+channel ORA_DISK_1: restored backup piece 1
+channel ORA_DISK_1: restore complete, elapsed time: 00:00:35
+channel ORA_DISK_1: starting datafile backup set restore
+channel ORA_DISK_1: specifying datafile(s) to restore from backup set
+channel ORA_DISK_1: restoring datafile 00021 to /opt/oracle/oradata/FREE/FREEPDB1/system01.dbf
+channel ORA_DISK_1: restoring datafile 00022 to /opt/oracle/oradata/FREE/FREEPDB1/sysaux01.dbf
+channel ORA_DISK_1: restoring datafile 00023 to /opt/oracle/oradata/FREE/FREEPDB1/undotbs01.dbf
+channel ORA_DISK_1: restoring datafile 00024 to /opt/oracle/oradata/FREE/FREEPDB1/users01.dbf
+channel ORA_DISK_1: reading from backup piece /opt/oracle/oradata/FRA/FREE/53103393CA0F0FE9E0636402000A5830/backupset/2026_08_28/o1_mf_nnndf_TAG20260828T092124_o92nsg5v_.bkp
+channel ORA_DISK_1: piece handle=/opt/oracle/oradata/FRA/FREE/53103393CA0F0FE9E0636402000A5830/backupset/2026_08_28/o1_mf_nnndf_TAG20260828T092124_o92nsg5v_.bkp tag=TAG20260828T092124
+channel ORA_DISK_1: restored backup piece 1
+channel ORA_DISK_1: restore complete, elapsed time: 00:00:15
+Finished restore at 28-AUG-26
+
+Starting recover at 28-AUG-26
+using channel ORA_DISK_1
+
+starting media recovery
+media recovery complete, elapsed time: 00:00:00
+
+Finished recover at 28-AUG-26
+
+Statement processed
+
+
+List of Database Incarnations
+DB Key  Inc Key DB Name  DB ID            STATUS  Reset SCN  Reset Time
+------- ------- -------- ---------------- --- ---------- ----------
+1       1       FREE     1506701350       PARENT  1          28-APR-26
+2       2       FREE     1506701350       PARENT  2063128    30-MAY-26
+3       3       FREE     1506701350       CURRENT 2243876    28-AUG-26
+
+Recovery Manager complete.

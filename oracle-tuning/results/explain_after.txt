@@ -1,0 +1,103 @@
+=== the index is visible to the optimizer again ===
+
+INDEX_NAME               STATUS   VISIBILITY
+------------------------ -------- ----------
+EMPLOYEES_DEPT_IDX       VALID    VISIBLE
+
+=== Q1 after: average salary per department, index available ===
+
+DEPARTMENT_ID AVG_SALARY
+------------- ----------
+           10 73756.5426
+           20 75054.1218
+           30 75330.3363
+           40 74934.4121
+           50 75067.4134
+           60 75255.6995
+           70 75014.3957
+           80 75114.7386
+           90 74984.9644
+          100 75051.4896
+
+PLAN_TABLE_OUTPUT
+------------------------------------------------------------------------------------------------------------------------------------------------------
+SQL_ID  879jhqnw86tbn, child number 0
+-------------------------------------
+SELECT /*+ GATHER_PLAN_STATISTICS q1_after */        department_id,
+AVG(salary) AS avg_salary FROM   hr_day9.employees GROUP  BY
+department_id ORDER  BY department_id
+
+Plan hash value: 2107619104
+
+---------------------------------------------------------------------------------------------------------------------
+| Id  | Operation          | Name      | Starts | E-Rows | A-Rows |   A-Time   | Buffers |  OMem |  1Mem | Used-Mem |
+---------------------------------------------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT   |           |      1 |        |     10 |00:00:00.01 |    1004 |       |       |          |
+|   1 |  SORT GROUP BY     |           |      1 |     10 |     10 |00:00:00.01 |    1004 |  2048 |  2048 | 2048  (0)|
+|   2 |   TABLE ACCESS FULL| EMPLOYEES |      1 |    200K|    200K|00:00:00.01 |    1004 |       |       |          |
+---------------------------------------------------------------------------------------------------------------------
+
+
+=== Q2 after: average salary for department 10, index available ===
+
+AVG_SALARY
+----------
+73756.5426
+
+PLAN_TABLE_OUTPUT
+------------------------------------------------------------------------------------------------------------------------------------------------------
+SQL_ID  b5dgh4b0u5jp0, child number 0
+-------------------------------------
+SELECT /*+ GATHER_PLAN_STATISTICS q2_after */        AVG(salary) AS
+avg_salary FROM   hr_day9.employees WHERE  department_id = 10
+
+Plan hash value: 2413904330
+
+---------------------------------------------------------------------------------------------------------------------
+| Id  | Operation                            | Name               | Starts | E-Rows | A-Rows |   A-Time   | Buffers |
+---------------------------------------------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT                     |                    |      1 |        |      1 |00:00:00.01 |     505 |
+|   1 |  SORT AGGREGATE                      |                    |      1 |      1 |      1 |00:00:00.01 |     505 |
+|   2 |   TABLE ACCESS BY INDEX ROWID BATCHED| EMPLOYEES          |      1 |    501 |    501 |00:00:00.01 |     505 |
+|*  3 |    INDEX RANGE SCAN                  | EMPLOYEES_DEPT_IDX |      1 |    501 |    501 |00:00:00.01 |       4 |
+---------------------------------------------------------------------------------------------------------------------
+
+Predicate Information (identified by operation id):
+---------------------------------------------------
+
+   3 - access("DEPARTMENT_ID"=10)
+
+
+=== what it costs to force the index on Q1 anyway ===
+
+DEPARTMENT_ID AVG_SALARY
+------------- ----------
+           10 73756.5426
+           20 75054.1218
+           30 75330.3363
+           40 74934.4121
+           50 75067.4134
+           60 75255.6995
+           70 75014.3957
+           80 75114.7386
+           90 74984.9644
+          100 75051.4896
+
+PLAN_TABLE_OUTPUT
+------------------------------------------------------------------------------------------------------------------------------------------------------
+SQL_ID  4q0g0w7guv5hk, child number 0
+-------------------------------------
+SELECT /*+ GATHER_PLAN_STATISTICS INDEX(e employees_dept_idx) q1_forced
+*/        department_id, AVG(salary) AS avg_salary FROM
+hr_day9.employees e GROUP  BY department_id ORDER  BY department_id
+
+Plan hash value: 2107619104
+
+---------------------------------------------------------------------------------------------------------------------
+| Id  | Operation          | Name      | Starts | E-Rows | A-Rows |   A-Time   | Buffers |  OMem |  1Mem | Used-Mem |
+---------------------------------------------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT   |           |      1 |        |     10 |00:00:00.01 |    1004 |       |       |          |
+|   1 |  SORT GROUP BY     |           |      1 |     10 |     10 |00:00:00.01 |    1004 |  2048 |  2048 | 2048  (0)|
+|   2 |   TABLE ACCESS FULL| EMPLOYEES |      1 |    200K|    200K|00:00:00.01 |    1004 |       |       |          |
+---------------------------------------------------------------------------------------------------------------------
+

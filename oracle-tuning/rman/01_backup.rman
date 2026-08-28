@@ -1,0 +1,40 @@
+# Step 3: a full backup of the whole container database with RMAN.
+#
+#   rman target / cmdfile=rman/01_backup.rman
+#
+# RMAN is Oracle's own backup tool and it is the one that matters here, because
+# it understands the file formats. A filesystem copy of an open database catches
+# datafiles mid-write and produces a backup that cannot be opened; RMAN reads
+# through the instance, checks every block as it goes, and records what it did in
+# the control file so that a later RESTORE knows what exists.
+
+SHOW ALL;
+
+# Two channels because the container has eight cores and the backup is the
+# slowest step in the assignment.
+CONFIGURE DEVICE TYPE DISK PARALLELISM 2;
+
+# With autobackup on, RMAN writes a copy of the control file and the spfile at
+# the end of every backup. Without it a recovery that has lost the control file
+# has to be talked through the backup set by hand.
+CONFIGURE CONTROLFILE AUTOBACKUP ON;
+
+CONFIGURE RETENTION POLICY TO RECOVERY WINDOW OF 7 DAYS;
+
+# What is being backed up, before backing it up.
+REPORT SCHEMA;
+
+# PLUS ARCHIVELOG archives the current redo log first, includes the archived
+# logs in the backup, and archives again afterwards. That is what makes the
+# backup usable on its own: the datafile copies are inconsistent, because the
+# database was open while they were read, and the redo in the same backup is
+# what reconciles them.
+BACKUP AS COMPRESSED BACKUPSET DATABASE PLUS ARCHIVELOG;
+
+LIST BACKUP SUMMARY;
+
+# Reads every block of every backup piece and checks it, so that the recovery
+# later on is not the first time anyone finds out whether the backup is sound.
+VALIDATE DATABASE;
+
+REPORT NEED BACKUP;

@@ -1,0 +1,50 @@
+=== the point the recovery will aim for, read one statement before ===
+=== the damage is done                                            ===
+
+RESTORE_POINT
+----------------------------------------
+RESTORE_POINT_SCN=2243875
+
+=== the failure ===
+
+Table dropped.
+
+
+=== it is gone ===
+
+OBJECT_NAME                OBJECT_TYPE  STATUS
+-------------------------- ------------ -------
+DEPT_AVG_SALARY            FUNCTION     INVALID
+DEPARTMENTS_PK             INDEX        VALID
+DEPARTMENTS                TABLE        VALID
+
+=== nothing in the recycle bin to flash back to ===
+
+=== so the two obvious shortcuts both fail ===
+FLASHBACK TABLE hr_day9.employees TO BEFORE DROP
+*
+ERROR at line 1:
+ORA-38305: object not in RECYCLE BIN
+Help: https://docs.oracle.com/error-help/db/ora-38305/
+
+
+SELECT COUNT(*) FROM hr_day9.employees
+                             *
+ERROR at line 1:
+ORA-00942: table or view "HR_DAY9"."EMPLOYEES" does not exist
+Help: https://docs.oracle.com/error-help/db/ora-00942/
+
+
+
+=== and the index went with the table ===
+
+INDEX_NAME             TABLE_NAME     STATUS
+---------------------- -------------- --------
+DEPARTMENTS_PK         DEPARTMENTS    VALID
+
+=== the departments table is untouched, which is what makes this a ===
+=== partial loss rather than a lost database                       ===
+
+DEPARTMENTS
+-----------
+         10
