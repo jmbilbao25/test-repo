@@ -1,0 +1,78 @@
+=== product-service is registered, and order-service can use it ===
+{
+  "servicesRegisteredInEureka" : [ "product-service", "order-service" ],
+  "productServiceInstances" : [ {
+    "instanceId" : "ip-10-131-70-226.us-east-1.compute.internal:product-service:9081",
+    "serviceId" : "PRODUCT-SERVICE",
+    "host" : "169.254.255.194",
+    "port" : 9081,
+    "uri" : "http://169.254.255.194:9081"
+  } ],
+  "configurationFromConfigServer" : {
+    "store.name" : "Bilbao Bazaar",
+    "store.currency" : "PHP",
+    "store.taxRate" : 0.12,
+    "orders.maxItemsPerOrder" : 10,
+    "orders.freeShippingThreshold" : 2000,
+    "orders.shippingFee" : 150
+  }
+}
+=== shutting product-service down through the actuator ===
+$ curl -X POST http://localhost:9081/actuator/shutdown
+(not exposed; SIGTERM to pid 604 instead, which triggers the
+ same DiscoveryClient shutdown hook and an explicit DELETE to Eureka)
+
+=== product-service says goodbye on the way out ===
+2026-08-28T09:48:53.850Z  INFO 604 --- [product-service] [nio-9081-exec-8] com.netflix.discovery.DiscoveryClient    : Shutting down DiscoveryClient ...
+2026-08-28T09:48:56.851Z  INFO 604 --- [product-service] [nio-9081-exec-8] com.netflix.discovery.DiscoveryClient    : Unregistering ...
+2026-08-28T09:48:56.859Z  INFO 604 --- [product-service] [nio-9081-exec-8] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_PRODUCT-SERVICE/ip-10-131-70-226.us-east-1.compute.internal:product-service:9081 - deregister  status: 200
+2026-08-28T09:48:56.875Z  INFO 604 --- [product-service] [nio-9081-exec-8] o.s.c.n.e.s.EurekaServiceRegistry        : Unregistering application PRODUCT-SERVICE with eureka with status DOWN
+2026-08-28T09:49:00.473Z  INFO 604 --- [product-service] [ionShutdownHook] o.s.c.n.e.s.EurekaServiceRegistry        : Unregistering application PRODUCT-SERVICE with eureka with status DOWN
+2026-08-28T09:49:00.481Z  INFO 604 --- [product-service] [ionShutdownHook] com.netflix.discovery.DiscoveryClient    : Shutting down DiscoveryClient ...
+
+=== the registry no longer lists PRODUCT-SERVICE ===
+$ curl -H 'Accept: application/json' http://localhost:8761/eureka/apps
+{"applications":{"versions__delta":"1","apps__hashcode":"UP_1_","application":[{"name":"ORDER-SERVICE","instance":[{"instanceId":"ip-10-131-70-226.us-east-1.compute.internal:order-service:9082","hostName":"169.254.255.194","app":"ORDER-SERVICE","ipAddr":"169.254.255.194","status":"UP","overriddenStatus":"UNKNOWN","port":{"$":9082,"@enabled":"true"},"securePort":{"$":443,"@enabled":"false"},"countryId":1,"dataCenterInfo":{"@class":"com.netflix.appinfo.InstanceInfo$DefaultDataCenterInfo","name":"MyOwn"},"leaseInfo":{"renewalIntervalInSecs":5,"durationInSecs":10,"registrationTimestamp":1787910511854,"lastRenewalTimestamp":1787910551862,"evictionTimestamp":0,"serviceUpTimestamp":1787910511341},"metadata":{"management.port":"9082"},"homePageUrl":"http://169.254.255.194:9082/","statusPageUrl":"http://169.254.255.194:9082/actuator/info","healthCheckUrl":"http://169.254.255.194:9082/actuator/health","vipAddress":"order-service","secureVipAddress":"order-service","isCoordinatingDiscoveryServer":"false","lastUpdatedTimestamp":"1787910511854","lastDirtyTimestamp":"1787910511310","actionType":"ADDED"}]}]}}
+
+=== order-service sees an empty instance list ===
+{
+  "servicesRegisteredInEureka" : [ "order-service" ],
+  "productServiceInstances" : [ ],
+  "configurationFromConfigServer" : {
+    "store.name" : "Bilbao Bazaar",
+    "store.currency" : "PHP",
+    "store.taxRate" : 0.12,
+    "orders.maxItemsPerOrder" : 10,
+    "orders.freeShippingThreshold" : 2000,
+    "orders.shippingFee" : 150
+  }
+}
+=== and placing an order now fails, with a reason ===
+$ curl -X POST -d '{"productId":3,"quantity":1}' http://localhost:9082/orders
+{
+  "error" : "could not reach product-service through Eureka: I/O error on GET request for \"http://product-service/products/3\": Connection refused"
+}
+[HTTP 503]
+
+=== the orders already placed are unaffected ===
+{
+  "store" : "Bilbao Bazaar",
+  "currency" : "PHP",
+  "count" : 2,
+  "orders" : [ {
+    "id" : "28b970b0",
+    "productId" : 1,
+    "productName" : "Wireless Mouse",
+    "quantity" : 1,
+    "unitPrice" : 899.0,
+    "subtotal" : 899.00,
+    "tax" : 107.88,
+    "shipping" : 150.00,
+    "total" : 1156.88,
+    "currency" : "PHP",
+    "servedByProductInstance" : "169.254.255.194:9081",
+    "placedAt" : "2026-08-28T09:48:44.330032951Z"
+  }, {
+    "id" : "c307bce7",
+    "productId" : 3,
+

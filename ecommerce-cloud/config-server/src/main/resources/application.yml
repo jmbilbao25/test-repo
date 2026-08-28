@@ -1,0 +1,26 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: config-server
+  jackson:
+    serialization:
+      indent-output: true
+  profiles:
+    # The "native" profile makes the Config Server read a directory instead of
+    # cloning a Git repository. Git is the usual production choice; native keeps
+    # this assignment to one moving part, and the HTTP contract the clients see
+    # is identical either way.
+    active: native
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: file:${CONFIG_REPO:../config-repo}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,env

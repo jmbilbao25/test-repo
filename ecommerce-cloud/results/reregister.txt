@@ -1,0 +1,51 @@
+=== it came back on port 9091, not the 9081 it had before ===
+$ curl http://localhost:9091/products/3
+{
+  "id" : 3,
+  "name" : "27-inch Monitor",
+  "category" : "Displays",
+  "price" : 12999.00,
+  "stock" : 7
+}
+
+=== product-service registers again, on the same logical name ===
+$ curl -H 'Accept: application/json' http://localhost:8761/eureka/apps/PRODUCT-SERVICE
+{"application":{"name":"PRODUCT-SERVICE","instance":[{"instanceId":"ip-10-131-70-226.us-east-1.compute.internal:product-service:9091","hostName":"169.254.255.194","app":"PRODUCT-SERVICE","ipAddr":"169.254.255.194","status":"UP","overriddenStatus":"UNKNOWN","port":{"$":9091,"@enabled":"true"},"securePort":{"$":443,"@enabled":"false"},"countryId":1,"dataCenterInfo":{"@class":"com.netflix.appinfo.InstanceInfo$DefaultDataCenterInfo","name":"MyOwn"},"leaseInfo":{"renewalIntervalInSecs":5,"durationInSecs":10,"registrationTimestamp":1787910561889,"lastRenewalTimestamp":1787910561889,"evictionTimestamp":0,"serviceUpTimestamp":1787910561803},"metadata":{"management.port":"9091"},"homePageUrl":"http://169.254.255.194:9091/","statusPageUrl":"http://169.254.255.194:9091/actuator/info","healthCheckUrl":"http://169.254.255.194:9091/actuator/health","vipAddress":"product-service","secureVipAddress":"product-service","isCoordinatingDiscoveryServer":"false","lastUpdatedTimestamp":"1787910561889","lastDirtyTimestamp":"1787910561772","actionType":"ADDED"}]}}
+
+=== order-service finds it again, at the new port, with no restart ===
+=== and no configuration change of its own                       ===
+{
+  "servicesRegisteredInEureka" : [ "order-service", "product-service" ],
+  "productServiceInstances" : [ {
+    "instanceId" : "ip-10-131-70-226.us-east-1.compute.internal:product-service:9091",
+    "serviceId" : "PRODUCT-SERVICE",
+    "host" : "169.254.255.194",
+    "port" : 9091,
+    "uri" : "http://169.254.255.194:9091"
+  } ],
+  "configurationFromConfigServer" : {
+    "store.name" : "Bilbao Bazaar",
+    "store.currency" : "PHP",
+    "store.taxRate" : 0.12,
+    "orders.maxItemsPerOrder" : 10,
+    "orders.freeShippingThreshold" : 2000,
+    "orders.shippingFee" : 150
+  }
+}
+=== and orders work again ===
+{
+  "id" : "c2ff813c",
+  "productId" : 6,
+  "productName" : "Noise-cancelling Headset",
+  "quantity" : 2,
+  "unitPrice" : 5799.0,
+  "subtotal" : 11598.00,
+  "tax" : 1391.76,
+  "shipping" : 0.00,
+  "total" : 12989.76,
+  "currency" : "PHP",
+  "servedByProductInstance" : "169.254.255.194:9091",
+  "placedAt" : "2026-08-28T09:49:34.532114269Z"
+}
+[HTTP 201]
+

@@ -1,0 +1,6 @@
+# Configuration served to product-service. The service itself ships with none
+# of this; it arrives over HTTP from the Config Server at startup.
+catalog:
+  featured-message: Welcome to Bilbao Bazaar
+  page-size: 20
+  low-stock-threshold: 5

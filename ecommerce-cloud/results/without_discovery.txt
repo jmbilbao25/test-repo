@@ -1,0 +1,8 @@
+=== the same URL without the load balancer ===
+$ curl http://localhost:9082/orders/without-discovery/3
+{
+  "attempted" : "GET http://product-service/products/3 on a RestTemplate with no @LoadBalanced",
+  "result" : "UnknownHostException: product-service"
+}
+[HTTP 200]
+

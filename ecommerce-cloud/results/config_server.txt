@@ -1,0 +1,109 @@
+=== the shared configuration, as the server resolves it ===
+$ curl http://localhost:8888/application/default
+{
+  "name" : "application",
+  "profiles" : [ "default" ],
+  "label" : null,
+  "version" : null,
+  "state" : null,
+  "propertySources" : [ {
+    "name" : "file:/projects/sandbox/test-repo/ecommerce-cloud/config-repo/application.yml",
+    "source" : {
+      "spring.jackson.serialization.indent-output" : true,
+      "store.name" : "Bilbao Bazaar",
+      "store.currency" : "PHP",
+      "store.tax-rate" : 0.12,
+      "store.support-email" : "support@bilbao-bazaar.example",
+      "management.endpoints.web.exposure.include" : "health,info,refresh,env,configprops",
+      "management.endpoint.health.show-details" : "always"
+    }
+  } ]
+}
+[HTTP 200]
+
+=== product-service configuration ===
+$ curl http://localhost:8888/product-service/default
+{
+  "name" : "product-service",
+  "profiles" : [ "default" ],
+  "label" : null,
+  "version" : null,
+  "state" : null,
+  "propertySources" : [ {
+    "name" : "file:/projects/sandbox/test-repo/ecommerce-cloud/config-repo/product-service.yml",
+    "source" : {
+      "catalog.featured-message" : "Welcome to Bilbao Bazaar",
+      "catalog.page-size" : 20,
+      "catalog.low-stock-threshold" : 5
+    }
+  }, {
+    "name" : "file:/projects/sandbox/test-repo/ecommerce-cloud/config-repo/application.yml",
+    "source" : {
+      "spring.jackson.serialization.indent-output" : true,
+      "store.name" : "Bilbao Bazaar",
+      "store.currency" : "PHP",
+      "store.tax-rate" : 0.12,
+      "store.support-email" : "support@bilbao-bazaar.example",
+      "management.endpoints.web.exposure.include" : "health,info,refresh,env,configprops",
+      "management.endpoint.health.show-details" : "always"
+    }
+  } ]
+}
+[HTTP 200]
+
+=== order-service configuration ===
+$ curl http://localhost:8888/order-service/default
+{
+  "name" : "order-service",
+  "profiles" : [ "default" ],
+  "label" : null,
+  "version" : null,
+  "state" : null,
+  "propertySources" : [ {
+    "name" : "file:/projects/sandbox/test-repo/ecommerce-cloud/config-repo/order-service.yml",
+    "source" : {
+      "orders.max-items-per-order" : 10,
+      "orders.free-shipping-threshold" : 2000,
+      "orders.shipping-fee" : 150
+    }
+  }, {
+    "name" : "file:/projects/sandbox/test-repo/ecommerce-cloud/config-repo/application.yml",
+    "source" : {
+      "spring.jackson.serialization.indent-output" : true,
+      "store.name" : "Bilbao Bazaar",
+      "store.currency" : "PHP",
+      "store.tax-rate" : 0.12,
+      "store.support-email" : "support@bilbao-bazaar.example",
+      "management.endpoints.web.exposure.include" : "health,info,refresh,env,configprops",
+      "management.endpoint.health.show-details" : "always"
+    }
+  } ]
+}
+[HTTP 200]
+
+=== the same file served as plain YAML ===
+$ curl http://localhost:8888/product-service-default.yml
+spring:
+  jackson:
+    serialization:
+      indent-output: true
+store:
+  name: Bilbao Bazaar
+  currency: PHP
+  tax-rate: 0.12
+  support-email: support@bilbao-bazaar.example
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,refresh,env,configprops
+  endpoint:
+    health:
+      show-details: always
+catalog:
+  featured-message: Welcome to Bilbao Bazaar
+  page-size: 20
+  low-stock-threshold: 5
+
+[HTTP 200]
+

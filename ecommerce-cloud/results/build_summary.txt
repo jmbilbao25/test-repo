@@ -1,0 +1,12 @@
+=== mvn -B package -DskipTests ===
+Java:  openjdk version "21.0.2" 2024-01-16
+Maven: Apache Maven 3.9.16 (2bdd9fddda4b155ebf8000e807eb73fd829a51d5)
+
+Spring Boot 3.4.1, Spring Cloud 2024.0.0 (see pom.xml)
+
+config-server    43868715 bytes
+eureka-server    57644004 bytes
+product-service  47422237 bytes
+order-service    47428141 bytes
+
+[mvn exit 0]

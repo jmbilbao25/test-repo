@@ -1,0 +1,5 @@
+# Configuration served to order-service.
+orders:
+  max-items-per-order: 10
+  free-shipping-threshold: 2000
+  shipping-fee: 150
