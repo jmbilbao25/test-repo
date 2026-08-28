@@ -1,0 +1,38 @@
+# Step 3: recover the database to the moment before the employees table was
+# dropped.
+#
+#   rman target / cmdfile=rman/02_restore.rman using <scn>
+#
+# &1 is the SCN captured in results/drop.txt, read one statement before the DROP.
+# RMAN reads it as text when it loads this file, so the recorded command in the
+# output shows the real number rather than a placeholder.
+#
+# This is a point-in-time recovery, which is why the database has to be opened
+# with RESETLOGS afterwards. The redo written after the chosen SCN — the DROP
+# itself — is being deliberately abandoned, so the log sequence has to start
+# over rather than continue past a point the datafiles no longer agree with.
+
+RUN {
+    # RESTORE needs the datafiles closed but the control file readable, and
+    # MOUNT is the state where both are true.
+    SHUTDOWN IMMEDIATE;
+    STARTUP MOUNT;
+
+    # SET UNTIL applies to both commands below: it stops RESTORE from picking a
+    # backup taken after the target, and stops RECOVER from applying redo past
+    # it. Setting it once is what keeps the two consistent.
+    SET UNTIL SCN &1;
+
+    # RESTORE copies the datafiles back out of the backup. They come back as
+    # they were during the backup, which is mid-transaction and unusable.
+    RESTORE DATABASE;
+
+    # RECOVER replays the archived redo logs on top of them, up to the SCN, and
+    # that is the step that turns the copies into a consistent database. The
+    # employees table exists again at the end of this line.
+    RECOVER DATABASE;
+
+    ALTER DATABASE OPEN RESETLOGS;
+}
+
+LIST INCARNATION OF DATABASE;

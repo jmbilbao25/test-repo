@@ -1,0 +1,70 @@
+CONTAINER: starting up...
+CONTAINER: INFO: Cannot determine memory, assuming default of 2 GB.
+CONTAINER: first database startup, initializing...
+CONTAINER: starting up Oracle Database...
+
+LSNRCTL for Linux: Version 23.26.2.0.0 - Production on 28-AUG-2026 09:20:17
+
+Copyright (c) 1991, 2026, Oracle.  All rights reserved.
+
+Starting /opt/oracle/product/26ai/dbhomeFree/bin/tnslsnr: please wait...
+
+TNSLSNR for Linux: Version 23.26.2.0.0 - Production
+System parameter file is /opt/oracle/product/26ai/dbhomeFree/network/admin/listener.ora
+Log messages written to /opt/oracle/diag/tnslsnr/25de307f48c7/listener/alert/log.xml
+Listening on: (DESCRIPTION=(ADDRESS=(PROTOCOL=ipc)(KEY=EXTPROC_FOR_FREE)))
+Listening on: (DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=25de307f48c7)(PORT=1521)))
+
+Connecting to (DESCRIPTION=(ADDRESS=(PROTOCOL=IPC)(KEY=EXTPROC_FOR_FREE)))
+STATUS of the LISTENER
+------------------------
+Alias                     LISTENER
+Version                   TNSLSNR for Linux: Version 23.26.2.0.0 - Production
+Start Date                28-AUG-2026 09:20:17
+Uptime                    0 days 0 hr. 0 min. 0 sec
+Trace Level               off
+Security                  ON: Local OS Authentication
+SNMP                      OFF
+Default Service           FREE
+Listener Parameter File   /opt/oracle/product/26ai/dbhomeFree/network/admin/listener.ora
+Listener Log File         /opt/oracle/diag/tnslsnr/25de307f48c7/listener/alert/log.xml
+Listening Endpoints Summary...
+  (DESCRIPTION=(ADDRESS=(PROTOCOL=ipc)(KEY=EXTPROC_FOR_FREE)))
+  (DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=25de307f48c7)(PORT=1521)))
+The listener supports no services
+The command completed successfully
+ORACLE instance started.
+
+Total System Global Area 1603392928 bytes
+Fixed Size		    5027232 bytes
+Variable Size		  587202560 bytes
+Database Buffers	 1006632960 bytes
+Redo Buffers		    4530176 bytes
+Database mounted.
+Database opened.
+
+CONTAINER: Resetting SYS and SYSTEM passwords.
+
+User altered.
+
+
+User altered.
+
+
+#########################
+DATABASE IS READY TO USE!
+#########################
+
+####################################################################
+CONTAINER: The following output is now from the alert_FREE.log file:
+####################################################################
+===========================================================
+Dumping current patch information
+===========================================================
+Unable to obtain current patch information due to error: 20013
+===========================================================
+FREEPDB1(3):Autotune of undo retention is turned on. 
+2026-08-28T09:20:37.733774+00:00
+FREEPDB1(3):Opening pdb with Resource Manager plan: DEFAULT_PLAN
+Completed: Pluggable database FREEPDB1 opened read write 
+Completed: ALTER DATABASE OPEN

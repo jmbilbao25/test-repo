@@ -1,0 +1,131 @@
+=== the schema owner ===
+
+User created.
+
+
+Grant succeeded.
+
+
+Grant succeeded.
+
+
+=== departments ===
+
+Table created.
+
+
+=== employees ===
+
+Table created.
+
+
+=== ten departments ===
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+=== twelve employees ===
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+Commit complete.
+
+
+=== what is in the two tables ===
+
+TABLE_NAME     ROWS_LOADED
+-------------- -----------
+DEPARTMENTS             10
+EMPLOYEES               12
+
+=== the employees, joined to their department ===
+
+EMPLOYEE_ID NAME                 DEPARTMENT_NAME               SALARY
+----------- -------------------- ------------------------ -----------
+          1 Amelia Reyes         Executive                 185,000.00
+          2 Bernard Cruz         Finance                    96,500.00
+          3 Corazon Vidal        Finance                    88,250.00
+          4 Diego Almonte        Human Resources            67,400.00
+          5 Elena Marquez        Information Technology    112,000.00
+          6 Fidel Ocampo         Information Technology    104,750.00
+          7 Grace Bautista       Operations                 73,900.00
+          8 Hector Salcedo       Retail Banking             58,300.00
+          9 Imelda Fajardo       Treasury                  121,600.00
+         10 Joaquin Tolentino    Risk and Compliance        99,800.00
+         11 Karina Delgado       Internal Audit             84,150.00
+         12 Lorenzo Pineda       Customer Service           61,250.00
+
+=== the constraints that came with them ===
+
+TABLE_NAME    CONSTRAINT_NAME        C            STATUS
+------------- ---------------------- ------------ --------
+DEPARTMENTS   SYS_C008648            CHECK        ENABLED
+DEPARTMENTS   SYS_C008649            CHECK        ENABLED
+DEPARTMENTS   DEPARTMENTS_PK         PRIMARY KEY  ENABLED
+EMPLOYEES     EMPLOYEES_SALARY_CK    CHECK        ENABLED
+EMPLOYEES     SYS_C008651            CHECK        ENABLED
+EMPLOYEES     SYS_C008652            CHECK        ENABLED
+EMPLOYEES     SYS_C008653            CHECK        ENABLED
+EMPLOYEES     EMPLOYEES_PK           PRIMARY KEY  ENABLED
+EMPLOYEES     EMPLOYEES_DEPT_FK      FOREIGN KEY  ENABLED

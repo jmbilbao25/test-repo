@@ -9,6 +9,7 @@
 | 6 | Building a data processing API with Pandas, NumPy and FastAPI | [docx](Data-Processing-API-Assignment.docx) · [pdf](Data-Processing-API-Assignment.pdf) | [`data-api/`](data-api) |
 | 7 | Securing an API with OAuth2, JWT and rate limiting | [docx](API-Security-OAuth2-JWT-Assignment.docx) · [pdf](API-Security-OAuth2-JWT-Assignment.pdf) | [`secure-api/`](secure-api) |
 | 8 | Optimizing PostgreSQL: indexing, stored procedures and replication | [docx](PostgreSQL-Performance-Assignment.docx) · [pdf](PostgreSQL-Performance-Assignment.pdf) | [`postgres-tuning/`](postgres-tuning) |
+| 9 | Optimizing and recovering an Oracle database | [docx](Oracle-Optimization-Recovery-Assignment.docx) · [pdf](Oracle-Optimization-Recovery-Assignment.pdf) | [`oracle-tuning/`](oracle-tuning) |
 | 10 | Hands-on JUnit 5: annotations, assertions and advanced concepts | [docx](JUnit5-Testing-Assignment.docx) · [pdf](JUnit5-Testing-Assignment.pdf) | [`calculator-junit5/`](calculator-junit5) |
 | Milestone | Case study: real-time banking fraud & analytics engine | [docx](Banking-Fraud-Analytics-CaseStudy.docx) · [pdf](Banking-Fraud-Analytics-CaseStudy.pdf) | [`banking-api/`](banking-api) |
 | Induction | EastWest Bank core banking relational database lab | [docx](EWB-Core-Banking-Database-Lab.docx) · [pdf](EWB-Core-Banking-Database-Lab.pdf) | [`ewb-core-banking/`](ewb-core-banking) |
@@ -236,6 +237,38 @@ between a 401 (the API does not know you), a 403 (it knows you and refuses) and 
 429 (you have asked too often). Details in
 [`secure-api/README.md`](secure-api/README.md).
 
+
+
+---
+
+# Day 9: Optimizing and Recovering an Oracle Database
+
+The write-up is **[Oracle-Optimization-Recovery-Assignment.docx](Oracle-Optimization-Recovery-Assignment.docx)**,
+with a **[PDF copy](Oracle-Optimization-Recovery-Assignment.pdf)** — 43 pages, 49
+figures. The lab is in **[`oracle-tuning/`](oracle-tuning)**.
+
+A real Oracle AI Database 26ai Free instance: two tables, an index, a PL/SQL
+average-per-department report, execution plans before and after, then an RMAN
+backup, a dropped table and a point-in-time recovery.
+
+```bash
+cd oracle-tuning
+./setup.sh                       # instance, schema, tuning, backup, recovery
+python3 scripts/make_figures.py
+python3 build.py
+```
+
+The index the assignment asks for turns out not to speed up the query the
+assignment asks for. Q1 averages every salary, so it reads every row either way:
+`TABLE ACCESS FULL` before and after, the same plan hash value, the same 1,006
+buffer gets. The same index makes a single-department query 10.7x faster, and a
+covering index on `(department_id, salary)` is what changes Q1 — 43% fewer blocks
+via `INDEX FAST FULL SCAN`, while getting *slower* on the clock, because the table
+already fits in the buffer cache.
+
+The recovery is a point-in-time restore to the SCN read one statement before the
+`DROP TABLE ... PURGE`, verified by a row fingerprint rather than a row count.
+Details in [`oracle-tuning/README.md`](oracle-tuning/README.md).
 
 
 ---

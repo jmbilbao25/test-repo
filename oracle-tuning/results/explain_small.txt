@@ -1,0 +1,70 @@
+=== how big the optimizer thinks the tables are ===
+
+TABLE_NAME        NUM_ROWS     BLOCKS AVG_ROW_LEN
+------------- ------------ ---------- -----------
+DEPARTMENTS             10          5          17
+EMPLOYEES               12          5          25
+
+=== Q1: average salary per department, all twelve rows ===
+
+DEPARTMENT_ID AVG_SALARY
+------------- ----------
+           10     185000
+           20      92375
+           30      67400
+           40     108375
+           50      73900
+           60      58300
+           70     121600
+           80      99800
+           90      84150
+          100      61250
+
+PLAN_TABLE_OUTPUT
+------------------------------------------------------------------------------------------------------------------------------------------------------
+SQL_ID  7v0qt6xs1kzj4, child number 0
+-------------------------------------
+SELECT /*+ GATHER_PLAN_STATISTICS q1_small */        department_id,
+AVG(salary) AS avg_salary FROM   hr_day9.employees GROUP  BY
+department_id ORDER  BY department_id
+
+Plan hash value: 2107619104
+
+---------------------------------------------------------------------------------------------------------------------
+| Id  | Operation          | Name      | Starts | E-Rows | A-Rows |   A-Time   | Buffers |  OMem |  1Mem | Used-Mem |
+---------------------------------------------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT   |           |      1 |        |     10 |00:00:00.01 |       6 |       |       |          |
+|   1 |  SORT GROUP BY     |           |      1 |     10 |     10 |00:00:00.01 |       6 |  2048 |  2048 | 2048  (0)|
+|   2 |   TABLE ACCESS FULL| EMPLOYEES |      1 |     12 |     12 |00:00:00.01 |       6 |       |       |          |
+---------------------------------------------------------------------------------------------------------------------
+
+
+=== Q2: average salary for one department ===
+
+AVG_SALARY
+----------
+    185000
+
+PLAN_TABLE_OUTPUT
+------------------------------------------------------------------------------------------------------------------------------------------------------
+SQL_ID  gzv072hxgnz4v, child number 0
+-------------------------------------
+SELECT /*+ GATHER_PLAN_STATISTICS q2_small */        AVG(salary) AS
+avg_salary FROM   hr_day9.employees WHERE  department_id = 10
+
+Plan hash value: 2413904330
+
+---------------------------------------------------------------------------------------------------------------------
+| Id  | Operation                            | Name               | Starts | E-Rows | A-Rows |   A-Time   | Buffers |
+---------------------------------------------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT                     |                    |      1 |        |      1 |00:00:00.01 |       2 |
+|   1 |  SORT AGGREGATE                      |                    |      1 |      1 |      1 |00:00:00.01 |       2 |
+|   2 |   TABLE ACCESS BY INDEX ROWID BATCHED| EMPLOYEES          |      1 |      1 |      1 |00:00:00.01 |       2 |
+|*  3 |    INDEX RANGE SCAN                  | EMPLOYEES_DEPT_IDX |      1 |      1 |      1 |00:00:00.01 |       1 |
+---------------------------------------------------------------------------------------------------------------------
+
+Predicate Information (identified by operation id):
+---------------------------------------------------
+
+   3 - access("DEPARTMENT_ID"=10)
+

@@ -1,0 +1,31 @@
+=== an anonymous PL/SQL block, one row per department ===
+DEPT  DEPARTMENT               STAFF    AVG SALARY
+--------------------------------------------------
+10    Executive                    1    185,000.00
+20    Finance                      2     92,375.00
+30    Human Resources              1     67,400.00
+40    Information Technology       2    108,375.00
+50    Operations                   1     73,900.00
+60    Retail Banking               1     58,300.00
+70    Treasury                     1    121,600.00
+80    Risk and Compliance          1     99,800.00
+90    Internal Audit               1     84,150.00
+100   Customer Service             1     61,250.00
+--------------------------------------------------
+10 departments reported
+
+=== the same thing as a stored function, so SQL can call it too ===
+No errors.
+
+DEPARTMENT_ID DEPARTMENT_NAME           AVG_SALARY
+------------- ------------------------ -----------
+           10 Executive                 185,000.00
+           20 Finance                    92,375.00
+           30 Human Resources            67,400.00
+           40 Information Technology    108,375.00
+           50 Operations                 73,900.00
+           60 Retail Banking             58,300.00
+           70 Treasury                  121,600.00
+           80 Risk and Compliance        99,800.00
+           90 Internal Audit             84,150.00
+          100 Customer Service           61,250.00

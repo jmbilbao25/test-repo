@@ -1,0 +1,62 @@
+=== before: the log mode as the image ships it ===
+
+LOG_MODE
+------------
+NOARCHIVELOG
+
+1 row selected.
+
+
+=== where the archived logs and backups will go ===
+
+System altered.
+
+
+System altered.
+
+
+=== a clean bounce through MOUNT, which is where the switch is made ===
+Database closed.
+Database dismounted.
+ORACLE instance shut down.
+ORACLE instance started.
+
+Total System Global Area 1603392928 bytes
+Fixed Size                  5027232 bytes
+Variable Size             587202560 bytes
+Database Buffers         1006632960 bytes
+Redo Buffers                4530176 bytes
+Database mounted.
+
+Database altered.
+
+
+Database altered.
+
+
+Pluggable database altered.
+
+
+=== after ===
+
+NAME       LOG_MODE      OPEN_MODE
+---------- ------------- -----------
+FREE       ARCHIVELOG    READ WRITE
+
+
+    CON_ID PDB_NAME       OPEN_MODE
+---------- -------------- -----------
+         2 PDB$SEED       READ ONLY
+         3 FREEPDB1       READ WRITE
+
+=== force a log switch so there is at least one archived log ===
+
+ SEQUENCE# FIRST_TIME           STATUS
+---------- -------------------- ---------
+        15 2026-08-28 09:21:03  A
+
+=== flash recovery area usage ===
+
+FILE_TYPE              PCT_USED NUMBER_OF_FILES
+---------------------- -------- ---------------
+ARCHIVED LOG               0.01               1

@@ -1,0 +1,11 @@
+Q   INDEXES            RUNS     MS / RUN   GETS / RUN
+-----------------------------------------------------
+Q1  no index             50        9.600        1,006
+Q2  no index            500        2.140        1,004
+Q1  department_id        50        9.400        1,006
+Q2  department_id       500        0.200          505
+Q1  covering             50       13.000          569
+Q2  covering            500        0.020            4
+-----------------------------------------------------
+Q1 = average salary per department (whole table)
+Q2 = average salary for department 10 only

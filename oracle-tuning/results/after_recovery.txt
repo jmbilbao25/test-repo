@@ -1,0 +1,72 @@
+=== the database is open again ===
+
+NAME       LOG_MODE      OPEN_MODE
+---------- ------------- -----------
+FREE       ARCHIVELOG    READ WRITE
+
+
+    CON_ID PDB_NAME       OPEN_MODE
+---------- -------------- -----------
+         3 FREEPDB1       READ WRITE
+
+=== the employees table is back ===
+
+TABLE_NAME        ROW_COUNT        SALARY_TOTAL
+-------------- ------------ -------------------
+DEPARTMENTS              10
+EMPLOYEES           200,012   15,018,179,225.12
+
+=== and it is the same table, not just a table of the same size ===
+
+FINGERPRINT
+--------------------
+430599086091596
+
+=== every object, including the two indexes and the function ===
+
+OBJECT_NAME                OBJECT_TYPE  STATUS
+-------------------------- ------------ -------
+DEPT_AVG_SALARY            FUNCTION     VALID
+DEPARTMENTS_PK             INDEX        VALID
+EMPLOYEES_DEPT_IDX         INDEX        VALID
+EMPLOYEES_DEPT_SAL_IDX     INDEX        VALID
+EMPLOYEES_PK               INDEX        VALID
+DEPARTMENTS                TABLE        VALID
+EMPLOYEES                  TABLE        VALID
+
+=== the constraints came back with it ===
+
+TABLE_NAME    CONSTRAINT_NAME        C            STATUS
+------------- ---------------------- ------------ --------
+DEPARTMENTS   SYS_C008648            CHECK        ENABLED
+DEPARTMENTS   SYS_C008649            CHECK        ENABLED
+DEPARTMENTS   DEPARTMENTS_PK         PRIMARY KEY  ENABLED
+EMPLOYEES     SYS_C008651            CHECK        ENABLED
+EMPLOYEES     EMPLOYEES_SALARY_CK    CHECK        ENABLED
+EMPLOYEES     SYS_C008652            CHECK        ENABLED
+EMPLOYEES     SYS_C008653            CHECK        ENABLED
+EMPLOYEES     EMPLOYEES_PK           PRIMARY KEY  ENABLED
+EMPLOYEES     EMPLOYEES_DEPT_FK      FOREIGN KEY  ENABLED
+
+=== the stored function still runs ===
+
+DEPARTMENT_ID DEPARTMENT_NAME           AVG_SALARY
+------------- ------------------------ -----------
+           10 Executive                  73,756.54
+           20 Finance                    75,054.12
+           30 Human Resources            75,330.34
+           40 Information Technology     74,934.41
+           50 Operations                 75,067.41
+           60 Retail Banking             75,255.70
+           70 Treasury                   75,014.40
+           80 Risk and Compliance        75,114.74
+           90 Internal Audit             74,984.96
+          100 Customer Service           75,051.49
+
+=== and the incarnation changed, which is the mark of a resetlogs ===
+
+INCARNATION# RESETLOGS_CHANGE# RESETLOGS_TIME         STATUS
+------------ ----------------- ---------------------- --------
+           1                 1 2026-04-28 14:57:23    PARENT
+           2           2063128 2026-05-30 20:51:50    PARENT
+           3           2243876 2026-08-28 09:23:27    CURRENT

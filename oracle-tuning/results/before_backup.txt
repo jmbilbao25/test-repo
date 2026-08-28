@@ -1,0 +1,30 @@
+=== contents ===
+
+TABLE_NAME        ROW_COUNT        SALARY_TOTAL
+-------------- ------------ -------------------
+DEPARTMENTS              10
+EMPLOYEES           200,012   15,018,179,225.12
+
+=== a fingerprint of the employees table ===
+
+FINGERPRINT
+--------------------
+430599086091596
+
+=== the objects that must come back ===
+
+OBJECT_NAME                OBJECT_TYPE  STATUS
+-------------------------- ------------ -------
+DEPT_AVG_SALARY            FUNCTION     VALID
+DEPARTMENTS_PK             INDEX        VALID
+EMPLOYEES_DEPT_IDX         INDEX        VALID
+EMPLOYEES_DEPT_SAL_IDX     INDEX        VALID
+EMPLOYEES_PK               INDEX        VALID
+DEPARTMENTS                TABLE        VALID
+EMPLOYEES                  TABLE        VALID
+
+=== the clock, for the record ===
+
+CLOCK
+----------------------
+2026-08-28 09:21:16

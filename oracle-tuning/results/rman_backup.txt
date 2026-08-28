@@ -1,0 +1,341 @@
+
+Recovery Manager: Release 23.26.2.0.0 - Production on Fri Aug 28 09:21:16 2026
+Version 23.26.2.0.0
+
+Copyright (c) 1982, 2026, Oracle and/or its affiliates.  All rights reserved.
+
+connected to target database: FREE (DBID=1506701350)
+
+RMAN> # Step 3: a full backup of the whole container database with RMAN.
+2> #
+3> #   rman target / cmdfile=rman/01_backup.rman
+4> #
+5> # RMAN is Oracle's own backup tool and it is the one that matters here, because
+6> # it understands the file formats. A filesystem copy of an open database catches
+7> # datafiles mid-write and produces a backup that cannot be opened; RMAN reads
+8> # through the instance, checks every block as it goes, and records what it did in
+9> # the control file so that a later RESTORE knows what exists.
+10> 
+11> SHOW ALL;
+12> 
+13> # Two channels because the container has eight cores and the backup is the
+14> # slowest step in the assignment.
+15> CONFIGURE DEVICE TYPE DISK PARALLELISM 2;
+16> 
+17> # With autobackup on, RMAN writes a copy of the control file and the spfile at
+18> # the end of every backup. Without it a recovery that has lost the control file
+19> # has to be talked through the backup set by hand.
+20> CONFIGURE CONTROLFILE AUTOBACKUP ON;
+21> 
+22> CONFIGURE RETENTION POLICY TO RECOVERY WINDOW OF 7 DAYS;
+23> 
+24> # What is being backed up, before backing it up.
+25> REPORT SCHEMA;
+26> 
+27> # PLUS ARCHIVELOG archives the current redo log first, includes the archived
+28> # logs in the backup, and archives again afterwards. That is what makes the
+29> # backup usable on its own: the datafile copies are inconsistent, because the
+30> # database was open while they were read, and the redo in the same backup is
+31> # what reconciles them.
+32> BACKUP AS COMPRESSED BACKUPSET DATABASE PLUS ARCHIVELOG;
+33> 
+34> LIST BACKUP SUMMARY;
+35> 
+36> # Reads every block of every backup piece and checks it, so that the recovery
+37> # later on is not the first time anyone finds out whether the backup is sound.
+38> VALIDATE DATABASE;
+39> 
+40> REPORT NEED BACKUP;
+41> 
+using target database control file instead of recovery catalog
+RMAN configuration parameters for database with db_unique_name FREE are:
+CONFIGURE RETENTION POLICY TO REDUNDANCY 1; # default
+CONFIGURE BACKUP OPTIMIZATION OFF; # default
+CONFIGURE DEFAULT DEVICE TYPE TO DISK; # default
+CONFIGURE CONTROLFILE AUTOBACKUP ON; # default
+CONFIGURE CONTROLFILE AUTOBACKUP FORMAT FOR DEVICE TYPE DISK TO '%F'; # default
+CONFIGURE DEVICE TYPE DISK PARALLELISM 1 BACKUP TYPE TO BACKUPSET; # default
+CONFIGURE DATAFILE BACKUP COPIES FOR DEVICE TYPE DISK TO 1; # default
+CONFIGURE ARCHIVELOG BACKUP COPIES FOR DEVICE TYPE DISK TO 1; # default
+CONFIGURE MAXSETSIZE TO UNLIMITED; # default
+CONFIGURE ENCRYPTION FOR DATABASE OFF; # default
+CONFIGURE ENCRYPTION ALGORITHM 'AES256'; # default
+CONFIGURE COMPRESSION ALGORITHM 'BASIC' AS OF RELEASE 'DEFAULT' OPTIMIZE FOR LOAD TRUE ; # default
+CONFIGURE RMAN OUTPUT TO KEEP FOR 7 DAYS; # default
+CONFIGURE ARCHIVELOG DELETION POLICY TO NONE; # default
+CONFIGURE SNAPSHOT CONTROLFILE NAME TO '/opt/oracle/product/26ai/dbhomeFree/dbs/snapcf_FREE.f'; # default
+
+new RMAN configuration parameters:
+CONFIGURE DEVICE TYPE DISK PARALLELISM 2 BACKUP TYPE TO BACKUPSET;
+new RMAN configuration parameters are successfully stored
+
+new RMAN configuration parameters:
+CONFIGURE CONTROLFILE AUTOBACKUP ON;
+new RMAN configuration parameters are successfully stored
+
+new RMAN configuration parameters:
+CONFIGURE RETENTION POLICY TO RECOVERY WINDOW OF 7 DAYS;
+new RMAN configuration parameters are successfully stored
+
+Report of database schema for database with db_unique_name FREE
+
+List of Permanent Datafiles
+===========================
+File Size(MB) Tablespace           RB segs Datafile Name
+---- -------- -------------------- ------- ------------------------
+1    930      SYSTEM               YES     /opt/oracle/oradata/FREE/system01.dbf
+2    288      PDB$SEED:SYSTEM      NO      /opt/oracle/oradata/FREE/pdbseed/system01.dbf
+3    594      SYSAUX               NO      /opt/oracle/oradata/FREE/sysaux01.dbf
+4    373      PDB$SEED:SYSAUX      NO      /opt/oracle/oradata/FREE/pdbseed/sysaux01.dbf
+7    10       USERS                NO      /opt/oracle/oradata/FREE/users01.dbf
+18   11       UNDOTBS1             YES     /opt/oracle/oradata/FREE/undotbs01.dbf
+20   11       PDB$SEED:UNDOTBS1    NO      /opt/oracle/oradata/FREE/pdbseed/undotbs01.dbf
+21   298      FREEPDB1:SYSTEM      YES     /opt/oracle/oradata/FREE/FREEPDB1/system01.dbf
+22   373      FREEPDB1:SYSAUX      NO      /opt/oracle/oradata/FREE/FREEPDB1/sysaux01.dbf
+23   41       FREEPDB1:UNDOTBS1    YES     /opt/oracle/oradata/FREE/FREEPDB1/undotbs01.dbf
+24   31       FREEPDB1:USERS       NO      /opt/oracle/oradata/FREE/FREEPDB1/users01.dbf
+
+List of Temporary Files
+=======================
+File Size(MB) Tablespace           Maxsize(MB) Tempfile Name
+---- -------- -------------------- ----------- --------------------
+1    10       TEMP                 32767       /opt/oracle/oradata/FREE/temp01.dbf
+2    10       PDB$SEED:TEMP        32767       /opt/oracle/oradata/FREE/pdbseed/temp01.dbf
+3    10       FREEPDB1:TEMP        32767       /opt/oracle/oradata/FREE/FREEPDB1/temp01.dbf
+
+
+Starting backup at 28-AUG-26
+current log archived
+RMAN-06908: warning: operation will not run in parallel on the allocated channels
+RMAN-06909: warning: parallelism require Enterprise Edition
+allocated channel: ORA_DISK_1
+channel ORA_DISK_1: SID=52 device type=DISK
+channel ORA_DISK_1: starting compressed archived log backup set
+channel ORA_DISK_1: specifying archived log(s) in backup set
+input archived log thread=1 sequence=15 RECID=1 STAMP=1242465675
+input archived log thread=1 sequence=16 RECID=2 STAMP=1242465683
+channel ORA_DISK_1: starting piece 1 at 28-AUG-26
+channel ORA_DISK_1: finished piece 1 at 28-AUG-26
+piece handle=/opt/oracle/oradata/FRA/FREE/backupset/2026_08_28/o1_mf_annnn_TAG20260828T092123_o92nrmsr_.bkp tag=TAG20260828T092123 comment=NONE
+channel ORA_DISK_1: backup set complete, elapsed time: 00:00:01
+Finished backup at 28-AUG-26
+
+Starting backup at 28-AUG-26
+using channel ORA_DISK_1
+channel ORA_DISK_1: starting compressed full datafile backup set
+channel ORA_DISK_1: specifying datafile(s) in backup set
+input datafile file number=00001 name=/opt/oracle/oradata/FREE/system01.dbf
+input datafile file number=00003 name=/opt/oracle/oradata/FREE/sysaux01.dbf
+input datafile file number=00018 name=/opt/oracle/oradata/FREE/undotbs01.dbf
+input datafile file number=00007 name=/opt/oracle/oradata/FREE/users01.dbf
+channel ORA_DISK_1: starting piece 1 at 28-AUG-26
+channel ORA_DISK_1: finished piece 1 at 28-AUG-26
+piece handle=/opt/oracle/oradata/FRA/FREE/backupset/2026_08_28/o1_mf_nnndf_TAG20260828T092124_o92nro55_.bkp tag=TAG20260828T092124 comment=NONE
+channel ORA_DISK_1: backup set complete, elapsed time: 00:00:25
+channel ORA_DISK_1: starting compressed full datafile backup set
+channel ORA_DISK_1: specifying datafile(s) in backup set
+input datafile file number=00022 name=/opt/oracle/oradata/FREE/FREEPDB1/sysaux01.dbf
+input datafile file number=00021 name=/opt/oracle/oradata/FREE/FREEPDB1/system01.dbf
+input datafile file number=00023 name=/opt/oracle/oradata/FREE/FREEPDB1/undotbs01.dbf
+input datafile file number=00024 name=/opt/oracle/oradata/FREE/FREEPDB1/users01.dbf
+channel ORA_DISK_1: starting piece 1 at 28-AUG-26
+channel ORA_DISK_1: finished piece 1 at 28-AUG-26
+piece handle=/opt/oracle/oradata/FRA/FREE/53103393CA0F0FE9E0636402000A5830/backupset/2026_08_28/o1_mf_nnndf_TAG20260828T092124_o92nsg5v_.bkp tag=TAG20260828T092124 comment=NONE
+channel ORA_DISK_1: backup set complete, elapsed time: 00:00:15
+channel ORA_DISK_1: starting compressed full datafile backup set
+channel ORA_DISK_1: specifying datafile(s) in backup set
+input datafile file number=00004 name=/opt/oracle/oradata/FREE/pdbseed/sysaux01.dbf
+input datafile file number=00002 name=/opt/oracle/oradata/FREE/pdbseed/system01.dbf
+input datafile file number=00020 name=/opt/oracle/oradata/FREE/pdbseed/undotbs01.dbf
+channel ORA_DISK_1: starting piece 1 at 28-AUG-26
+channel ORA_DISK_1: finished piece 1 at 28-AUG-26
+piece handle=/opt/oracle/oradata/FRA/FREE/508D5151DE58BD63E06304BF6B64EEE7/backupset/2026_08_28/o1_mf_nnndf_TAG20260828T092124_o92nsx8j_.bkp tag=TAG20260828T092124 comment=NONE
+channel ORA_DISK_1: backup set complete, elapsed time: 00:00:15
+Finished backup at 28-AUG-26
+
+Starting backup at 28-AUG-26
+current log archived
+using channel ORA_DISK_1
+channel ORA_DISK_1: starting compressed archived log backup set
+channel ORA_DISK_1: specifying archived log(s) in backup set
+input archived log thread=1 sequence=17 RECID=3 STAMP=1242465740
+channel ORA_DISK_1: starting piece 1 at 28-AUG-26
+channel ORA_DISK_1: finished piece 1 at 28-AUG-26
+piece handle=/opt/oracle/oradata/FRA/FREE/backupset/2026_08_28/o1_mf_annnn_TAG20260828T092220_o92ntdj2_.bkp tag=TAG20260828T092220 comment=NONE
+channel ORA_DISK_1: backup set complete, elapsed time: 00:00:01
+Finished backup at 28-AUG-26
+
+Starting Control File and SPFILE Autobackup at 28-AUG-26
+piece handle=/opt/oracle/oradata/FRA/FREE/autobackup/2026_08_28/o1_mf_s_1242465741_o92ntfw0_.bkp comment=NONE
+Finished Control File and SPFILE Autobackup at 28-AUG-26
+
+
+List of Backups
+===============
+Key     TY LV S Device Type Completion Time #Pieces #Copies Compressed Tag
+------- -- -- - ----------- --------------- ------- ------- ---------- ---
+1       B  A  A DISK        28-AUG-26       1       1       YES        TAG20260828T092123
+2       B  F  A DISK        28-AUG-26       1       1       YES        TAG20260828T092124
+3       B  F  A DISK        28-AUG-26       1       1       YES        TAG20260828T092124
+4       B  F  A DISK        28-AUG-26       1       1       YES        TAG20260828T092124
+5       B  A  A DISK        28-AUG-26       1       1       YES        TAG20260828T092220
+6       B  F  A DISK        28-AUG-26       1       1       NO         TAG20260828T092221
+
+Starting validate at 28-AUG-26
+using channel ORA_DISK_1
+channel ORA_DISK_1: starting validation of datafile
+channel ORA_DISK_1: specifying datafile(s) for validation
+input datafile file number=00001 name=/opt/oracle/oradata/FREE/system01.dbf
+input datafile file number=00003 name=/opt/oracle/oradata/FREE/sysaux01.dbf
+input datafile file number=00018 name=/opt/oracle/oradata/FREE/undotbs01.dbf
+input datafile file number=00007 name=/opt/oracle/oradata/FREE/users01.dbf
+channel ORA_DISK_1: validation complete, elapsed time: 00:00:01
+List of Datafiles
+=================
+File Status Marked Corrupt Empty Blocks Blocks Examined High SCN
+---- ------ -------------- ------------ --------------- ----------
+1    OK     0              20735        119129          2243779   
+  File Name: /opt/oracle/oradata/FREE/system01.dbf
+  Block Type Blocks Failing Blocks Processed
+  ---------- -------------- ----------------
+  Data       0              77839           
+  Index      0              14532           
+  Other      0              6022            
+
+File Status Marked Corrupt Empty Blocks Blocks Examined High SCN
+---- ------ -------------- ------------ --------------- ----------
+3    OK     0              17945        76072           2243814   
+  File Name: /opt/oracle/oradata/FREE/sysaux01.dbf
+  Block Type Blocks Failing Blocks Processed
+  ---------- -------------- ----------------
+  Data       0              6300            
+  Index      0              3556            
+  Other      0              48271           
+
+File Status Marked Corrupt Empty Blocks Blocks Examined High SCN
+---- ------ -------------- ------------ --------------- ----------
+7    OK     0              510          1280            2228838   
+  File Name: /opt/oracle/oradata/FREE/users01.dbf
+  Block Type Blocks Failing Blocks Processed
+  ---------- -------------- ----------------
+  Data       0              0               
+  Index      0              0               
+  Other      0              770             
+
+File Status Marked Corrupt Empty Blocks Blocks Examined High SCN
+---- ------ -------------- ------------ --------------- ----------
+18   OK     0              1132         1408            2243814   
+  File Name: /opt/oracle/oradata/FREE/undotbs01.dbf
+  Block Type Blocks Failing Blocks Processed
+  ---------- -------------- ----------------
+  Data       0              0               
+  Index      0              0               
+  Other      0              276             
+
+channel ORA_DISK_1: starting validation of datafile
+channel ORA_DISK_1: specifying datafile(s) for validation
+input datafile file number=00004 name=/opt/oracle/oradata/FREE/pdbseed/sysaux01.dbf
+input datafile file number=00002 name=/opt/oracle/oradata/FREE/pdbseed/system01.dbf
+input datafile file number=00020 name=/opt/oracle/oradata/FREE/pdbseed/undotbs01.dbf
+channel ORA_DISK_1: validation complete, elapsed time: 00:00:01
+List of Datafiles
+=================
+File Status Marked Corrupt Empty Blocks Blocks Examined High SCN
+---- ------ -------------- ------------ --------------- ----------
+2    OK     0              6857         36877           2230077   
+  File Name: /opt/oracle/oradata/FREE/pdbseed/system01.dbf
+  Block Type Blocks Failing Blocks Processed
+  ---------- -------------- ----------------
+  Data       0              17742           
+  Index      0              10375           
+  Other      0              1890            
+
+File Status Marked Corrupt Empty Blocks Blocks Examined High SCN
+---- ------ -------------- ------------ --------------- ----------
+4    OK     0              7412         47752           2230068   
+  File Name: /opt/oracle/oradata/FREE/pdbseed/sysaux01.dbf
+  Block Type Blocks Failing Blocks Processed
+  ---------- -------------- ----------------
+  Data       0              5907            
+  Index      0              1752            
+  Other      0              32681           
+
+File Status Marked Corrupt Empty Blocks Blocks Examined High SCN
+---- ------ -------------- ------------ --------------- ----------
+20   OK     0              1363         1408            2230074   
+  File Name: /opt/oracle/oradata/FREE/pdbseed/undotbs01.dbf
+  Block Type Blocks Failing Blocks Processed
+  ---------- -------------- ----------------
+  Data       0              0               
+  Index      0              0               
+  Other      0              45              
+
+channel ORA_DISK_1: starting validation of datafile
+channel ORA_DISK_1: specifying datafile(s) for validation
+input datafile file number=00022 name=/opt/oracle/oradata/FREE/FREEPDB1/sysaux01.dbf
+input datafile file number=00021 name=/opt/oracle/oradata/FREE/FREEPDB1/system01.dbf
+input datafile file number=00023 name=/opt/oracle/oradata/FREE/FREEPDB1/undotbs01.dbf
+input datafile file number=00024 name=/opt/oracle/oradata/FREE/FREEPDB1/users01.dbf
+channel ORA_DISK_1: validation complete, elapsed time: 00:00:01
+List of Datafiles
+=================
+File Status Marked Corrupt Empty Blocks Blocks Examined High SCN
+---- ------ -------------- ------------ --------------- ----------
+21   OK     0              8104         38167           2243491   
+  File Name: /opt/oracle/oradata/FREE/FREEPDB1/system01.dbf
+  Block Type Blocks Failing Blocks Processed
+  ---------- -------------- ----------------
+  Data       0              17766           
+  Index      0              10404           
+  Other      0              1870            
+
+File Status Marked Corrupt Empty Blocks Blocks Examined High SCN
+---- ------ -------------- ------------ --------------- ----------
+22   OK     0              7382         47752           2243769   
+  File Name: /opt/oracle/oradata/FREE/FREEPDB1/sysaux01.dbf
+  Block Type Blocks Failing Blocks Processed
+  ---------- -------------- ----------------
+  Data       0              5592            
+  Index      0              1709            
+  Other      0              33069           
+
+File Status Marked Corrupt Empty Blocks Blocks Examined High SCN
+---- ------ -------------- ------------ --------------- ----------
+23   OK     0              591          5248            2243769   
+  File Name: /opt/oracle/oradata/FREE/FREEPDB1/undotbs01.dbf
+  Block Type Blocks Failing Blocks Processed
+  ---------- -------------- ----------------
+  Data       0              0               
+  Index      0              0               
+  Other      0              4657            
+
+File Status Marked Corrupt Empty Blocks Blocks Examined High SCN
+---- ------ -------------- ------------ --------------- ----------
+24   OK     0              1256         3968            2241183   
+  File Name: /opt/oracle/oradata/FREE/FREEPDB1/users01.dbf
+  Block Type Blocks Failing Blocks Processed
+  ---------- -------------- ----------------
+  Data       0              1005            
+  Index      0              1618            
+  Other      0              89              
+
+channel ORA_DISK_1: starting validation of datafile
+channel ORA_DISK_1: specifying datafile(s) for validation
+including current control file for validation
+including current SPFILE in backup set
+channel ORA_DISK_1: validation complete, elapsed time: 00:00:01
+List of Control File and SPFILE
+===============================
+File Type    Status Blocks Failing Blocks Examined
+------------ ------ -------------- ---------------
+SPFILE       OK     0              2               
+Control File OK     0              1146            
+Finished validate at 28-AUG-26
+
+RMAN retention policy will be applied to the command
+RMAN retention policy is set to recovery window of 7 days
+Report of files that must be backed up to satisfy 7 days recovery window
+File Days  Name
+---- ----- -----------------------------------------------------
+
+Recovery Manager complete.
