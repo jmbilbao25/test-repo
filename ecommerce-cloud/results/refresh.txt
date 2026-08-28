@@ -1,0 +1,93 @@
+=== before: the value the running service is using ===
+{
+  "source" : "Spring Cloud Config Server",
+  "store.name" : "Bilbao Bazaar",
+  "store.currency" : "PHP",
+  "store.taxRate" : 0.12,
+  "store.supportEmail" : "support@bilbao-bazaar.example",
+  "catalog.featuredMessage" : "Welcome to Bilbao Bazaar",
+  "catalog.pageSize" : 20,
+  "catalog.lowStockThreshold" : 5
+}
+=== the edit ===
+$ diff -u config-repo/product-service.yml
+--- product-service.yml (before)	2026-08-28 09:48:53.660130028 +0000
++++ product-service.yml (after)	2026-08-28 09:48:53.670130013 +0000
+@@ -1,6 +1,6 @@
+ # Configuration served to product-service. The service itself ships with none
+ # of this; it arrives over HTTP from the Config Server at startup.
+ catalog:
+-  featured-message: Welcome to Bilbao Bazaar
+-  page-size: 20
+-  low-stock-threshold: 5
++  featured-message: MID-YEAR SALE - up to 40% off peripherals
++  page-size: 4
++  low-stock-threshold: 8
+
+=== the Config Server serves the new value immediately ===
+    "source" : {
+      "catalog.featured-message" : "MID-YEAR SALE - up to 40% off peripherals",
+      "catalog.page-size" : 4,
+      "catalog.low-stock-threshold" : 8
+    }
+  }, {
+    "name" : "file:/projects/sandbox/test-repo/ecommerce-cloud/config-repo/application.yml",
+    "source" : {
+      "spring.jackson.serialization.indent-output" : true,
+      "store.name" : "Bilbao Bazaar",
+      "store.currency" : "PHP",
+      "store.tax-rate" : 0.12,
+      "store.support-email" : "support@bilbao-bazaar.example",
+      "management.endpoints.web.exposure.include" : "health,info,refresh,env,configprops",
+
+=== but the running service is still on the old one ===
+{
+  "source" : "Spring Cloud Config Server",
+  "store.name" : "Bilbao Bazaar",
+  "store.currency" : "PHP",
+  "store.taxRate" : 0.12,
+  "store.supportEmail" : "support@bilbao-bazaar.example",
+  "catalog.featuredMessage" : "Welcome to Bilbao Bazaar",
+  "catalog.pageSize" : 20,
+  "catalog.lowStockThreshold" : 5
+}
+=== POST /actuator/refresh ===
+$ curl -X POST http://localhost:9081/actuator/refresh
+[ "catalog.low-stock-threshold", "catalog.page-size", "catalog.featured-message" ]
+
+=== and now it is not ===
+{
+  "source" : "Spring Cloud Config Server",
+  "store.name" : "Bilbao Bazaar",
+  "store.currency" : "PHP",
+  "store.taxRate" : 0.12,
+  "store.supportEmail" : "support@bilbao-bazaar.example",
+  "catalog.featuredMessage" : "MID-YEAR SALE - up to 40% off peripherals",
+  "catalog.pageSize" : 4,
+  "catalog.lowStockThreshold" : 8
+}
+=== the change reaches behaviour, not just the config endpoint ===
+$ curl http://localhost:9081/products/low-stock
+{
+  "threshold" : 8,
+  "count" : 3,
+  "products" : [ {
+    "id" : 3,
+    "name" : "27-inch Monitor",
+    "category" : "Displays",
+    "price" : 12999.00,
+    "stock" : 7
+  }, {
+    "id" : 4,
+    "name" : "USB-C Hub",
+    "category" : "Accessories",
+    "price" : 1650.00,
+    "stock" : 3
+  }, {
+    "id" : 7,
+    "name" : "1080p Webcam",
+    "category" : "Video",
+    "price" : 2450.00,
+    "stock" : 2
+  } ]
+}

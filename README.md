@@ -11,6 +11,7 @@
 | 8 | Optimizing PostgreSQL: indexing, stored procedures and replication | [docx](PostgreSQL-Performance-Assignment.docx) · [pdf](PostgreSQL-Performance-Assignment.pdf) | [`postgres-tuning/`](postgres-tuning) |
 | 9 | Optimizing and recovering an Oracle database | [docx](Oracle-Optimization-Recovery-Assignment.docx) · [pdf](Oracle-Optimization-Recovery-Assignment.pdf) | [`oracle-tuning/`](oracle-tuning) |
 | 10 | Hands-on JUnit 5: annotations, assertions and advanced concepts | [docx](JUnit5-Testing-Assignment.docx) · [pdf](JUnit5-Testing-Assignment.pdf) | [`calculator-junit5/`](calculator-junit5) |
+| 13 | Spring Cloud service discovery with Eureka and Config Server | [docx](Spring-Cloud-Eureka-Config-Assignment.docx) · [pdf](Spring-Cloud-Eureka-Config-Assignment.pdf) | [`ecommerce-cloud/`](ecommerce-cloud) |
 | Milestone | Case study: real-time banking fraud & analytics engine | [docx](Banking-Fraud-Analytics-CaseStudy.docx) · [pdf](Banking-Fraud-Analytics-CaseStudy.pdf) | [`banking-api/`](banking-api) |
 | Induction | EastWest Bank core banking relational database lab | [docx](EWB-Core-Banking-Database-Lab.docx) · [pdf](EWB-Core-Banking-Database-Lab.pdf) | [`ewb-core-banking/`](ewb-core-banking) |
 
@@ -309,3 +310,36 @@ Two findings from building it, both covered in the write-up:
   where a failure has already shown up.
 
 Details in [`calculator-junit5/README.md`](calculator-junit5/README.md).
+
+
+
+---
+
+# Day 13: Spring Cloud Service Discovery and Configuration
+
+The write-up is **[Spring-Cloud-Eureka-Config-Assignment.docx](Spring-Cloud-Eureka-Config-Assignment.docx)**,
+with a **[PDF copy](Spring-Cloud-Eureka-Config-Assignment.pdf)** — 36 pages, 47
+figures, 14 of them real browser screenshots. The application is in
+**[`ecommerce-cloud/`](ecommerce-cloud)**.
+
+Bilbao Bazaar: a Product Service and an Order Service, a Eureka registry and a
+Config Server, on Spring Boot 3.4.1 and Spring Cloud 2024.0.0.
+
+```bash
+cd ecommerce-cloud
+./run.sh                         # builds, starts all four, exercises everything
+python3 scripts/make_figures.py
+python3 build.py
+```
+
+No host and no port for the Product Service appears anywhere in the Order
+Service. Two things turn that into evidence rather than a claim: the same URL on
+a RestTemplate without `@LoadBalanced` fails with `UnknownHostException:
+product-service`, and the Product Service is deregistered and restarted on **port
+9091 instead of 9081**, after which the Order Service prices an order against it
+with no restart and no configuration change.
+
+The configuration finding is that a refresh has three states, not two. The Config
+Server served the edited value immediately while the running service was still
+returning the old one; checking the server alone would have looked like success.
+Details in [`ecommerce-cloud/README.md`](ecommerce-cloud/README.md).

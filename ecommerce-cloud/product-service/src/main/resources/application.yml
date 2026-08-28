@@ -1,0 +1,27 @@
+server:
+  port: 9081
+
+spring:
+  application:
+    # This name does two things: Eureka registers the instance under it, and the
+    # Config Server uses it to pick which YAML file to serve. That is why
+    # config-repo/product-service.yml is named the way it is.
+    name: product-service
+  config:
+    # Ask the Config Server for configuration before the application context is
+    # built. optional: means the service still starts if the Config Server is
+    # down, which is how Step 3 can show the difference between configured and
+    # unconfigured rather than just failing to boot.
+    import: optional:configserver:${CONFIG_SERVER_URI:http://localhost:8888}
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
+    # Short intervals so registration and deregistration are quick enough to
+    # screenshot. Production defaults are 30s each.
+    registry-fetch-interval-seconds: 5
+  instance:
+    prefer-ip-address: true
+    lease-renewal-interval-in-seconds: 5
+    lease-expiration-duration-in-seconds: 10

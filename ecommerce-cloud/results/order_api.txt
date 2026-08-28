@@ -1,0 +1,101 @@
+=== what order-service can see in the registry ===
+$ curl http://localhost:9082/orders/discovery
+{
+  "servicesRegisteredInEureka" : [ "product-service", "order-service" ],
+  "productServiceInstances" : [ {
+    "instanceId" : "ip-10-131-70-226.us-east-1.compute.internal:product-service:9081",
+    "serviceId" : "PRODUCT-SERVICE",
+    "host" : "169.254.255.194",
+    "port" : 9081,
+    "uri" : "http://169.254.255.194:9081"
+  } ],
+  "configurationFromConfigServer" : {
+    "store.name" : "Bilbao Bazaar",
+    "store.currency" : "PHP",
+    "store.taxRate" : 0.12,
+    "orders.maxItemsPerOrder" : 10,
+    "orders.freeShippingThreshold" : 2000,
+    "orders.shippingFee" : 150
+  }
+}
+[HTTP 200]
+
+=== placing an order: 1 x 27-inch Monitor ===
+$ curl -X POST -H Content-Type: application/json -d {"productId":3,"quantity":1} http://localhost:9082/orders
+{
+  "id" : "c307bce7",
+  "productId" : 3,
+  "productName" : "27-inch Monitor",
+  "quantity" : 1,
+  "unitPrice" : 12999.0,
+  "subtotal" : 12999.00,
+  "tax" : 1559.88,
+  "shipping" : 0.00,
+  "total" : 14558.88,
+  "currency" : "PHP",
+  "servedByProductInstance" : "169.254.255.194:9081",
+  "placedAt" : "2026-08-28T09:48:44.312169720Z"
+}
+[HTTP 201]
+
+=== placing a second order below the free shipping threshold ===
+$ curl -X POST -H Content-Type: application/json -d {"productId":1,"quantity":1} http://localhost:9082/orders
+{
+  "id" : "28b970b0",
+  "productId" : 1,
+  "productName" : "Wireless Mouse",
+  "quantity" : 1,
+  "unitPrice" : 899.0,
+  "subtotal" : 899.00,
+  "tax" : 107.88,
+  "shipping" : 150.00,
+  "total" : 1156.88,
+  "currency" : "PHP",
+  "servedByProductInstance" : "169.254.255.194:9081",
+  "placedAt" : "2026-08-28T09:48:44.330032951Z"
+}
+[HTTP 201]
+
+=== a quantity above the configured maximum is refused ===
+$ curl -X POST -H Content-Type: application/json -d {"productId":1,"quantity":25} http://localhost:9082/orders
+{
+  "error" : "quantity 25 exceeds the configured maximum of 10 items per order"
+}
+[HTTP 400]
+
+=== both orders ===
+$ curl http://localhost:9082/orders
+{
+  "store" : "Bilbao Bazaar",
+  "currency" : "PHP",
+  "count" : 2,
+  "orders" : [ {
+    "id" : "28b970b0",
+    "productId" : 1,
+    "productName" : "Wireless Mouse",
+    "quantity" : 1,
+    "unitPrice" : 899.0,
+    "subtotal" : 899.00,
+    "tax" : 107.88,
+    "shipping" : 150.00,
+    "total" : 1156.88,
+    "currency" : "PHP",
+    "servedByProductInstance" : "169.254.255.194:9081",
+    "placedAt" : "2026-08-28T09:48:44.330032951Z"
+  }, {
+    "id" : "c307bce7",
+    "productId" : 3,
+    "productName" : "27-inch Monitor",
+    "quantity" : 1,
+    "unitPrice" : 12999.0,
+    "subtotal" : 12999.00,
+    "tax" : 1559.88,
+    "shipping" : 0.00,
+    "total" : 14558.88,
+    "currency" : "PHP",
+    "servedByProductInstance" : "169.254.255.194:9081",
+    "placedAt" : "2026-08-28T09:48:44.312169720Z"
+  } ]
+}
+[HTTP 200]
+

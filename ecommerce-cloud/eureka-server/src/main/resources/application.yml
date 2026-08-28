@@ -1,0 +1,28 @@
+server:
+  port: 8761
+
+spring:
+  application:
+    name: eureka-server
+
+eureka:
+  client:
+    # This IS the registry, so it neither registers with itself nor fetches a
+    # copy of its own registry.
+    register-with-eureka: false
+    fetch-registry: false
+  server:
+    # Self preservation stops Eureka evicting instances when it thinks it is
+    # seeing a network partition rather than a genuine shutdown. That is the
+    # right default in production and the wrong one here: Step 2 has to show a
+    # service actually disappearing from the registry, and with this on the
+    # dead instance would linger. eviction-interval makes the sweep prompt.
+    enable-self-preservation: false
+    eviction-interval-timer-in-ms: 3000
+    response-cache-update-interval-ms: 1000
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info

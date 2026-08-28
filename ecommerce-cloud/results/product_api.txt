@@ -1,0 +1,85 @@
+=== the catalogue, wrapped in configured values ===
+$ curl http://localhost:9081/products
+{
+  "store" : "Bilbao Bazaar",
+  "currency" : "PHP",
+  "featuredMessage" : "Welcome to Bilbao Bazaar",
+  "pageSize" : 20,
+  "count" : 8,
+  "products" : [ {
+    "id" : 1,
+    "name" : "Wireless Mouse",
+    "category" : "Peripherals",
+    "price" : 899.00,
+    "stock" : 42
+  }, {
+    "id" : 2,
+    "name" : "Mechanical Keyboard",
+    "category" : "Peripherals",
+    "price" : 3450.00,
+    "stock" : 18
+  }, {
+    "id" : 3,
+    "name" : "27-inch Monitor",
+    "category" : "Displays",
+    "price" : 12999.00,
+    "stock" : 7
+  }, {
+    "id" : 4,
+    "name" : "USB-C Hub",
+    "category" : "Accessories",
+    "price" : 1650.00,
+    "stock" : 3
+  }, {
+    "id" : 5,
+    "name" : "Laptop Stand",
+    "category" : "Accessories",
+    "price" : 1200.00,
+    "stock" : 25
+  }, {
+    "id" : 6,
+    "name" : "Noise-cancelling Headset",
+    "category" : "Audio",
+    "price" : 5799.00,
+    "stock" : 11
+  }, {
+    "id" : 7,
+    "name" : "1080p Webcam",
+    "category" : "Video",
+    "price" : 2450.00,
+    "stock" : 2
+  }, {
+    "id" : 8,
+    "name" : "Laptop Sleeve 14-inch",
+    "category" : "Accessories",
+    "price" : 749.00,
+    "stock" : 30
+  } ]
+}
+[HTTP 200]
+
+=== one product, the endpoint order-service calls ===
+$ curl http://localhost:9081/products/3
+{
+  "id" : 3,
+  "name" : "27-inch Monitor",
+  "category" : "Displays",
+  "price" : 12999.00,
+  "stock" : 7
+}
+[HTTP 200]
+
+=== everything the Config Server told this service ===
+$ curl http://localhost:9081/products/config
+{
+  "source" : "Spring Cloud Config Server",
+  "store.name" : "Bilbao Bazaar",
+  "store.currency" : "PHP",
+  "store.taxRate" : 0.12,
+  "store.supportEmail" : "support@bilbao-bazaar.example",
+  "catalog.featuredMessage" : "Welcome to Bilbao Bazaar",
+  "catalog.pageSize" : 20,
+  "catalog.lowStockThreshold" : 5
+}
+[HTTP 200]
+

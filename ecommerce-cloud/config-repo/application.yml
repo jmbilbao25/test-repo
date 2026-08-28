@@ -1,0 +1,27 @@
+# Shared by every service that asks the Config Server for its configuration.
+# The Config Server merges this with the service-specific file, so store.* is
+# defined once here rather than copied into both services.
+spring:
+  jackson:
+    serialization:
+      # Indented JSON, so that a response read in a browser is legible without
+      # a formatting extension. This is served from here rather than set in each
+      # service, which is itself a small demonstration of the point.
+      indent-output: true
+
+store:
+  name: Bilbao Bazaar
+  currency: PHP
+  tax-rate: 0.12
+  support-email: support@bilbao-bazaar.example
+
+management:
+  endpoints:
+    web:
+      exposure:
+        # /actuator/refresh is what makes a configuration change reachable
+        # without a restart. It is the endpoint Step 3 posts to.
+        include: health,info,refresh,env,configprops
+  endpoint:
+    health:
+      show-details: always
