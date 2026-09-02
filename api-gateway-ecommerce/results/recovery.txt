@@ -1,0 +1,31 @@
+=== docker start bazaar-products ===
+$ docker start bazaar-products
+bazaar-products
+
+=== the catalogue route recovers with no gateway restart ===
+$ curl -s -o /dev/null -w 'GET /api/products -> %{http_code}\n' http://localhost:8091/api/products
+GET /api/products -> 200
+
+=== and orders can be priced again ===
+$ curl -s -X POST http://localhost:8091/api/orders -H 'Content-Type: application/json' -d '{"product_id":1007,"quantity":2,"customer":"after-restart"}'
+{
+  "id": 5005,
+  "customer": "after-restart",
+  "product_id": 1007,
+  "product_name": "Calamansi Marmalade 250g",
+  "unit_price": 185.0,
+  "quantity": 2,
+  "total": 370.0,
+  "currency": "PHP",
+  "status": "CONFIRMED",
+  "placed_at": "2026-09-02 05:42:44Z",
+  "priced_by": "products-service",
+  "request_id": "b778797196fa8a107e1ea0ee5489dfda"
+}
+=== NGINX did not need to be reloaded ===
+$ docker ps --format 'table {{.Names}}\t{{.Status}}'
+NAMES            STATUS
+bazaar-products  Up 1 second
+bazaar-orders    Up 13 seconds
+bazaar-gateway   Up 13 seconds
+

@@ -1,0 +1,23 @@
+=== docker logs bazaar-gateway  (the access log, one line per request) ===
+127.0.0.1  "GET / HTTP/1.1"  200  1925b  0.000s  rid=8deb4857255e3a08acb271bcc6e1fdf8  upstream=-
+127.0.0.1  "GET /styles.css HTTP/1.1"  200  5625b  0.000s  rid=75eb9caf552a5cbf8c441a166dc506a0  upstream=-
+127.0.0.1  "GET /app.js HTTP/1.1"  200  6319b  0.000s  rid=6fdc2ca591410efad8995036a820f6e0  upstream=-
+127.0.0.1  "GET /health HTTP/1.1"  200  80b  0.000s  rid=d5085a902eb09312f3c3d69777ec26ab  upstream=-
+127.0.0.1  "GET /api/status/products HTTP/1.1"  503  118b  0.000s  rid=52df75d1ead03438a10090ccc096ce31  upstream=127.0.0.1:8000
+2026/09/02 05:42:40 [error] 27#27: *46 connect() failed (111: Connection refused) while connecting to upstream, client: 127.0.0.1, server: _, request: "GET /api/status/products HTTP/1.1", upstream: "http://127.0.0.1:8000/health", host: "localhost:8091", referrer: "http://localhost:8091/"
+127.0.0.1  "GET /api/status/orders HTTP/1.1"  200  174b  0.001s  rid=8df37bc5e33ffbdfa501199a27e6887e  upstream=127.0.0.1:8001
+2026/09/02 05:42:40 [error] 27#27: *46 connect() failed (111: Connection refused) while connecting to upstream, client: 127.0.0.1, server: _, request: "GET /api/products HTTP/1.1", upstream: "http://127.0.0.1:8000/products", host: "localhost:8091", referrer: "http://localhost:8091/"
+127.0.0.1  "GET /api/products HTTP/1.1"  503  118b  0.000s  rid=15e31cd96ad0833518f216093d92fc4d  upstream=127.0.0.1:8000
+127.0.0.1  "GET /api/orders HTTP/1.1"  200  1666b  0.001s  rid=c6c89ab5abc4b5a9535cd55e03c5ff02  upstream=127.0.0.1:8001
+2026/09/02 05:42:42 [error] 25#25: *50 connect() failed (111: Connection refused) while connecting to upstream, client: 127.0.0.1, server: _, request: "GET /api/products HTTP/1.1", upstream: "http://127.0.0.1:8000/products", host: "localhost:8091"
+127.0.0.1  "GET /api/products HTTP/1.1"  503  118b  0.000s  rid=28b8d68c0de1070420b638ca9fb1ca81  upstream=127.0.0.1:8000
+127.0.0.1  "GET /api/products HTTP/1.1"  200  1193b  0.002s  rid=25f4495aec1ae3d1654316eb03deb471  upstream=127.0.0.1:8000
+127.0.0.1  "POST /api/orders HTTP/1.1"  201  345b  0.014s  rid=b778797196fa8a107e1ea0ee5489dfda  upstream=127.0.0.1:8001
+127.0.0.1  "GET / HTTP/1.1"  200  1925b  0.000s  rid=60f5d1402d8baaa86629dcd0bf3592f6  upstream=-
+127.0.0.1  "GET /styles.css HTTP/1.1"  200  5625b  0.000s  rid=7950aaacaed0cf634ff1e060359f164e  upstream=-
+127.0.0.1  "GET /app.js HTTP/1.1"  200  6319b  0.000s  rid=f55a9831ff22369c6f67bd4798b12d3f  upstream=-
+127.0.0.1  "GET /health HTTP/1.1"  200  80b  0.000s  rid=08bfe1c4446cd3e005099c3ea72d4b03  upstream=-
+127.0.0.1  "GET /api/status/products HTTP/1.1"  200  130b  0.001s  rid=f0ebfa73a3fcdda8080028347e61323f  upstream=127.0.0.1:8000
+127.0.0.1  "GET /api/status/orders HTTP/1.1"  200  174b  0.002s  rid=2d603b5bf101d4973b08db7634949158  upstream=127.0.0.1:8001
+127.0.0.1  "GET /api/products HTTP/1.1"  200  1193b  0.002s  rid=6fee008b4805c381ca67a492551879e0  upstream=127.0.0.1:8000
+127.0.0.1  "GET /api/orders HTTP/1.1"  200  2069b  0.002s  rid=f406c0e45a416286ad0bdd932d458fe0  upstream=127.0.0.1:8001

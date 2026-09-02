@@ -1,0 +1,113 @@
+=== GET /api/products -> products-service ===
+$ curl -s http://localhost:8091/api/products
+{
+  "currency": "PHP",
+  "count": 8,
+  "served_by": "products-service",
+  "products": [
+    {
+      "id": 1001,
+      "name": "Bamboo Cutting Board",
+      "category": "Kitchen",
+      "price": 749.0,
+      "stock": 24
+    },
+    {
+      "id": 1002,
+      "name": "Cast Iron Skillet 10in",
+      "category": "Kitchen",
+      "price": 1895.0,
+      "stock": 8
+    },
+    {
+      "id": 1003,
+      "name": "Barako Coffee Beans 1kg",
+      "category": "Pantry",
+      "price": 620.0,
+      "stock": 52
+    },
+    {
+      "id": 1004,
+      "name": "Buri Storage Basket",
+      "category": "Home",
+      "price": 480.0,
+      "stock": 3
+    },
+    {
+      "id": 1005,
+      "name": "Abaca Table Runner",
+      "category": "Home",
+      "price": 395.0,
+      "stock": 17
+    },
+    {
+      "id": 1006,
+      "name": "Stainless Tumbler 500ml",
+      "category": "Kitchen",
+      "price": 559.0,
+      "stock": 0
+    },
+    {
+      "id": 1007,
+      "name": "Calamansi Marmalade 250g",
+      "category": "Pantry",
+      "price": 185.0,
+      "stock": 41
+    },
+    {
+      "id": 1008,
+      "name": "Handwoven Placemat Set",
+      "category": "Home",
+      "price": 690.0,
+      "stock": 6
+    }
+  ]
+}
+=== GET /api/products/1002 -> a single product ===
+$ curl -s http://localhost:8091/api/products/1002
+{
+  "currency": "PHP",
+  "served_by": "products-service",
+  "id": 1002,
+  "name": "Cast Iron Skillet 10in",
+  "category": "Kitchen",
+  "price": 1895.0,
+  "stock": 8
+}
+=== the public path and the internal path are not the same ===
+    /api/products/1002 at the gateway is /products/1002 at the service.
+$ curl -s -o /dev/null -w 'gateway  %{http_code}  %{time_total}s\n' http://localhost:8091/api/products/1002
+gateway  200  0.001988s
+
+$ curl -s -o /dev/null -w 'direct   %{http_code}  %{time_total}s\n' http://127.0.0.1:8000/products/1002
+direct   200  0.001733s
+
+=== a filter, passed through as a query string ===
+$ curl -s 'http://localhost:8091/api/products?category=Pantry'
+{
+  "currency": "PHP",
+  "count": 2,
+  "served_by": "products-service",
+  "products": [
+    {
+      "id": 1003,
+      "name": "Barako Coffee Beans 1kg",
+      "category": "Pantry",
+      "price": 620.0,
+      "stock": 52
+    },
+    {
+      "id": 1007,
+      "name": "Calamansi Marmalade 250g",
+      "category": "Pantry",
+      "price": 185.0,
+      "stock": 41
+    }
+  ]
+}
+=== GET /api/products/9999 -> the service's own 404, not the gateway's ===
+$ curl -s -w '[HTTP %{http_code}]\n' http://localhost:8091/api/products/9999
+{
+  "detail": "no product with id 9999 in the catalogue"
+}[HTTP 404]
+

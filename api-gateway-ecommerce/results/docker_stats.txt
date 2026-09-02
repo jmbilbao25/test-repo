@@ -1,0 +1,10 @@
+=== docker stats --no-stream ===
+$ docker stats --no-stream --format 'table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}'
+time="2026-09-02T05:32:06Z" level=warning msg="Failed to retrieve cgroup stats: open /sys/fs/cgroup/libpod_parent/libpod-7e4b4f9e0257168e715e7ceee1ff88f21511ed9013a966003a7ddd3aa7765328/memory.stat: no such file or directory"
+time="2026-09-02T05:32:06Z" level=warning msg="Failed to retrieve cgroup stats: open /sys/fs/cgroup/libpod_parent/libpod-12b696e31dcb0908e2c41c6306b4b2bd0e1ac795b2f108c962a201a8d4b0ce30/memory.stat: no such file or directory"
+time="2026-09-02T05:32:06Z" level=warning msg="Failed to retrieve cgroup stats: open /sys/fs/cgroup/libpod_parent/libpod-bfdcc6a5871b935bbcfb3d2b3fe4c3cb4303ca4e1aff2d837583d9a85586ae3b/memory.stat: no such file or directory"
+NAME             CPU %       MEM USAGE / LIMIT
+bazaar-products  53.93%      0B / 33.09GB
+bazaar-orders    62.00%      0B / 33.09GB
+bazaar-gateway   2.81%       0B / 33.09GB
+

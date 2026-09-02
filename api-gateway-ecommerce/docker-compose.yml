@@ -1,0 +1,84 @@
+# Bilbao Bazaar - three containers, one gateway.
+#
+# A note on the networking, because it is not the textbook shape and the reason
+# is worth recording.
+#
+# The intended version of this file put all three containers on a user-defined
+# bridge network, published only the gateway's port, and left the two services on
+# `expose:` so that nothing but the gateway could reach them. That is the right
+# way to write it and it is what the write-up describes as the standard setup.
+#
+# It does not run on the machine this was built on. The container runtime there
+# is Podman without CAP_NET_ADMIN, so netavark hands out addresses on the bridge
+# but cannot program the routes: containers get an IP, and no packet reaches it
+# from anywhere. Published ports fail for the same reason, since publishing is
+# NAT. Both were verified before giving up on them - a container could not be
+# reached from the host or from another container, by name or by address.
+#
+# So all three containers share the host network namespace instead, and the
+# isolation is done with bind addresses rather than with the network:
+#
+#   products-service   127.0.0.1:8000   loopback only
+#   orders-service     127.0.0.1:8001   loopback only
+#   gateway            0.0.0.0:8091     the only reachable port
+#
+# 8091 and not 8080 because 8080, 8081 and 8083 were already taken on the build
+# machine, and not 8090 either: a server binds 8090 there quite happily and then
+# no connection to it ever completes, which cost an hour to find. Anything the
+# gateway listens on is a one-line change here and in nginx.conf.
+#
+# The services are still unreachable from off the machine, which is the property
+# that matters for the assignment; it is enforced one layer up from where it
+# should be. `--add-host` keeps the logical names, so nginx.conf and the orders
+# service still say `products-service` and never an address.
+
+services:
+
+  # -------------------------------------------------------------- catalogue
+  products-service:
+    build: ./products-service
+    image: bazaar/products-service:1.0
+    container_name: bazaar-products
+    network_mode: host
+    environment:
+      BIND_HOST: 127.0.0.1
+      BIND_PORT: "8000"
+      STORE_CURRENCY: PHP
+    restart: unless-stopped
+
+  # ----------------------------------------------------------------- orders
+  orders-service:
+    build: ./orders-service
+    image: bazaar/orders-service:1.0
+    container_name: bazaar-orders
+    network_mode: host
+    # The name, not the address. Nothing in the image knows where the catalogue
+    # runs; the mapping below is the only place it is stated.
+    extra_hosts:
+      - "products-service:127.0.0.1"
+    environment:
+      BIND_HOST: 127.0.0.1
+      BIND_PORT: "8001"
+      PRODUCTS_BASE_URL: http://products-service:8000
+      MAX_QUANTITY_PER_ORDER: "10"
+      PRODUCTS_TIMEOUT_SECONDS: "3.0"
+    depends_on:
+      - products-service
+    restart: unless-stopped
+
+  # ------------------------------------------------------------ api gateway
+  gateway:
+    build: ./gateway
+    image: bazaar/api-gateway:1.0
+    container_name: bazaar-gateway
+    network_mode: host
+    # Both upstream names resolved here rather than written into nginx.conf.
+    extra_hosts:
+      - "products-service:127.0.0.1"
+      - "orders-service:127.0.0.1"
+    depends_on:
+      # Ordering only, not readiness: NGINX resolves every name in an upstream
+      # block when it starts, so the names have to exist by then.
+      - products-service
+      - orders-service
+    restart: unless-stopped

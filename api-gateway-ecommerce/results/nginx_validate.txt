@@ -1,0 +1,10 @@
+=== nginx -t with no network: the names cannot resolve ===
+$ docker run --rm --network none bazaar/api-gateway:1.0 nginx -t
+2026/09/02 05:42:25 [emerg] 1#1: host not found in upstream "products-service:8000" in /etc/nginx/nginx.conf:43
+nginx: [emerg] host not found in upstream "products-service:8000" in /etc/nginx/nginx.conf:43
+nginx: configuration file /etc/nginx/nginx.conf test failed
+
+=== nginx -t with the names mapped: the same file is valid ===
+$ docker run --rm --network host --add-host ... nginx -t
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful

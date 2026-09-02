@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bilbao Bazaar</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="mark">BB</span>
+    <div>
+      <h1>Bilbao Bazaar</h1>
+      <p>Storefront and API served through one gateway on port 8091</p>
+    </div>
+  </div>
+  <div class="status" id="status">
+    <span class="pill pending" id="pill-gateway">gateway</span>
+    <span class="pill pending" id="pill-products">products-service</span>
+    <span class="pill pending" id="pill-orders">orders-service</span>
+  </div>
+</header>
+
+<main>
+  <section class="panel">
+    <div class="panel-head">
+      <h2>Catalogue</h2>
+      <code class="route">GET /api/products &rarr; products-service:8000/products</code>
+    </div>
+    <div class="grid" id="catalogue">
+      <p class="muted span">Loading the catalogue through the gateway&hellip;</p>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head">
+      <h2>Orders</h2>
+      <code class="route">GET /api/orders &rarr; orders-service:8000/orders</code>
+    </div>
+    <div id="orders"><p class="muted">No orders yet.</p></div>
+  </section>
+</main>
+
+<!-- Reads the headers the gateway adds, which is how the page can show that the
+     request actually went through it. -->
+<footer class="trace">
+  <div class="trace-title">Last request through the gateway</div>
+  <dl>
+    <div><dt>Request</dt><dd id="t-request">&mdash;</dd></div>
+    <div><dt>Status</dt><dd id="t-status">&mdash;</dd></div>
+    <div><dt>Served by</dt><dd id="t-served">&mdash;</dd></div>
+    <div><dt>X-Request-ID</dt><dd id="t-rid" class="rid">&mdash;</dd></div>
+    <div><dt>Time</dt><dd id="t-time">&mdash;</dd></div>
+  </dl>
+</footer>
+
+<div id="toast" class="toast"></div>
+
+<script src="app.js"></script>
+</body>
+</html>

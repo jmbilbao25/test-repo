@@ -1,0 +1,19 @@
+=== docker ps ===
+$ docker ps --format 'table {{.Names}}\t{{.Image}}\t{{.Status}}\t{{.Command}}'
+NAMES            IMAGE                                  STATUS       COMMAND
+bazaar-products  localhost/bazaar/products-service:1.0  Up 1 second  sh -c exec uvicor...
+bazaar-orders    localhost/bazaar/orders-service:1.0    Up 1 second  sh -c exec uvicor...
+bazaar-gateway   localhost/bazaar/api-gateway:1.0       Up 1 second  nginx -g daemon o...
+
+=== docker images ===
+$ docker images bazaar/* --format 'table {{.Repository}}\t{{.Tag}}\t{{.ID}}\t{{.Size}}'
+REPOSITORY                         TAG         IMAGE ID      SIZE
+localhost/bazaar/api-gateway       1.0         8339fde0ac30  49.7 MB
+localhost/bazaar/orders-service    1.0         93e83c9e8918  173 MB
+localhost/bazaar/products-service  1.0         f2411c61b8ba  171 MB
+
+=== how each container is attached, and what it binds ===
+CONTAINER          NETWORK      BINDS
+bazaar-products    host         127.0.0.1:8000  (loopback only)
+bazaar-orders      host         127.0.0.1:8001  (loopback only)
+bazaar-gateway     host         0.0.0.0:8091    (reachable)

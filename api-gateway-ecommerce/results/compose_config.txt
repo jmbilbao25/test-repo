@@ -1,0 +1,46 @@
+=== docker compose config (the declarative definition) ===
+[0mservices:
+  gateway:
+    build:
+      context: /projects/sandbox/test-repo/api-gateway-ecommerce/gateway
+    container_name: bazaar-gateway
+    depends_on:
+      orders-service:
+        condition: service_started
+      products-service:
+        condition: service_started
+    extra_hosts:
+    - products-service:127.0.0.1
+    - orders-service:127.0.0.1
+    image: bazaar/api-gateway:1.0
+    network_mode: host
+    restart: unless-stopped
+  orders-service:
+    build:
+      context: /projects/sandbox/test-repo/api-gateway-ecommerce/orders-service
+    container_name: bazaar-orders
+    depends_on:
+      products-service:
+        condition: service_started
+    environment:
+      BIND_HOST: 127.0.0.1
+      BIND_PORT: '8001'
+      MAX_QUANTITY_PER_ORDER: '10'
+      PRODUCTS_BASE_URL: http://products-service:8000
+      PRODUCTS_TIMEOUT_SECONDS: '3.0'
+    extra_hosts:
+    - products-service:127.0.0.1
+    image: bazaar/orders-service:1.0
+    network_mode: host
+    restart: unless-stopped
+  products-service:
+    build:
+      context: /projects/sandbox/test-repo/api-gateway-ecommerce/products-service
+    container_name: bazaar-products
+    environment:
+      BIND_HOST: 127.0.0.1
+      BIND_PORT: '8000'
+      STORE_CURRENCY: PHP
+    image: bazaar/products-service:1.0
+    network_mode: host
+    restart: unless-stopped

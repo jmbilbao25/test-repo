@@ -1,0 +1,89 @@
+=== what orders-service knows about its dependency ===
+    A name in configuration, resolved at run time.
+$ curl -s http://localhost:8091/api/orders/dependency
+{
+  "service": "orders-service",
+  "instance": "ip-10-137-53-49.us-east-1.compute.internal",
+  "configured_dependency": "http://products-service:8000",
+  "dns_name": "products-service",
+  "resolved_to": "127.0.0.1",
+  "health_probe": {
+    "reachable": true,
+    "status_code": 200,
+    "body": {
+      "service": "products-service",
+      "status": "up",
+      "instance": "ip-10-137-53-49.us-east-1.compute.internal",
+      "products": 8
+    }
+  }
+}
+=== POST /api/orders: the gateway routes it, products prices it ===
+$ curl -s -X POST http://localhost:8091/api/orders -H 'Content-Type: application/json' -d '{"product_id":1002,"quantity":2,"customer":"curl"}'
+{
+  "id": 5001,
+  "customer": "curl",
+  "product_id": 1002,
+  "product_name": "Cast Iron Skillet 10in",
+  "unit_price": 1895.0,
+  "quantity": 2,
+  "total": 3790.0,
+  "currency": "PHP",
+  "status": "CONFIRMED",
+  "placed_at": "2026-09-02 05:42:33Z",
+  "priced_by": "products-service",
+  "request_id": "478ef6c99db0a61181af51984e100a0a"
+}
+=== a second order, on a cheaper line ===
+$ curl -s -X POST http://localhost:8091/api/orders -H 'Content-Type: application/json' -d '{"product_id":1003,"quantity":3,"customer":"curl"}'
+{
+  "id": 5002,
+  "customer": "curl",
+  "product_id": 1003,
+  "product_name": "Barako Coffee Beans 1kg",
+  "unit_price": 620.0,
+  "quantity": 3,
+  "total": 1860.0,
+  "currency": "PHP",
+  "status": "CONFIRMED",
+  "placed_at": "2026-09-02 05:42:33Z",
+  "priced_by": "products-service",
+  "request_id": "92b8297fbd577f954e2ead9c4bcacec6"
+}
+=== GET /api/orders: note priced_by on every order ===
+$ curl -s http://localhost:8091/api/orders
+{
+  "count": 2,
+  "served_by": "orders-service",
+  "revenue": 5650.0,
+  "orders": [
+    {
+      "id": 5001,
+      "customer": "curl",
+      "product_id": 1002,
+      "product_name": "Cast Iron Skillet 10in",
+      "unit_price": 1895.0,
+      "quantity": 2,
+      "total": 3790.0,
+      "currency": "PHP",
+      "status": "CONFIRMED",
+      "placed_at": "2026-09-02 05:42:33Z",
+      "priced_by": "products-service",
+      "request_id": "478ef6c99db0a61181af51984e100a0a"
+    },
+    {
+      "id": 5002,
+      "customer": "curl",
+      "product_id": 1003,
+      "product_name": "Barako Coffee Beans 1kg",
+      "unit_price": 620.0,
+      "quantity": 3,
+      "total": 1860.0,
+      "currency": "PHP",
+      "status": "CONFIRMED",
+      "placed_at": "2026-09-02 05:42:33Z",
+      "priced_by": "products-service",
+      "request_id": "92b8297fbd577f954e2ead9c4bcacec6"
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+=== the gateway's own health endpoint ===
+$ curl -s http://localhost:8091/health
+{"service":"api-gateway","status":"up","routes":["/api/products","/api/orders"]}
+=== response headers on a proxied route ===
+    X-Request-ID and X-Served-By are added by NGINX, not by the service.
+$ curl -s -D - -o /dev/null http://localhost:8091/api/products/1002
+HTTP/1.1 200 OK
+Server: nginx
+Date: Wed, 02 Sep 2026 05:42:33 GMT
+Content-Type: application/json
+Content-Length: 166
+Connection: keep-alive
+x-service: products-service
+X-Request-ID: 0a98421f32ddb823edb5b2c1dfdc7fcf
+X-Served-By: api-gateway
+
+
+=== each service's health, reached through the gateway ===
+$ curl -s http://localhost:8091/api/status/products
+{
+  "service": "products-service",
+  "status": "up",
+  "instance": "ip-10-137-53-49.us-east-1.compute.internal",
+  "products": 8
+}
+$ curl -s http://localhost:8091/api/status/orders
+{
+  "service": "orders-service",
+  "status": "up",
+  "instance": "ip-10-137-53-49.us-east-1.compute.internal",
+  "orders": 0,
+  "depends_on": "http://products-service:8000"
+}
