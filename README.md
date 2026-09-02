@@ -12,6 +12,7 @@
 | 9 | Optimizing and recovering an Oracle database | [docx](Oracle-Optimization-Recovery-Assignment.docx) · [pdf](Oracle-Optimization-Recovery-Assignment.pdf) | [`oracle-tuning/`](oracle-tuning) |
 | 10 | Hands-on JUnit 5: annotations, assertions and advanced concepts | [docx](JUnit5-Testing-Assignment.docx) · [pdf](JUnit5-Testing-Assignment.pdf) | [`calculator-junit5/`](calculator-junit5) |
 | 13 | Spring Cloud service discovery with Eureka and Config Server | [docx](Spring-Cloud-Eureka-Config-Assignment.docx) · [pdf](Spring-Cloud-Eureka-Config-Assignment.pdf) | [`ecommerce-cloud/`](ecommerce-cloud) |
+| 14 | Designing an API gateway and service communication for an e-commerce app | [docx](API-Gateway-Service-Communication-Assignment.docx) · [pdf](API-Gateway-Service-Communication-Assignment.pdf) | [`api-gateway-ecommerce/`](api-gateway-ecommerce) |
 | Milestone | Case study: real-time banking fraud & analytics engine | [docx](Banking-Fraud-Analytics-CaseStudy.docx) · [pdf](Banking-Fraud-Analytics-CaseStudy.pdf) | [`banking-api/`](banking-api) |
 | Induction | EastWest Bank core banking relational database lab | [docx](EWB-Core-Banking-Database-Lab.docx) · [pdf](EWB-Core-Banking-Database-Lab.pdf) | [`ewb-core-banking/`](ewb-core-banking) |
 

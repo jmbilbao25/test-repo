@@ -1,0 +1,25 @@
+=== docker logs bazaar-orders ===
+05:42:34  orders-service    HTTP Request: GET http://products-service:8000/products/4242 "HTTP/1.1 404 Not Found"
+05:42:34  orders-service    rid=2e6d353d912e4327fff09574ed68f0ec  POST /orders -> 404
+05:42:34  orders-service    rid=6123708a8ba2a38f67de8ab86e982a98  -> GET http://products-service:8000/products/1005
+05:42:34  orders-service    HTTP Request: GET http://products-service:8000/products/1005 "HTTP/1.1 200 OK"
+05:42:34  orders-service    rid=6123708a8ba2a38f67de8ab86e982a98  order 5004 confirmed: Abaca Table Runner x2 = 790.00
+05:42:34  orders-service    rid=6123708a8ba2a38f67de8ab86e982a98  POST /orders -> 201
+05:42:35  orders-service    rid=ab3ac8abdae29d54764076484e52ea2b  GET /health -> 200
+05:42:35  orders-service    rid=985646e2f3d14d9a085403d3902fcc7a  GET /orders -> 200
+05:42:37  orders-service    rid=83189c9c9047978907c4be7e5c150811  GET /orders -> 200
+05:42:38  orders-service    HTTP Request: GET http://products-service:8000/health "HTTP/1.1 200 OK"
+05:42:38  orders-service    rid=6b0cdf1d1d0efaf3bcbc4d1f4ba9ca79  GET /orders/dependency -> 200
+05:42:40  orders-service    rid=b068a23109b8d9bb27263722bb09d9b6  -> GET http://products-service:8000/products/1002
+05:42:40  orders-service    rid=b068a23109b8d9bb27263722bb09d9b6  products-service unreachable: All connection attempts failed
+05:42:40  orders-service    rid=b068a23109b8d9bb27263722bb09d9b6  POST /orders -> 503
+05:42:40  orders-service    rid=d5245541862ee6e74a5ef77de5d4a964  GET /orders -> 200
+05:42:40  orders-service    rid=94a00efb928594e7b103e35b8c3a2cbb  GET /orders/dependency -> 200
+05:42:40  orders-service    rid=8df37bc5e33ffbdfa501199a27e6887e  GET /health -> 200
+05:42:40  orders-service    rid=c6c89ab5abc4b5a9535cd55e03c5ff02  GET /orders -> 200
+05:42:44  orders-service    rid=b778797196fa8a107e1ea0ee5489dfda  -> GET http://products-service:8000/products/1007
+05:42:44  orders-service    HTTP Request: GET http://products-service:8000/products/1007 "HTTP/1.1 200 OK"
+05:42:44  orders-service    rid=b778797196fa8a107e1ea0ee5489dfda  order 5005 confirmed: Calamansi Marmalade 250g x2 = 370.00
+05:42:44  orders-service    rid=b778797196fa8a107e1ea0ee5489dfda  POST /orders -> 201
+05:42:45  orders-service    rid=2d603b5bf101d4973b08db7634949158  GET /health -> 200
+05:42:45  orders-service    rid=f406c0e45a416286ad0bdd932d458fe0  GET /orders -> 200

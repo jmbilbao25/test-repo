@@ -1,0 +1,23 @@
+=== docker logs bazaar-products ===
+05:42:33  products-service  rid=f5dd287e3a84d4449caff9815f30f682  from=orders-service GET /products/1001 -> 200
+05:42:34  products-service  rid=bf34baf8d960e729a163d713463d5e99  from=orders-service GET /products/1006 -> 200
+05:42:34  products-service  rid=3f17373053636b11c6fc2ef2eb446344  from=orders-service GET /products/1004 -> 200
+05:42:34  products-service  rid=2e6d353d912e4327fff09574ed68f0ec  from=orders-service GET /products/4242 -> 404
+05:42:34  products-service  rid=6123708a8ba2a38f67de8ab86e982a98  from=orders-service GET /products/1005 -> 200
+05:42:35  products-service  rid=efc497864a7e8df0c4a6ec9aeb0c2e37  from=gateway        GET /health -> 200
+05:42:35  products-service  rid=9347190343a6dbb2a5c8866955a1e877  from=gateway        GET /products -> 200
+05:42:36  products-service  rid=48fdad8d6876a97b87090757220168d8  from=gateway        GET /products -> 200
+05:42:38  products-service  rid=-  from=gateway        GET /health -> 200
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [1]
+INFO:     Started server process [1]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+05:42:44  products-service  rid=-  from=gateway        GET /health -> 200
+05:42:44  products-service  rid=25f4495aec1ae3d1654316eb03deb471  from=gateway        GET /products -> 200
+05:42:44  products-service  rid=b778797196fa8a107e1ea0ee5489dfda  from=orders-service GET /products/1007 -> 200
+05:42:45  products-service  rid=f0ebfa73a3fcdda8080028347e61323f  from=gateway        GET /health -> 200
+05:42:45  products-service  rid=6fee008b4805c381ca67a492551879e0  from=gateway        GET /products -> 200

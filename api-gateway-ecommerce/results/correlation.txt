@@ -1,0 +1,32 @@
+=== one POST /api/orders, and the same ID in three container logs ===
+    The gateway generated it. Nobody configured it anywhere.
+
+$ RID=f5dd287e3a84d4449caff9815f30f682
+
+$ docker logs bazaar-gateway | grep $RID
+127.0.0.1  "POST /api/orders HTTP/1.1"  201  334b  0.014s  rid=f5dd287e3a84d4449caff9815f30f682  upstream=127.0.0.1:8001
+
+$ docker logs bazaar-orders | grep $RID
+05:42:33  orders-service    rid=f5dd287e3a84d4449caff9815f30f682  -> GET http://products-service:8000/products/1001
+05:42:33  orders-service    rid=f5dd287e3a84d4449caff9815f30f682  order 5003 confirmed: Bamboo Cutting Board x4 = 2996.00
+05:42:33  orders-service    rid=f5dd287e3a84d4449caff9815f30f682  POST /orders -> 201
+
+$ docker logs bazaar-products | grep $RID
+05:42:33  products-service  rid=f5dd287e3a84d4449caff9815f30f682  from=orders-service GET /products/1001 -> 200
+
+=== and it is stored on the order itself ===
+$ curl -s http://localhost:8091/api/orders/5003
+{
+  "id": 5003,
+  "customer": "trace",
+  "product_id": 1001,
+  "product_name": "Bamboo Cutting Board",
+  "unit_price": 749.0,
+  "quantity": 4,
+  "total": 2996.0,
+  "currency": "PHP",
+  "status": "CONFIRMED",
+  "placed_at": "2026-09-02 05:42:33Z",
+  "priced_by": "products-service",
+  "request_id": "f5dd287e3a84d4449caff9815f30f682"
+}

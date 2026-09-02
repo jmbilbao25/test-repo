@@ -1,0 +1,50 @@
+=== docker stop bazaar-products ===
+$ docker stop bazaar-products
+bazaar-products
+
+$ docker ps --format 'table {{.Names}}\t{{.Status}}'
+NAMES           STATUS
+bazaar-orders   Up 9 seconds
+bazaar-gateway  Up 9 seconds
+
+=== the gateway is still up and still answering for itself ===
+$ curl -s http://localhost:8091/health
+{"service":"api-gateway","status":"up","routes":["/api/products","/api/orders"]}
+=== but the catalogue route now has nothing behind it ===
+    NGINX cannot connect, so the shaped 503 from error_page is returned
+    instead of an HTML error page.
+$ curl -s -w '[HTTP %{http_code}]\n' http://localhost:8091/api/products
+{"error":"upstream service unavailable","gateway":"nginx-api-gateway","request_id":"dec9b153f71122df92b895dd82f30bc4"}[HTTP 503]
+
+=== and an order cannot be priced ===
+    orders-service is healthy. It is its dependency that is gone, and
+    it says so rather than returning a 500.
+$ curl -s -w '[HTTP %{http_code}]\n' -X POST http://localhost:8091/api/orders -H 'Content-Type: application/json' -d '{"product_id":1002,"quantity":1}'
+{
+  "detail": {
+    "error": "products service unavailable",
+    "dependency": "http://products-service:8000",
+    "hint": "the catalogue container is not answering, so the order cannot be priced",
+    "reason": "ConnectError"
+  }
+}[HTTP 503]
+
+=== orders already placed are still readable ===
+    The orders service holds them; nothing about reading them needs the
+    catalogue.
+$ curl -s -o /dev/null -w 'GET /api/orders -> %{http_code}\n' http://localhost:8091/api/orders
+GET /api/orders -> 200
+
+=== and the dependency view shows what it now sees ===
+$ curl -s http://localhost:8091/api/orders/dependency
+{
+  "service": "orders-service",
+  "instance": "ip-10-137-53-49.us-east-1.compute.internal",
+  "configured_dependency": "http://products-service:8000",
+  "dns_name": "products-service",
+  "resolved_to": "127.0.0.1",
+  "health_probe": {
+    "reachable": false,
+    "error": "ConnectError"
+  }
+}

@@ -1,0 +1,38 @@
+=== a product that is out of stock (1006, stock 0) ===
+$ curl -s -w '[HTTP %{http_code}]\n' -X POST http://localhost:8091/api/orders -H 'Content-Type: application/json' -d '{"product_id":1006,"quantity":1}'
+{
+  "detail": {
+    "error": "out of stock",
+    "product": "Stainless Tumbler 500ml",
+    "product_id": 1006
+  }
+}[HTTP 409]
+
+=== more than the catalogue has (1004, stock 3) ===
+$ curl -s -w '[HTTP %{http_code}]\n' -X POST http://localhost:8091/api/orders -H 'Content-Type: application/json' -d '{"product_id":1004,"quantity":5}'
+{
+  "detail": {
+    "error": "not enough stock",
+    "product": "Buri Storage Basket",
+    "requested": 5,
+    "available": 3
+  }
+}[HTTP 409]
+
+=== above the configured per-order maximum of 10 ===
+    Refused by orders-service before it calls products-service at all.
+$ curl -s -w '[HTTP %{http_code}]\n' -X POST http://localhost:8091/api/orders -H 'Content-Type: application/json' -d '{"product_id":1003,"quantity":25}'
+{
+  "detail": {
+    "error": "quantity above the configured maximum",
+    "requested": 25,
+    "maximum": 10
+  }
+}[HTTP 422]
+
+=== a product that does not exist: the 404 comes from products-service ===
+$ curl -s -w '[HTTP %{http_code}]\n' -X POST http://localhost:8091/api/orders -H 'Content-Type: application/json' -d '{"product_id":4242,"quantity":1}'
+{
+  "detail": "product 4242 is not in the catalogue"
+}[HTTP 404]
+

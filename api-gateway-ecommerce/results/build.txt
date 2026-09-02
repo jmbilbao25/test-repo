@@ -1,0 +1,47 @@
+=== docker version ===
+client 5.2.3
+
+=== docker build ./products-service ===
+--> Using cache 9750f2d539c0393cc0d75e5dae632fd162518ac36424d8ea305476da946206ad
+--> 9750f2d539c0
+STEP 9/11: ENV BIND_HOST=127.0.0.1     BIND_PORT=8000
+--> Using cache 3060713bedecd60919aa78d70b9fd6a5ae0c2b139daa9f35e4622990e205955a
+--> 3060713bedec
+STEP 10/11: EXPOSE 8000
+--> Using cache 0bfc8d1dcadde2592a46fdc581c557efff567c7eb30a03d2429e93e2e03b670f
+--> 0bfc8d1dcadd
+STEP 11/11: CMD ["sh", "-c",      "exec uvicorn app:app --host \"$BIND_HOST\" --port \"$BIND_PORT\" --no-access-log"]
+--> Using cache f2411c61b8ba749b367808acb58eb6eb55c420bc0b30831386ed3f31fe04c41a
+COMMIT bazaar/products-service:1.0
+--> f2411c61b8ba
+Successfully tagged localhost/bazaar/products-service:1.0
+f2411c61b8ba749b367808acb58eb6eb55c420bc0b30831386ed3f31fe04c41a
+
+=== docker build ./orders-service ===
+--> Using cache c7594e73016909e59efcb96255f62a5e0160a67145d022cb158339103c0f180b
+--> c7594e730169
+STEP 9/11: ENV BIND_HOST=127.0.0.1     BIND_PORT=8001
+--> Using cache a4a5655bb22627af003a01a0bfeb32d0696e1d2bc0debad63f04169922ec28b0
+--> a4a5655bb226
+STEP 10/11: EXPOSE 8001
+--> Using cache 2aef700de8cb7164c9e982fb4dfb0e07411d1430fe219f17aa16699087dcdb2d
+--> 2aef700de8cb
+STEP 11/11: CMD ["sh", "-c",      "exec uvicorn app:app --host \"$BIND_HOST\" --port \"$BIND_PORT\" --no-access-log"]
+--> Using cache 93e83c9e89181bac55997992064aff1b1af05faf63a5d54729fc7ad90207a19d
+COMMIT bazaar/orders-service:1.0
+--> 93e83c9e8918
+Successfully tagged localhost/bazaar/orders-service:1.0
+93e83c9e89181bac55997992064aff1b1af05faf63a5d54729fc7ad90207a19d
+
+=== docker build ./gateway ===
+STEP 1/4: FROM nginx:1.27-alpine
+STEP 2/4: COPY nginx.conf /etc/nginx/nginx.conf
+--> 4f7cf3f523bb
+STEP 3/4: COPY html/ /usr/share/nginx/html/
+--> 490c804758ad
+STEP 4/4: EXPOSE 8091
+COMMIT bazaar/api-gateway:1.0
+--> 8339fde0ac30
+Successfully tagged localhost/bazaar/api-gateway:1.0
+8339fde0ac3038306721073b52d877a99d107225f53457f9ffb10e98174ebab7
+

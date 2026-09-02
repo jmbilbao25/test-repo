@@ -1,0 +1,18 @@
+=== the same three ports, dialled two ways ===
+    loopback   127.0.0.1
+    routable   169.254.255.194   (what another machine would use)
+
+PORT   SERVICE            via 127.0.0.1   via 169.254.255.194
+--------------------------------------------------------------
+8000   products-service   connected       refused
+8001   orders-service     connected       refused
+8091   api-gateway        connected       connected
+
+=== what that means ===
+    Only 8091 answers on the routable address, so the gateway is the
+    only way in. The two services are reachable from processes on this
+    machine, which includes the gateway, and from nothing else.
+
+    On a runtime where the bridge network works, the same property
+    comes from docker-compose.yml instead: the services get `expose`
+    and only the gateway gets `ports`.
